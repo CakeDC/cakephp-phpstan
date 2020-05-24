@@ -4,3 +4,11 @@ services:
 		factory: CakeDC\PHPStan\Type\TableLocatorDynamicReturnTypeExtension(Cake\ORM\Locator\LocatorInterface, get)
 		tags:
 			- phpstan.broker.dynamicMethodReturnTypeExtension
+	-
+		class: CakeDC\PHPStan\ComponentLoadDynamicReturnTypeExtension
+		tags:
+			- phpstan.broker.dynamicMethodReturnTypeExtension
+	-
+		class: CakeDC\PHPStan\ShellHelperLoadDynamicReturnTypeExtension
+		tags:
+			- phpstan.broker.dynamicMethodReturnTypeExtension

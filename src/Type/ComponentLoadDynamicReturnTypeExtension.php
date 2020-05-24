@@ -1,26 +1,17 @@
 <?php
 
-/**
- * Copyright 2020, Cake Development Corporation (https://www.cakedc.com)
- *
- * Licensed under The MIT License
- * Redistributions of files must retain the above copyright notice.
- *
- * @copyright Copyright 2020, Cake Development Corporation (https://www.cakedc.com)
- *  @license MIT License (http://www.opensource.org/licenses/mit-license.php)
- */
-
-namespace CakeDC\PHPStan\Type;
+namespace CakeDC\PHPStan;
 
 use CakeDC\PHPStan\Traits\BaseCakeRegistryReturnTrait;
-use Cake\ORM\Table;
+use Cake\Controller\Component;
+use Cake\Controller\Controller;
 use PhpParser\Node\Expr\MethodCall;
 use PHPStan\Analyser\Scope;
 use PHPStan\Reflection\MethodReflection;
 use PHPStan\Type\DynamicMethodReturnTypeExtension;
 use PHPStan\Type\Type;
 
-class TableLocatorDynamicReturnTypeExtension implements DynamicMethodReturnTypeExtension
+class ComponentLoadDynamicReturnTypeExtension implements DynamicMethodReturnTypeExtension
 {
     use BaseCakeRegistryReturnTrait;
 
@@ -36,13 +27,11 @@ class TableLocatorDynamicReturnTypeExtension implements DynamicMethodReturnTypeE
     /**
      * TableLocatorDynamicReturnTypeExtension constructor.
      *
-     * @param string $className The target className.
-     * @param string $methodName The dynamic method to handle.
      */
-    public function __construct(string $className, string $methodName)
+    public function __construct()
     {
-        $this->className = $className;
-        $this->methodName = $methodName;
+        $this->className = Controller::class;
+        $this->methodName = 'loadComponent';
     }
 
     /**
@@ -57,8 +46,8 @@ class TableLocatorDynamicReturnTypeExtension implements DynamicMethodReturnTypeE
         MethodCall $methodCall,
         Scope $scope
     ): Type {
-        $defaultClass = Table::class;
-        $namespaceFormat = '\\%s\\Model\\Table\\%sTable';
+        $defaultClass = Component::class;
+        $namespaceFormat = '\\%s\\Controller\Component\\%sComponent';
 
         return $this->getRegistryReturnType($methodReflection, $methodCall, $scope, $defaultClass, $namespaceFormat);
     }

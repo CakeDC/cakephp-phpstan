@@ -15,8 +15,24 @@ namespace App\Model\Table;
 use Cake\ORM\Entity;
 use Cake\ORM\Table;
 
+/**
+ * Class VeryCustomize00009ArticlesTable
+ * @mixin \App\Model\Behavior\SampleTestCustomMethodBehavior
+ * @package App\Model\Table
+ */
 class VeryCustomize00009ArticlesTable extends Table
 {
+    /**
+     * @param string[] $config Configuration options passed to the constructor
+     *
+     * @return void
+     */
+    public function initialize(array $config): void
+    {
+        parent::initialize($config);
+        $this->behaviors()->load('SampleTestCustomMethod');
+    }
+
     /**
      * @param \Cake\Datasource\EntityInterface $article
      *
@@ -25,6 +41,7 @@ class VeryCustomize00009ArticlesTable extends Table
     public function fixArticle($article)
     {
         //logic to clear article
+        $this->fakeData();
 
         return true;
     }

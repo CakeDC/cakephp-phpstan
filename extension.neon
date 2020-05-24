@@ -1,6 +1,11 @@
 
 services:
 	-
+		class: CakeDC\PHPStan\Method\AssociationTableMixinClassReflectionExtension
+		tags:
+			- phpstan.broker.methodsClassReflectionExtension
+			- phpstan.broker.propertiesClassReflectionExtension
+	-
 		factory: CakeDC\PHPStan\Type\TableLocatorDynamicReturnTypeExtension(Cake\ORM\Locator\LocatorInterface, get)
 		tags:
 			- phpstan.broker.dynamicMethodReturnTypeExtension

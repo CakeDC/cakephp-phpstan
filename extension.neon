@@ -5,6 +5,10 @@ services:
 		tags:
 			- phpstan.broker.dynamicMethodReturnTypeExtension
 	-
+		factory: CakeDC\PHPStan\Type\TableLocatorDynamicReturnTypeExtension(Cake\Controller\Controller, loadModel)
+		tags:
+			- phpstan.broker.dynamicMethodReturnTypeExtension
+	-
 		class: CakeDC\PHPStan\ComponentLoadDynamicReturnTypeExtension
 		tags:
 			- phpstan.broker.dynamicMethodReturnTypeExtension

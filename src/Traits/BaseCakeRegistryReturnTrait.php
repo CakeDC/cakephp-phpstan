@@ -51,7 +51,6 @@ trait BaseCakeRegistryReturnTrait
         foreach ($prefixes as $prefix) {
             $namespace = str_replace('/', '\\', $prefix);
             $className = sprintf($namespaceFormat, $namespace, $name);
-            $exists = class_exists($className);
             if (class_exists($className)) {
                 return new ObjectType($className);
             }

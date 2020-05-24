@@ -12,6 +12,7 @@
 
 namespace CakeDC\MyPlugin\Model\Table;
 
+use Cake\Datasource\EntityInterface;
 use Cake\ORM\Table;
 
 /**
@@ -31,5 +32,18 @@ class HelloWorld101010ArticlesTable extends Table
         //logic to clear article
 
         return true;
+    }
+
+    /**
+     * @return \Cake\Datasource\EntityInterface
+     */
+    public function getLatestOne(): EntityInterface
+    {
+        /**
+         * @var \Cake\Datasource\EntityInterface $entity
+         */
+        $entity = $this->find()->orderDesc('created')->firstOrFail();
+
+        return $entity;
     }
 }

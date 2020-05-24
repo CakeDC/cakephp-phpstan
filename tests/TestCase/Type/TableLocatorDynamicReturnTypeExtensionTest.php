@@ -13,15 +13,7 @@
 namespace CakeDC\PHPStan\Test\TestCase\Type;
 
 use CakeDC\PHPStan\Type\TableLocatorDynamicReturnTypeExtension;
-use PhpParser\Node\Arg;
-use PhpParser\Node\Expr\MethodCall;
-use PhpParser\Node\Scalar\MagicConst\Method;
-use PhpParser\Node\Scalar\String_;
-use PHPStan\Analyser\Scope;
-use PHPStan\Reflection\ClassReflection;
 use PHPStan\Reflection\Dummy\DummyMethodReflection;
-use PHPStan\Reflection\MethodReflection;
-use PHPStan\Type\Constant\ConstantStringType;
 use PHPUnit\Framework\TestCase;
 
 class TableLocatorDynamicReturnTypeExtensionTest extends TestCase

@@ -9,6 +9,10 @@ services:
 		tags:
 			- phpstan.broker.dynamicMethodReturnTypeExtension
 	-
+		factory: CakeDC\PHPStan\Type\TableLocatorDynamicReturnTypeExtension(Cake\Command\Command, loadModel)
+		tags:
+			- phpstan.broker.dynamicMethodReturnTypeExtension
+	-
 		factory: CakeDC\PHPStan\Type\TableLocatorDynamicReturnTypeExtension(Cake\Console\Shell, loadModel)
 		tags:
 			- phpstan.broker.dynamicMethodReturnTypeExtension

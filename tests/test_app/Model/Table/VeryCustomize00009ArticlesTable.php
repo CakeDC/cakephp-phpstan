@@ -12,6 +12,7 @@
 
 namespace App\Model\Table;
 
+use Cake\ORM\Entity;
 use Cake\ORM\Table;
 
 class VeryCustomize00009ArticlesTable extends Table
@@ -26,5 +27,18 @@ class VeryCustomize00009ArticlesTable extends Table
         //logic to clear article
 
         return true;
+    }
+
+    /**
+     * Return a new sample article
+     *
+     * @return \Cake\ORM\Entity
+     */
+    public function newSample()
+    {
+        return new Entity([
+            'title' => 'This is my title',
+            'content' => 'Sample content for test'
+        ]);
     }
 }

@@ -42,7 +42,8 @@ class VeryCustomize00009ArticlesTable extends Table
     {
         //logic to clear article
         $this->fakeData();
-
+        $article = $this->findByTitle('sample')->first();
+        $article->set('title', 'sample two');
         return true;
     }
 

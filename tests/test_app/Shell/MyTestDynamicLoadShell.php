@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright 2020, Cake Development Corporation (https://www.cakedc.com)
  *
@@ -13,14 +14,19 @@ namespace App\Shell;
 
 use Cake\Console\Shell;
 
-class MyTestHelpLoadShell extends Shell
+class MyTestDynamicLoadShell extends Shell
 {
     /**
      * @return bool|int|void|null
      */
     public function main()
     {
-        //logic
+        //testing ShellHelperLoadDynamicReturnTypeExtension
         $this->helper('progress')->increment(1);
+
+        //testing TableLocatorDynamicReturnTypeExtension
+        $latest = $this->loadModel('CakeDC/MyPlugin.HelloWorld101010Articles')
+            ->getLatestOne();
+        $this->out($latest['id']);
     }
 }

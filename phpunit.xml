@@ -1,0 +1,16 @@
+<phpunit
+        bootstrap="./vendor/autoload.php"
+        backupGlobals="false"
+        colors="true"
+        verbose="true">
+
+    <testsuite name="CakeDCPhpStan">
+        <directory>./tests</directory>
+    </testsuite>
+
+    <filter>
+        <whitelist>
+            <directory suffix=".php">./src</directory>
+        </whitelist>
+    </filter>
+</phpunit>

@@ -22,13 +22,19 @@ To use this extension, require it in [Composer](https://getcomposer.org/):
 composer require --dev cakedc/cakephp-phpstan
 ```
 
-Include extension.neon in your project's PHPStan config:
 
+If you also install [phpstan/extension-installer](https://github.com/phpstan/extension-installer) then you're all set!
+
+<details>
+    <summary>Manual installation</summary>
+
+If you don't want to use `phpstan/extension-installer`, include extension.neon in your project's PHPStan config:
 ```
 includes:
     - vendor/cakedc/cakephp-phpstan/extension.neon
 ```
 
+</details>
 
 ### Tips
 To make your life easier make sure to have @mixin and @method annotations in your table classes.

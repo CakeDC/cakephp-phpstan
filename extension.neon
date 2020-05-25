@@ -30,10 +30,10 @@ services:
 		tags:
 			- phpstan.broker.dynamicMethodReturnTypeExtension
 	-
-		class: CakeDC\PHPStan\ComponentLoadDynamicReturnTypeExtension
+		class: CakeDC\PHPStan\Type\ComponentLoadDynamicReturnTypeExtension
 		tags:
 			- phpstan.broker.dynamicMethodReturnTypeExtension
 	-
-		class: CakeDC\PHPStan\ShellHelperLoadDynamicReturnTypeExtension
+		class: CakeDC\PHPStan\Type\ShellHelperLoadDynamicReturnTypeExtension
 		tags:
 			- phpstan.broker.dynamicMethodReturnTypeExtension

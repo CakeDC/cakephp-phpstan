@@ -10,7 +10,7 @@
  *  @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
-namespace CakeDC\PHPStan;
+namespace CakeDC\PHPStan\Type;
 
 use CakeDC\PHPStan\Traits\BaseCakeRegistryReturnTrait;
 use Cake\Console\Helper;

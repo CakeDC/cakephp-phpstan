@@ -13,7 +13,7 @@
 namespace CakeDC\PHPStan\Test\TestCase\Type;
 
 use Cake\Controller\Controller;
-use CakeDC\PHPStan\ComponentLoadDynamicReturnTypeExtension;
+use CakeDC\PHPStan\Type\ComponentLoadDynamicReturnTypeExtension;
 use PHPStan\Reflection\Dummy\DummyMethodReflection;
 use PHPUnit\Framework\TestCase;
 

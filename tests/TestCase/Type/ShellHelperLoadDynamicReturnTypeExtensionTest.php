@@ -13,7 +13,7 @@
 namespace CakeDC\PHPStan\Test\TestCase\Type;
 
 use Cake\Console\Shell;
-use CakeDC\PHPStan\ShellHelperLoadDynamicReturnTypeExtension;
+use CakeDC\PHPStan\Type\ShellHelperLoadDynamicReturnTypeExtension;
 use PHPStan\Reflection\Dummy\DummyMethodReflection;
 use PHPUnit\Framework\TestCase;
 

@@ -6,6 +6,34 @@ services:
 			- phpstan.broker.methodsClassReflectionExtension
 			- phpstan.broker.propertiesClassReflectionExtension
 	-
+		factory: CakeDC\PHPStan\Type\TableLocatorDynamicReturnTypeExtension(Cake\ORM\Locator\LocatorAwareTrait, fetchTable)
+		tags:
+			- phpstan.broker.dynamicMethodReturnTypeExtension
+	-
+		factory: CakeDC\PHPStan\Type\TableLocatorDynamicReturnTypeExtension(Cake\Controller\Controller, fetchTable)
+		tags:
+			- phpstan.broker.dynamicMethodReturnTypeExtension
+	-
+		factory: CakeDC\PHPStan\Type\TableLocatorDynamicReturnTypeExtension(Cake\Command\Command, fetchTable)
+		tags:
+			- phpstan.broker.dynamicMethodReturnTypeExtension
+	-
+		factory: CakeDC\PHPStan\Type\TableLocatorDynamicReturnTypeExtension(Cake\Console\Shell, fetchTable)
+		tags:
+			- phpstan.broker.dynamicMethodReturnTypeExtension
+	-
+		factory: CakeDC\PHPStan\Type\TableLocatorDynamicReturnTypeExtension(Cake\Mailer\Mailer, fetchTable)
+		tags:
+			- phpstan.broker.dynamicMethodReturnTypeExtension
+	-
+		factory: CakeDC\PHPStan\Type\TableLocatorDynamicReturnTypeExtension(Cake\View\Cell, fetchTable)
+		tags:
+			- phpstan.broker.dynamicMethodReturnTypeExtension
+	-
+		factory: CakeDC\PHPStan\Type\TableLocatorDynamicReturnTypeExtension(Cake\Controller\Component, fetchTable)
+		tags:
+			- phpstan.broker.dynamicMethodReturnTypeExtension
+	-
 		factory: CakeDC\PHPStan\Type\TableLocatorDynamicReturnTypeExtension(Cake\ORM\Locator\LocatorInterface, get)
 		tags:
 			- phpstan.broker.dynamicMethodReturnTypeExtension
@@ -27,6 +55,10 @@ services:
 			- phpstan.broker.dynamicMethodReturnTypeExtension
 	-
 		factory: CakeDC\PHPStan\Type\TableLocatorDynamicReturnTypeExtension(Cake\View\Cell, loadModel)
+		tags:
+			- phpstan.broker.dynamicMethodReturnTypeExtension
+	-
+		factory: CakeDC\PHPStan\Type\TableLocatorDynamicReturnTypeExtension(Cake\Controller\Component, loadModel)
 		tags:
 			- phpstan.broker.dynamicMethodReturnTypeExtension
 	-

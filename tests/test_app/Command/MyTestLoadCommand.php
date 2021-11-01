@@ -26,6 +26,6 @@ class MyTestLoadCommand extends Command
         $article = $this->loadModel('VeryCustomize00009Articles')
             ->newSample();
 
-        $io->out($article->get('title'));
+        $io->out(strval($article->get('title')));
     }
 }

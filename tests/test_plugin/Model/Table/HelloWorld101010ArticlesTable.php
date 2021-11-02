@@ -35,7 +35,7 @@ class HelloWorld101010ArticlesTable extends Table
     }
 
     /**
-     * @return \Cake\Datasource\EntityInterface|array<\Cake\Datasource\EntityInterface>
+     * @return \Cake\Datasource\EntityInterface|array<string, mixed>
      */
     public function getLatestOne()
     {

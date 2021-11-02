@@ -37,11 +37,11 @@ trait BaseCakeRegistryReturnTrait
         string $defaultClass,
         string $namespaceFormat
     ) {
-        if (\count($methodCall->args) === 0) {
+        if (\count($methodCall->getArgs()) === 0) {
             return ParametersAcceptorSelector::selectSingle($methodReflection->getVariants())->getReturnType();
         }
 
-        $argType = $scope->getType($methodCall->args[0]->value);
+        $argType = $scope->getType($methodCall->getArgs()[0]->value);
         if (!method_exists($argType, 'getValue')) {
             return new ObjectType($defaultClass);
         }

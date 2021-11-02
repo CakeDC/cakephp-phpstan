@@ -35,15 +35,10 @@ class HelloWorld101010ArticlesTable extends Table
     }
 
     /**
-     * @return \Cake\Datasource\EntityInterface
+     * @return \Cake\Datasource\EntityInterface|array<string, mixed>
      */
-    public function getLatestOne(): EntityInterface
+    public function getLatestOne()
     {
-        /**
-         * @var \Cake\Datasource\EntityInterface $entity
-         */
-        $entity = $this->find()->orderDesc('created')->firstOrFail();
-
-        return $entity;
+        return $this->find()->orderDesc('created')->firstOrFail();
     }
 }

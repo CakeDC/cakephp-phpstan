@@ -57,7 +57,7 @@ class ComponentLoadDynamicReturnTypeExtension implements DynamicMethodReturnType
         Scope $scope
     ): Type {
         $defaultClass = Component::class;
-        $namespaceFormat = '\\%s\\Controller\Component\\%sComponent';
+        $namespaceFormat = '%s\\Controller\Component\\%sComponent';
 
         return $this->getRegistryReturnType($methodReflection, $methodCall, $scope, $defaultClass, $namespaceFormat);
     }

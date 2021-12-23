@@ -69,7 +69,7 @@ class ShellHelperLoadDynamicReturnTypeExtension implements DynamicMethodReturnTy
     protected function pluginSplit($baseName): array
     {
         list($plugin, $name) = pluginSplit($baseName);
-        $name = ucfirst($name);
+        $name = \ucfirst($name);
 
         return [$plugin, $name];
     }

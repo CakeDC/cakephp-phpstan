@@ -42,16 +42,16 @@ trait BaseCakeRegistryReturnTrait
         }
 
         $argType = $scope->getType($methodCall->getArgs()[0]->value);
-        if (!method_exists($argType, 'getValue')) {
+        if (!\method_exists($argType, 'getValue')) {
             return new ObjectType($defaultClass);
         }
         $baseName = $argType->getValue();
         list($plugin, $name) = $this->pluginSplit($baseName);
         $prefixes = $plugin ? [$plugin] : ['Cake', 'App'];
         foreach ($prefixes as $prefix) {
-            $namespace = str_replace('/', '\\', $prefix);
-            $className = sprintf($namespaceFormat, $namespace, $name);
-            if (class_exists($className)) {
+            $namespace = \str_replace('/', '\\', $prefix);
+            $className = \sprintf($namespaceFormat, $namespace, $name);
+            if (\class_exists($className)) {
                 return new ObjectType($className);
             }
         }
@@ -85,6 +85,6 @@ trait BaseCakeRegistryReturnTrait
      */
     protected function pluginSplit($baseName): array
     {
-        return pluginSplit($baseName);
+        return \pluginSplit($baseName);
     }
 }

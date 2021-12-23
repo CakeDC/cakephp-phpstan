@@ -58,7 +58,7 @@ class TableLocatorDynamicReturnTypeExtension implements DynamicMethodReturnTypeE
         Scope $scope
     ): Type {
         $defaultClass = Table::class;
-        $namespaceFormat = '\\%s\\Model\\Table\\%sTable';
+        $namespaceFormat = '%s\\Model\\Table\\%sTable';
 
         return $this->getRegistryReturnType($methodReflection, $methodCall, $scope, $defaultClass, $namespaceFormat);
     }

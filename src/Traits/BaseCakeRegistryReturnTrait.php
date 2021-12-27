@@ -26,7 +26,7 @@ trait BaseCakeRegistryReturnTrait
      * @param MethodCall $methodCall
      * @param Scope $scope
      * @param string $defaultClass
-     * @param string $namespaceFormat
+     * @param string|array<string> $namespaceFormat
      * @return ObjectType|Type
      * @throws \PHPStan\ShouldNotHappenException
      */
@@ -35,7 +35,7 @@ trait BaseCakeRegistryReturnTrait
         $methodCall,
         $scope,
         string $defaultClass,
-        string $namespaceFormat
+        $namespaceFormat
     ) {
         if (\count($methodCall->getArgs()) === 0) {
             return ParametersAcceptorSelector::selectSingle($methodReflection->getVariants())->getReturnType();
@@ -48,11 +48,14 @@ trait BaseCakeRegistryReturnTrait
         $baseName = $argType->getValue();
         list($plugin, $name) = $this->pluginSplit($baseName);
         $prefixes = $plugin ? [$plugin] : ['Cake', 'App'];
-        foreach ($prefixes as $prefix) {
-            $namespace = \str_replace('/', '\\', $prefix);
-            $className = \sprintf($namespaceFormat, $namespace, $name);
-            if (\class_exists($className)) {
-                return new ObjectType($className);
+        $namespaceFormat = (array)$namespaceFormat;
+        foreach ($namespaceFormat as $format) {
+            foreach ($prefixes as $prefix) {
+                $namespace = \str_replace('/', '\\', $prefix);
+                $className = \sprintf($format, $namespace, $name);
+                if (\class_exists($className)) {
+                    return new ObjectType($className);
+                }
             }
         }
 

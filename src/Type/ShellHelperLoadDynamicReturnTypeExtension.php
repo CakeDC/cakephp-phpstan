@@ -36,11 +36,14 @@ class ShellHelperLoadDynamicReturnTypeExtension implements DynamicMethodReturnTy
 
     /**
      * TableLocatorDynamicReturnTypeExtension constructor.
+     *
+     * @param string|null $className The target className.
+     * @param string|null $methodName The dynamic method to handle.
      */
-    public function __construct()
+    public function __construct(?string $className = null, ?string $methodName = null)
     {
-        $this->className = Shell::class;
-        $this->methodName = 'helper';
+        $this->className = $className ?? Shell::class;
+        $this->methodName = $methodName ?? 'helper';
     }
 
     /**
@@ -56,7 +59,10 @@ class ShellHelperLoadDynamicReturnTypeExtension implements DynamicMethodReturnTy
         Scope $scope
     ): Type {
         $defaultClass = Helper::class;
-        $namespaceFormat = '%s\\Shell\Helper\\%sHelper';
+        $namespaceFormat = [
+            '%s\\Command\Helper\\%sHelper',
+            '%s\\Shell\Helper\\%sHelper'
+        ];
 
         return $this->getRegistryReturnType($methodReflection, $methodCall, $scope, $defaultClass, $namespaceFormat);
     }

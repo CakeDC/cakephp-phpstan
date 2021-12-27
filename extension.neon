@@ -69,3 +69,7 @@ services:
 		class: CakeDC\PHPStan\Type\ShellHelperLoadDynamicReturnTypeExtension
 		tags:
 			- phpstan.broker.dynamicMethodReturnTypeExtension
+	-
+		factory: CakeDC\PHPStan\Type\ShellHelperLoadDynamicReturnTypeExtension(Cake\Console\ConsoleIo)
+		tags:
+			- phpstan.broker.dynamicMethodReturnTypeExtension

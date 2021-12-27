@@ -23,6 +23,7 @@ class MyTestDynamicLoadShell extends Shell
     {
         //testing ShellHelperLoadDynamicReturnTypeExtension
         $this->helper('progress')->increment(1);
+        $this->_io->out($this->helper('BazBaz')->foo());
 
         //testing TableLocatorDynamicReturnTypeExtension
         $latest = $this->loadModel('CakeDC/MyPlugin.HelloWorld101010Articles')

@@ -67,7 +67,7 @@ class ShellHelperLoadDynamicReturnTypeExtensionTest extends TestCase
      * @param bool $expected
      * @dataProvider dataProviderIsMethodSupported
      */
-    public function testIsMethodSupported(string $testMethod, ?string$methodConfigured, bool $expected)
+    public function testIsMethodSupported(string $testMethod, ?string $methodConfigured, bool $expected)
     {
         $subject = new ShellHelperLoadDynamicReturnTypeExtension(null, $methodConfigured);
         $methodReflection = new DummyMethodReflection($testMethod);

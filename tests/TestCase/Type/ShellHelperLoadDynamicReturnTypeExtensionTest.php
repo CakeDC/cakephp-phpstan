@@ -12,6 +12,7 @@
 
 namespace CakeDC\PHPStan\Test\TestCase\Type;
 
+use Cake\Console\ConsoleIo;
 use Cake\Console\Shell;
 use CakeDC\PHPStan\Type\ShellHelperLoadDynamicReturnTypeExtension;
 use PHPStan\Reflection\Dummy\DummyMethodReflection;
@@ -31,6 +32,17 @@ class ShellHelperLoadDynamicReturnTypeExtensionTest extends TestCase
     }
 
     /**
+     * Test getClassMethod
+     *
+     * @return void
+     */
+    public function testGetClassWithCustom()
+    {
+        $subject = new ShellHelperLoadDynamicReturnTypeExtension(ConsoleIo::class);
+        $this->assertSame(ConsoleIo::class, $subject->getClass());
+    }
+
+    /**
      * Data provider for testIsMethodSupported method
      *
      * @return array
@@ -38,21 +50,26 @@ class ShellHelperLoadDynamicReturnTypeExtensionTest extends TestCase
     public function dataProviderIsMethodSupported()
     {
         return [
-            ['get', false],
-            ['helper', true],
-            ['Helper', false]
+            ['get', null, false],
+            ['get', 'helper', false],
+            ['helper', 'helper', true],
+            ['helper', null, true],
+            ['Helper', null, false],
+            ['myHelper', 'myHelper', true],
+            ['myHelper', 'helper', false],
         ];
     }
     /**
      * Test getClassMethod
      *
      * @param string $testMethod
+     * @param string|null $methodConfigured
      * @param bool $expected
      * @dataProvider dataProviderIsMethodSupported
      */
-    public function testIsMethodSupported(string $testMethod, bool $expected)
+    public function testIsMethodSupported(string $testMethod, ?string$methodConfigured, bool $expected)
     {
-        $subject = new ShellHelperLoadDynamicReturnTypeExtension();
+        $subject = new ShellHelperLoadDynamicReturnTypeExtension(null, $methodConfigured);
         $methodReflection = new DummyMethodReflection($testMethod);
         $this->assertSame($expected, $subject->isMethodSupported($methodReflection));
     }

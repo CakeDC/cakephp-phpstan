@@ -30,5 +30,6 @@ class MyTestLoadCommand extends Command
 
         $io->helper('progress')->increment(1);
         $io->out($io->helper('BazBaz')->foo());
+        $io->helper('MyHeading')->headingOne('Sample Text 01');
     }
 }

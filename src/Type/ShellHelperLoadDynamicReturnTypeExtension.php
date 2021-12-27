@@ -59,7 +59,10 @@ class ShellHelperLoadDynamicReturnTypeExtension implements DynamicMethodReturnTy
         Scope $scope
     ): Type {
         $defaultClass = Helper::class;
-        $namespaceFormat = '%s\\Shell\Helper\\%sHelper';
+        $namespaceFormat = [
+            '%s\\Command\Helper\\%sHelper',
+            '%s\\Shell\Helper\\%sHelper'
+        ];
 
         return $this->getRegistryReturnType($methodReflection, $methodCall, $scope, $defaultClass, $namespaceFormat);
     }

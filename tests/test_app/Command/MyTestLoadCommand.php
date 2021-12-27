@@ -27,5 +27,8 @@ class MyTestLoadCommand extends Command
             ->newSample();
 
         $io->out(strval($article->get('title')));
+
+        $io->helper('progress')->increment(1);
+        $io->out($io->helper('BazBaz')->foo());
     }
 }

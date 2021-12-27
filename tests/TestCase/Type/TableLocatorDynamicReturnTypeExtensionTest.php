@@ -18,7 +18,6 @@ use PHPUnit\Framework\TestCase;
 
 class TableLocatorDynamicReturnTypeExtensionTest extends TestCase
 {
-
     /**
      * Data provider for testGetClass method
      *

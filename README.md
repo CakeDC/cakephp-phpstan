@@ -25,6 +25,7 @@ This extension provides following features:
 1. Provide correct return type for `Cake\Mailer\Mailer::fetchTable()`
 1. Provide correct return type for `Cake\View\Cell::fetchTable()`
 1. Provide correct return type for `Cake\Console\Shell::helper()`
+1. Provide correct return type for `Cake\Console\ConsoleIo::helper()`
 
 ## Installation
 

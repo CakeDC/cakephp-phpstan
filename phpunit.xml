@@ -1,16 +1,18 @@
-<phpunit
-        bootstrap="./vendor/autoload.php"
-        backupGlobals="false"
-        colors="true"
-        verbose="true">
+<?xml version="1.0"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         bootstrap="./vendor/autoload.php"
+         backupGlobals="false"
+         colors="true"
+         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.3/phpunit.xsd"
+         cacheDirectory=".phpunit.cache">
 
-    <testsuite name="CakeDCPhpStan">
-        <directory>./tests</directory>
-    </testsuite>
+  <testsuite name="CakeDCPhpStan">
+    <directory>./tests</directory>
+  </testsuite>
 
-    <filter>
-        <whitelist>
-            <directory suffix=".php">./src</directory>
-        </whitelist>
-    </filter>
+  <source>
+    <include>
+      <directory suffix=".php">./src</directory>
+    </include>
+  </source>
 </phpunit>

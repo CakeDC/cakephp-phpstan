@@ -35,7 +35,7 @@ class ComponentLoadDynamicReturnTypeExtensionTest extends TestCase
      *
      * @return array
      */
-    public function dataProviderIsMethodSupported()
+    public static function dataProviderIsMethodSupported()
     {
         return [
             ['loadComponent', true],

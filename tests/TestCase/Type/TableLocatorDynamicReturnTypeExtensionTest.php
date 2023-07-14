@@ -23,7 +23,7 @@ class TableLocatorDynamicReturnTypeExtensionTest extends TestCase
      *
      * @return array
      */
-    public function dataProviderGetClass()
+    public static function dataProviderGetClass()
     {
         return [
             ['Cake\ORM\Locator\LocatorInterface', 'get'],
@@ -49,7 +49,7 @@ class TableLocatorDynamicReturnTypeExtensionTest extends TestCase
      *
      * @return array
      */
-    public function dataProviderIsMethodSupported()
+    public static function dataProviderIsMethodSupported()
     {
         return [
             ['get', 'get', true],

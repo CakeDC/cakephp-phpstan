@@ -18,7 +18,7 @@
     },
     "require-dev": {
         "phpstan/phpstan-phpunit": "^1.0",
-        "phpunit/phpunit": "^9.5",
+        "phpunit/phpunit": "^10.1",
         "cakephp/cakephp-codesniffer": "^5.0"
     },
     "extra": {
@@ -55,5 +55,10 @@
             "@test",
             "@stan-integration"
         ]
+    },
+    "config": {
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true
+        }
     }
 }

@@ -28,6 +28,7 @@ class FixArticles
             ->where(['created <=' => new \DateTime('-30 days')])
             ->all();
 
+        /** @var \Cake\ORM\Entity $record */
         foreach ($records as $record) {
             $Table->fixArticle($record);
         }

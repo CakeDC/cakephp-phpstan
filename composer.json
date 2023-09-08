@@ -11,6 +11,7 @@
         }
     ],
     "minimum-stability": "dev",
+    "prefer-stable": true,
     "require": {
         "php": ">=8.1.0",
         "phpstan/phpstan": "^1.0",

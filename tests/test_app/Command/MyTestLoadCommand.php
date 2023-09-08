@@ -23,10 +23,7 @@ class MyTestLoadCommand extends Command
      */
     public function execute(Arguments $args, ConsoleIo $io)
     {
-        $article = $this->loadModel('VeryCustomize00009Articles')
-            ->newSample();
-
-        $io->out(strval($article->get('title')));
+        $this->fetchTable('VeryCustomize00009Articles')->newSample();
 
         $io->helper('progress')->increment(1);
         $io->out($io->helper('BazBaz')->foo());

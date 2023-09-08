@@ -19,6 +19,8 @@ use PHPStan\Reflection\ParametersAcceptorSelector;
 use PHPStan\Type\ObjectType;
 use PHPStan\Type\Type;
 
+use function Cake\Core\pluginSplit;
+
 trait BaseCakeRegistryReturnTrait
 {
     /**
@@ -88,6 +90,6 @@ trait BaseCakeRegistryReturnTrait
      */
     protected function pluginSplit($baseName): array
     {
-        return \pluginSplit($baseName);
+        return pluginSplit($baseName);
     }
 }

@@ -24,8 +24,7 @@ class MyTestLoadComponentController extends Controller
      */
     public function myTest()
     {
-        $model = TableRegistry::getTableLocator()->get('MyCustomSources');
-        $this->loadComponent('Paginator')->paginate($model);
+        $this->loadComponent('Flash')->success('Something');
     }
 
     /**
@@ -36,7 +35,7 @@ class MyTestLoadComponentController extends Controller
     public function lately()
     {
         //getLatestOne is defined at HelloWorld101010ArticlesTable
-        $latest = $this->loadModel('CakeDC/MyPlugin.HelloWorld101010Articles')
+        $latest = $this->fetchTable('CakeDC/MyPlugin.HelloWorld101010Articles')
             ->getLatestOne();
         $this->set('latest', $latest);
     }

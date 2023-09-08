@@ -23,7 +23,7 @@ class MyTestLoadCell extends Cell
      */
     public function sample()
     {
-        $article = $this->loadModel('VeryCustomize00009Articles')
+        $article = $this->fetchTable('VeryCustomize00009Articles')
             ->newSample();
         $this->set('article', $article);
     }

@@ -23,7 +23,7 @@ class MyTestLoadMailer extends Mailer
      */
     protected function sampleLoading()
     {
-        $article = $this->loadModel('VeryCustomize00009Articles')
+        $article = $this->fetchTable('VeryCustomize00009Articles')
             ->newSample();
         $this->viewBuilder()->setVar('article', $article);
     }

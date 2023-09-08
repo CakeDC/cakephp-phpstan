@@ -10,7 +10,7 @@
  *  @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
-namespace App\Shell\Helper;
+namespace App\Command\Helper;
 
 use Cake\Console\Helper;
 
@@ -24,16 +24,16 @@ class BazBazHelper extends Helper
      */
     public function output(array $args): void
     {
-        $this->_io->success('Sample text');
+        $this->_io->success('Sample heading');
     }
 
     /**
-     * Sample foo method.
+     * Custom method
      *
      * @return string
      */
     public function foo(): string
     {
-        return 'sample text';
+        return 'Invoked!';
     }
 }

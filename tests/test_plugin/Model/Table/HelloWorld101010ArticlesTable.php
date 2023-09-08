@@ -12,7 +12,6 @@
 
 namespace CakeDC\MyPlugin\Model\Table;
 
-use Cake\Datasource\EntityInterface;
 use Cake\ORM\Table;
 
 /**
@@ -35,10 +34,10 @@ class HelloWorld101010ArticlesTable extends Table
     }
 
     /**
-     * @return \Cake\Datasource\EntityInterface|array<string, mixed>
+     * @return mixed
      */
     public function getLatestOne()
     {
-        return $this->find()->orderDesc('created')->firstOrFail();
+        return $this->find()->orderByDesc('created')->firstOrFail();
     }
 }

@@ -12,16 +12,16 @@
 
 namespace CakeDC\PHPStan\Type;
 
+use Cake\Console\ConsoleIo;
+use Cake\Controller\Component;
 use CakeDC\PHPStan\Traits\BaseCakeRegistryReturnTrait;
-use Cake\Console\Helper;
-use Cake\Console\Shell;
 use PhpParser\Node\Expr\MethodCall;
 use PHPStan\Analyser\Scope;
 use PHPStan\Reflection\MethodReflection;
 use PHPStan\Type\DynamicMethodReturnTypeExtension;
 use PHPStan\Type\Type;
 
-class ShellHelperLoadDynamicReturnTypeExtension implements DynamicMethodReturnTypeExtension
+class ConsoleHelperLoadDynamicReturnTypeExtension implements DynamicMethodReturnTypeExtension
 {
     use BaseCakeRegistryReturnTrait;
 
@@ -37,13 +37,11 @@ class ShellHelperLoadDynamicReturnTypeExtension implements DynamicMethodReturnTy
     /**
      * TableLocatorDynamicReturnTypeExtension constructor.
      *
-     * @param string|null $className The target className.
-     * @param string|null $methodName The dynamic method to handle.
      */
-    public function __construct(?string $className = null, ?string $methodName = null)
+    public function __construct()
     {
-        $this->className = $className ?? Shell::class;
-        $this->methodName = $methodName ?? 'helper';
+        $this->className = ConsoleIo::class;
+        $this->methodName = 'helper';
     }
 
     /**
@@ -58,25 +56,9 @@ class ShellHelperLoadDynamicReturnTypeExtension implements DynamicMethodReturnTy
         MethodCall $methodCall,
         Scope $scope
     ): Type {
-        $defaultClass = Helper::class;
-        $namespaceFormat = [
-            '%s\\Command\Helper\\%sHelper',
-            '%s\\Shell\Helper\\%sHelper'
-        ];
+        $defaultClass = Component::class;
+        $namespaceFormat = '%s\\Command\Helper\\%sHelper';
 
         return $this->getRegistryReturnType($methodReflection, $methodCall, $scope, $defaultClass, $namespaceFormat);
-    }
-
-    /**
-     * @param string $baseName
-     * @return array
-     * @psalm-return array{string|null, string}
-     */
-    protected function pluginSplit($baseName): array
-    {
-        list($plugin, $name) = pluginSplit($baseName);
-        $name = \ucfirst($name);
-
-        return [$plugin, $name];
     }
 }

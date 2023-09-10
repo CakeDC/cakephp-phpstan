@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 /**
  * Copyright 2020, Cake Development Corporation (https://www.cakedc.com)
@@ -7,7 +8,7 @@
  * Redistributions of files must retain the above copyright notice.
  *
  * @copyright Copyright 2020, Cake Development Corporation (https://www.cakedc.com)
- *  @license MIT License (http://www.opensource.org/licenses/mit-license.php)
+ * @license   MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
 namespace CakeDC\PHPStan\Type;
@@ -28,15 +29,14 @@ class ConsoleHelperLoadDynamicReturnTypeExtension implements DynamicMethodReturn
     /**
      * @var string
      */
-    private $className;
+    private string $className;
     /**
      * @var string
      */
-    private $methodName;
+    private string $methodName;
 
     /**
      * TableLocatorDynamicReturnTypeExtension constructor.
-     *
      */
     public function __construct()
     {
@@ -45,10 +45,10 @@ class ConsoleHelperLoadDynamicReturnTypeExtension implements DynamicMethodReturn
     }
 
     /**
-     * @param MethodReflection $methodReflection
-     * @param MethodCall $methodCall
-     * @param Scope $scope
-     * @return Type
+     * @param \PHPStan\Reflection\MethodReflection $methodReflection
+     * @param \PhpParser\Node\Expr\MethodCall       $methodCall
+     * @param \PHPStan\Analyser\Scope            $scope
+     * @return \PHPStan\Type\Type
      * @throws \PHPStan\ShouldNotHappenException
      */
     public function getTypeFromMethodCall(

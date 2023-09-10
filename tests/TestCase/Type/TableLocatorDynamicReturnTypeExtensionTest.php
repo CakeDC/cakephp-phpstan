@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 /**
  * Copyright 2020, Cake Development Corporation (https://www.cakedc.com)
@@ -7,7 +8,7 @@
  * Redistributions of files must retain the above copyright notice.
  *
  * @copyright Copyright 2020, Cake Development Corporation (https://www.cakedc.com)
- *  @license MIT License (http://www.opensource.org/licenses/mit-license.php)
+ * @license   MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
 namespace CakeDC\PHPStan\Test\TestCase\Type;
@@ -27,15 +28,15 @@ class TableLocatorDynamicReturnTypeExtensionTest extends TestCase
     {
         return [
             ['Cake\ORM\Locator\LocatorInterface', 'get'],
-            ['Cake\Controller\Controller', 'loadModel']
+            ['Cake\Controller\Controller', 'loadModel'],
         ];
     }
 
     /**
      * Test getClassMethod
      *
-     * @param string $targetClass
-     * @param string $methodName
+     * @param        string $targetClass
+     * @param        string $methodName
      * @dataProvider dataProviderGetClass
      */
     public function testGetClass(string $targetClass, string $methodName)
@@ -55,15 +56,16 @@ class TableLocatorDynamicReturnTypeExtensionTest extends TestCase
             ['get', 'get', true],
             ['get', 'read', false],
             ['loadModel', 'loadModel', true],
-            ['loadModel', 'get', false]
+            ['loadModel', 'get', false],
         ];
     }
+
     /**
      * Test getClassMethod
      *
-     * @param string $allowedMethod
-     * @param string $testMethod
-     * @param bool $expected
+     * @param        string $allowedMethod
+     * @param        string $testMethod
+     * @param        bool   $expected
      * @dataProvider dataProviderIsMethodSupported
      */
     public function testIsMethodSupported(string $allowedMethod, string $testMethod, bool $expected)

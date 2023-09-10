@@ -10,12 +10,10 @@
             "role": "Author"
         }
     ],
-    "minimum-stability": "dev",
-    "prefer-stable": true,
     "require": {
         "php": ">=8.1.0",
         "phpstan/phpstan": "^1.0",
-        "cakephp/cakephp": "5.x-dev"
+        "cakephp/cakephp": "^5.0.0"
     },
     "require-dev": {
         "phpstan/phpstan-phpunit": "^1.0",
@@ -42,8 +40,8 @@
         }
     },
     "scripts": {
-        "cs-check": "phpcs -p --standard=PSR12 src/ tests",
-        "cs-fix": "phpcbf -p --standard=PSR12 src/ tests",
+        "cs-check": "phpcs -p src/ tests",
+        "cs-fix": "phpcbf -p src/ tests",
         "test": "phpunit --stderr",
         "stan-integration": [
             "phpstan analyse tests/test_app/",

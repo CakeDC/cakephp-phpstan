@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 /**
  * @source https://github.com/cakephp/cakephp
@@ -24,10 +25,10 @@ class AssociationTableMixinClassReflectionExtension implements
     /**
      * @var \PHPStan\Broker\Broker
      */
-    private $broker;
+    private Broker $broker;
 
     /**
-     * @param Broker $broker Class reflection broker
+     * @param \PHPStan\Broker\Broker $broker Class reflection broker
      * @return void
      */
     public function setBroker(Broker $broker): void
@@ -36,7 +37,7 @@ class AssociationTableMixinClassReflectionExtension implements
     }
 
     /**
-     * @return ClassReflection
+     * @return \PHPStan\Reflection\ClassReflection
      */
     protected function getTableReflection(): ClassReflection
     {
@@ -44,8 +45,8 @@ class AssociationTableMixinClassReflectionExtension implements
     }
 
     /**
-     * @param ClassReflection $classReflection Class reflection
-     * @param string $methodName Method name
+     * @param \PHPStan\Reflection\ClassReflection $classReflection Class reflection
+     * @param string          $methodName      Method name
      * @return bool
      */
     public function hasMethod(ClassReflection $classReflection, string $methodName): bool
@@ -63,9 +64,9 @@ class AssociationTableMixinClassReflectionExtension implements
     }
 
     /**
-     * @param ClassReflection $classReflection Class reflection
-     * @param string $methodName Method name
-     * @return MethodReflection
+     * @param \PHPStan\Reflection\ClassReflection $classReflection Class reflection
+     * @param string          $methodName      Method name
+     * @return \PHPStan\Reflection\MethodReflection
      */
     public function getMethod(ClassReflection $classReflection, string $methodName): MethodReflection
     {
@@ -78,8 +79,8 @@ class AssociationTableMixinClassReflectionExtension implements
     }
 
     /**
-     * @param ClassReflection $classReflection Class reflection
-     * @param string $propertyName Method name
+     * @param \PHPStan\Reflection\ClassReflection $classReflection Class reflection
+     * @param string          $propertyName    Method name
      * @return bool
      */
     public function hasProperty(ClassReflection $classReflection, string $propertyName): bool
@@ -92,9 +93,9 @@ class AssociationTableMixinClassReflectionExtension implements
     }
 
     /**
-     * @param ClassReflection $classReflection Class reflection
-     * @param string $propertyName Method name
-     * @return PropertyReflection
+     * @param \PHPStan\Reflection\ClassReflection $classReflection Class reflection
+     * @param string          $propertyName    Method name
+     * @return \PHPStan\Reflection\PropertyReflection
      */
     public function getProperty(ClassReflection $classReflection, string $propertyName): PropertyReflection
     {

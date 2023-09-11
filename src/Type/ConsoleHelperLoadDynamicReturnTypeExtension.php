@@ -13,7 +13,8 @@ declare(strict_types=1);
 
 namespace CakeDC\PHPStan\Type;
 
-use Cake\ORM\Table;
+use Cake\Console\ConsoleIo;
+use Cake\Controller\Component;
 use CakeDC\PHPStan\Traits\BaseCakeRegistryReturnTrait;
 use PhpParser\Node\Expr\MethodCall;
 use PHPStan\Analyser\Scope;
@@ -21,7 +22,7 @@ use PHPStan\Reflection\MethodReflection;
 use PHPStan\Type\DynamicMethodReturnTypeExtension;
 use PHPStan\Type\Type;
 
-class TableLocatorDynamicReturnTypeExtension implements DynamicMethodReturnTypeExtension
+class ConsoleHelperLoadDynamicReturnTypeExtension implements DynamicMethodReturnTypeExtension
 {
     use BaseCakeRegistryReturnTrait;
 
@@ -36,14 +37,11 @@ class TableLocatorDynamicReturnTypeExtension implements DynamicMethodReturnTypeE
 
     /**
      * TableLocatorDynamicReturnTypeExtension constructor.
-     *
-     * @param string $className  The target className.
-     * @param string $methodName The dynamic method to handle.
      */
-    public function __construct(string $className, string $methodName)
+    public function __construct()
     {
-        $this->className = $className;
-        $this->methodName = $methodName;
+        $this->className = ConsoleIo::class;
+        $this->methodName = 'helper';
     }
 
     /**
@@ -58,8 +56,8 @@ class TableLocatorDynamicReturnTypeExtension implements DynamicMethodReturnTypeE
         MethodCall $methodCall,
         Scope $scope
     ): Type {
-        $defaultClass = Table::class;
-        $namespaceFormat = '%s\\Model\\Table\\%sTable';
+        $defaultClass = Component::class;
+        $namespaceFormat = '%s\\Command\Helper\\%sHelper';
 
         return $this->getRegistryReturnType($methodReflection, $methodCall, $scope, $defaultClass, $namespaceFormat);
     }

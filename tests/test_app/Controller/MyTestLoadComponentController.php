@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 /**
  * Copyright 2020, Cake Development Corporation (https://www.cakedc.com)
@@ -7,13 +8,12 @@
  * Redistributions of files must retain the above copyright notice.
  *
  * @copyright Copyright 2020, Cake Development Corporation (https://www.cakedc.com)
- *  @license MIT License (http://www.opensource.org/licenses/mit-license.php)
+ * @license   MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
 namespace App\Controller;
 
 use Cake\Controller\Controller;
-use Cake\ORM\TableRegistry;
 
 class MyTestLoadComponentController extends Controller
 {
@@ -24,8 +24,7 @@ class MyTestLoadComponentController extends Controller
      */
     public function myTest()
     {
-        $model = TableRegistry::getTableLocator()->get('MyCustomSources');
-        $this->loadComponent('Paginator')->paginate($model);
+        $this->loadComponent('Flash')->success('Something');
     }
 
     /**
@@ -36,7 +35,7 @@ class MyTestLoadComponentController extends Controller
     public function lately()
     {
         //getLatestOne is defined at HelloWorld101010ArticlesTable
-        $latest = $this->loadModel('CakeDC/MyPlugin.HelloWorld101010Articles')
+        $latest = $this->fetchTable('CakeDC/MyPlugin.HelloWorld101010Articles')
             ->getLatestOne();
         $this->set('latest', $latest);
     }

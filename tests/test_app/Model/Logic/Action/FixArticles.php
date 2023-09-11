@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 /**
  * Copyright 2020, Cake Development Corporation (https://www.cakedc.com)
@@ -7,12 +8,13 @@
  * Redistributions of files must retain the above copyright notice.
  *
  * @copyright Copyright 2020, Cake Development Corporation (https://www.cakedc.com)
- *  @license MIT License (http://www.opensource.org/licenses/mit-license.php)
+ * @license   MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
 namespace App\Model\Logic\Action;
 
 use Cake\ORM\TableRegistry;
+use DateTime;
 
 class FixArticles
 {
@@ -25,9 +27,12 @@ class FixArticles
         $Table = TableRegistry::getTableLocator()->get('VeryCustomize00009Articles');
         $records = $Table
             ->find('all')
-            ->where(['created <=' => new \DateTime('-30 days')])
+            ->where(['created <=' => new DateTime('-30 days')])
             ->all();
 
+        /**
+ * @var \Cake\ORM\Entity $record
+*/
         foreach ($records as $record) {
             $Table->fixArticle($record);
         }

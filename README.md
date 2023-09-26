@@ -1,4 +1,4 @@
-# CakePHP 4 extension for PHPStan
+# CakePHP 5 extension for PHPStan
 
 [![Build Status](https://secure.travis-ci.org/CakeDC/cakephp-phpstan.png?branch=master)](http://travis-ci.org/CakeDC/cakephp-phpstan)
 [![Downloads](https://poser.pugx.org/CakeDC/cakephp-phpstan/d/total.png)](https://packagist.org/packages/CakeDC/cakephp-phpstan)
@@ -12,19 +12,11 @@ This extension provides following features:
 
 1. Provide correct return type for `Cake\ORM\Locator\LocatorInterface::get()`
 1. Provide correct return type for `Cake\Controller\Controller::loadComponent()`
-1. Provide correct return type for `Cake\Controller\Controller::loadModel()`
-1. Provide correct return type for `Cake\Controller\Component::loadModel()`
-1. Provide correct return type for `Cake\Command\Command::loadModel()`
-1. Provide correct return type for `Cake\Console\Shell::loadModel()`
-1. Provide correct return type for `Cake\Mailer\Mailer::loadModel()`
-1. Provide correct return type for `Cake\View\Cell::loadModel()`
 1. Provide correct return type for `Cake\Controller\Controller::fetchTable()`
 1. Provide correct return type for `Cake\Controller\Component::fetchTable()`
 1. Provide correct return type for `Cake\Command\Command::fetchTable()`
-1. Provide correct return type for `Cake\Console\Shell::fetchTable()`
 1. Provide correct return type for `Cake\Mailer\Mailer::fetchTable()`
 1. Provide correct return type for `Cake\View\Cell::fetchTable()`
-1. Provide correct return type for `Cake\Console\Shell::helper()`
 1. Provide correct return type for `Cake\Console\ConsoleIo::helper()`
 
 ## Installation

@@ -106,7 +106,7 @@ class TableFindByPropertyMethodReflection implements MethodReflection
      */
     public function getReturnType(): ObjectType
     {
-        return new ObjectType('\Cake\ORM\Query');
+        return new ObjectType('\Cake\ORM\Query\SelectQuery');
     }
 
     /**

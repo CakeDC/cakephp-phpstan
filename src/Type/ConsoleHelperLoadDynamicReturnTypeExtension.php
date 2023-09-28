@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace CakeDC\PHPStan\Type;
 
 use Cake\Console\ConsoleIo;
-use Cake\Controller\Component;
+use Cake\Console\Helper;
 use CakeDC\PHPStan\Traits\BaseCakeRegistryReturnTrait;
 use PhpParser\Node\Expr\MethodCall;
 use PHPStan\Analyser\Scope;
@@ -56,7 +56,7 @@ class ConsoleHelperLoadDynamicReturnTypeExtension implements DynamicMethodReturn
         MethodCall $methodCall,
         Scope $scope
     ): Type {
-        $defaultClass = Component::class;
+        $defaultClass = Helper::class;
         $namespaceFormat = '%s\\Command\Helper\\%sHelper';
 
         return $this->getRegistryReturnType($methodReflection, $methodCall, $scope, $defaultClass, $namespaceFormat);

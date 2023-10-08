@@ -20,6 +20,7 @@ use PHPStan\Analyser\Scope;
 use PHPStan\Reflection\MethodReflection;
 use PHPStan\Type\DynamicMethodReturnTypeExtension;
 use PHPStan\Type\Type;
+use ReflectionClass;
 use ReflectionException;
 
 class TableLocatorDynamicReturnTypeExtension implements DynamicMethodReturnTypeExtension
@@ -82,9 +83,9 @@ class TableLocatorDynamicReturnTypeExtension implements DynamicMethodReturnTypeE
      * @return mixed
      * @throws \ReflectionException
      */
-    protected function getDefaultTable(\ReflectionClass $target): mixed
+    protected function getDefaultTable(ReflectionClass $target): mixed
     {
-        return $target->getProperty('defaultTable')?->getDefaultValue();
+        return $target->getProperty('defaultTable')->getDefaultValue();
     }
 
     /**
@@ -96,8 +97,8 @@ class TableLocatorDynamicReturnTypeExtension implements DynamicMethodReturnTypeE
     protected function getReturnTypeWithoutArgs(
         MethodReflection $methodReflection,
         MethodCall $methodCall,
-        \ReflectionClass $targetClassReflection
-    ): Type|null {
+        ReflectionClass $targetClassReflection
+    ): ?Type {
         try {
             $defaultTable = $this->getDefaultTable($targetClassReflection);
             if (is_string($defaultTable) && $defaultTable) {
@@ -114,17 +115,14 @@ class TableLocatorDynamicReturnTypeExtension implements DynamicMethodReturnTypeE
      * @param \PhpParser\Node\Expr\MethodCall $methodCall
      * @return \ReflectionClass|null
      */
-    protected function getTargetClassReflection(Scope $scope, MethodCall $methodCall): ?\ReflectionClass
+    protected function getTargetClassReflection(Scope $scope, MethodCall $methodCall): ?ReflectionClass
     {
-        $reference = $scope->getType($methodCall->var)->getReferencedClasses();
+        $reference = $scope->getType($methodCall->var)->getReferencedClasses()[0] ?? null;
 
-        if (!isset($reference[0])) {
+        if ($reference === null || !class_exists($reference)) {
             return null;
         }
-        try {
-            return new \ReflectionClass($reference[0]);
-        } catch (ReflectionException $e) {
-            return null;
-        }
+
+        return new ReflectionClass($reference);
     }
 }

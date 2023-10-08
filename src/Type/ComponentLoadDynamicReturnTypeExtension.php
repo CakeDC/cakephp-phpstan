@@ -16,11 +16,7 @@ namespace CakeDC\PHPStan\Type;
 use Cake\Controller\Component;
 use Cake\Controller\Controller;
 use CakeDC\PHPStan\Traits\BaseCakeRegistryReturnTrait;
-use PhpParser\Node\Expr\MethodCall;
-use PHPStan\Analyser\Scope;
-use PHPStan\Reflection\MethodReflection;
 use PHPStan\Type\DynamicMethodReturnTypeExtension;
-use PHPStan\Type\Type;
 
 class ComponentLoadDynamicReturnTypeExtension implements DynamicMethodReturnTypeExtension
 {

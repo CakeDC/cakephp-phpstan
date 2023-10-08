@@ -17,6 +17,7 @@ use PhpParser\Node\Expr\MethodCall;
 use PHPStan\Reflection\MethodReflection;
 use PHPStan\Type\ObjectType;
 use PHPStan\Type\Type;
+use ReflectionClass;
 
 class ControllerFetchTableDynamicReturnTypeExtension extends TableLocatorDynamicReturnTypeExtension
 {
@@ -26,7 +27,7 @@ class ControllerFetchTableDynamicReturnTypeExtension extends TableLocatorDynamic
     protected function getReturnTypeWithoutArgs(
         MethodReflection $methodReflection,
         MethodCall $methodCall,
-        \ReflectionClass $targetClassReflection
+        ReflectionClass $targetClassReflection
     ): ?Type {
         $type = parent::getReturnTypeWithoutArgs($methodReflection, $methodCall, $targetClassReflection);
         if ($type !== null) {
@@ -44,7 +45,7 @@ class ControllerFetchTableDynamicReturnTypeExtension extends TableLocatorDynamic
      * @param \ReflectionClass $targetClassReflection
      * @return string|null
      */
-    protected function getDefaultTableByControllerClass(\ReflectionClass $targetClassReflection): ?string
+    protected function getDefaultTableByControllerClass(ReflectionClass $targetClassReflection): ?string
     {
         $hasProperty = $targetClassReflection->hasProperty('defaultTable');
         if (!$hasProperty) {

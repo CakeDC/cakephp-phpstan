@@ -64,21 +64,45 @@ class TableLocatorDynamicReturnTypeExtension implements DynamicMethodReturnTypeE
         $namespaceFormat = '%s\\Model\\Table\\%sTable';
 
         if (count($methodCall->getArgs()) === 0) {
-            try {
-                $defaultTable = $scope->getClassReflection()
-                    ?->getNativeReflection()
-                    ?->getProperty('defaultTable')
-                    ?->getDefaultValue();
-                if (is_string($defaultTable) && $defaultTable) {
-                    return $this->getCakeType($defaultTable, $defaultClass, $namespaceFormat);
-                }
-            } catch (ReflectionException) {
-            }
-
-            return ParametersAcceptorSelector::selectSingle($methodReflection->getVariants())
-                ->getReturnType();
+            return $this->getReturnTypeWithoutArgs($scope, $defaultClass, $namespaceFormat, $methodReflection);
         }
 
         return $this->getRegistryReturnType($methodReflection, $methodCall, $scope, $defaultClass, $namespaceFormat);
+    }
+
+    /**
+     * @param \PHPStan\Analyser\Scope $scope
+     * @return mixed|null
+     * @throws \ReflectionException
+     */
+    protected function getDefaultTable(Scope $scope): mixed
+    {
+        $defaultTable = $scope->getClassReflection()
+            ?->getNativeReflection()
+            ?->getProperty('defaultTable')
+            ?->getDefaultValue();
+        return $defaultTable;
+    }
+
+    /**
+     * @param \PHPStan\Analyser\Scope $scope
+     * @param string $defaultClass
+     * @param string $namespaceFormat
+     * @param \PHPStan\Reflection\MethodReflection $methodReflection
+     * @return \PHPStan\Type\ObjectType|\PHPStan\Type\Type
+     * @throws \PHPStan\ShouldNotHappenException
+     */
+    protected function getReturnTypeWithoutArgs(Scope $scope, string $defaultClass, string $namespaceFormat, MethodReflection $methodReflection): \PHPStan\Type\ObjectType|Type
+    {
+        try {
+            $defaultTable = $this->getDefaultTable($scope);
+            if (is_string($defaultTable) && $defaultTable) {
+                return $this->getCakeType($defaultTable, $defaultClass, $namespaceFormat);
+            }
+        } catch (ReflectionException) {
+        }
+
+        return ParametersAcceptorSelector::selectSingle($methodReflection->getVariants())
+            ->getReturnType();
     }
 }

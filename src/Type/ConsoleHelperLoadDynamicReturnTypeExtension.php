@@ -20,11 +20,14 @@ use PhpParser\Node\Expr\MethodCall;
 use PHPStan\Analyser\Scope;
 use PHPStan\Reflection\MethodReflection;
 use PHPStan\Type\DynamicMethodReturnTypeExtension;
+use PHPStan\Type\ObjectType;
 use PHPStan\Type\Type;
 
 class ConsoleHelperLoadDynamicReturnTypeExtension implements DynamicMethodReturnTypeExtension
 {
-    use BaseCakeRegistryReturnTrait;
+    use BaseCakeRegistryReturnTrait {
+        getCakeType as _getCakeType;
+    }
 
     /**
      * @var string
@@ -60,5 +63,21 @@ class ConsoleHelperLoadDynamicReturnTypeExtension implements DynamicMethodReturn
         $namespaceFormat = '%s\\Command\Helper\\%sHelper';
 
         return $this->getRegistryReturnType($methodReflection, $methodCall, $scope, $defaultClass, $namespaceFormat);
+    }
+
+    /**
+     * Before calling BaseCakeRegistryReturnTrait::getCakeType uppercase the
+     * first letter as done in the method ConsoleIo::helper
+     *
+     * @param string $baseName
+     * @param string $defaultClass
+     * @param array<string>|string $namespaceFormat
+     * @return \PHPStan\Type\ObjectType
+     */
+    protected function getCakeType(string $baseName, string $defaultClass, array|string $namespaceFormat): ObjectType
+    {
+        $baseName = ucfirst($baseName);
+
+        return $this->_getCakeType($baseName, $defaultClass, $namespaceFormat);
     }
 }

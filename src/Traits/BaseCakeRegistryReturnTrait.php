@@ -39,7 +39,7 @@ trait BaseCakeRegistryReturnTrait
         MethodReflection $methodReflection,
         MethodCall $methodCall,
         Scope $scope
-    ): ?Type {
+    ): Type {
         if (count($methodCall->getArgs()) === 0) {
             return ParametersAcceptorSelector::selectSingle($methodReflection->getVariants())
                 ->getReturnType();

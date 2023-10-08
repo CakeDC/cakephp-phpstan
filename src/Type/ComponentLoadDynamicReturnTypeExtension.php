@@ -54,20 +54,4 @@ class ComponentLoadDynamicReturnTypeExtension implements DynamicMethodReturnType
         $this->defaultClass = Component::class;
         $this->namespaceFormat = '%s\\Controller\Component\\%sComponent';
     }
-
-    /**
-     * @param \PHPStan\Reflection\MethodReflection $methodReflection
-     * @param \PhpParser\Node\Expr\MethodCall $methodCall
-     * @param \PHPStan\Analyser\Scope $scope
-     * @return \PHPStan\Type\Type
-     * @throws \PHPStan\ShouldNotHappenException
-     */
-    public function getTypeFromMethodCall(
-        MethodReflection $methodReflection,
-        MethodCall $methodCall,
-        Scope $scope
-    ): Type {
-
-        return $this->getRegistryReturnType($methodReflection, $methodCall, $scope);
-    }
 }

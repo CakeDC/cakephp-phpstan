@@ -16,11 +16,7 @@ namespace CakeDC\PHPStan\Type;
 use Cake\Console\ConsoleIo;
 use Cake\Console\Helper;
 use CakeDC\PHPStan\Traits\BaseCakeRegistryReturnTrait;
-use PhpParser\Node\Expr\MethodCall;
-use PHPStan\Analyser\Scope;
-use PHPStan\Reflection\MethodReflection;
 use PHPStan\Type\DynamicMethodReturnTypeExtension;
-use PHPStan\Type\ObjectType;
 use PHPStan\Type\Type;
 
 class ConsoleHelperLoadDynamicReturnTypeExtension implements DynamicMethodReturnTypeExtension
@@ -58,29 +54,13 @@ class ConsoleHelperLoadDynamicReturnTypeExtension implements DynamicMethodReturn
     }
 
     /**
-     * @param \PHPStan\Reflection\MethodReflection $methodReflection
-     * @param \PhpParser\Node\Expr\MethodCall $methodCall
-     * @param \PHPStan\Analyser\Scope $scope
-     * @return \PHPStan\Type\Type
-     * @throws \PHPStan\ShouldNotHappenException
-     */
-    public function getTypeFromMethodCall(
-        MethodReflection $methodReflection,
-        MethodCall $methodCall,
-        Scope $scope
-    ): Type {
-
-        return $this->getRegistryReturnType($methodReflection, $methodCall, $scope);
-    }
-
-    /**
      * Before calling BaseCakeRegistryReturnTrait::getCakeType uppercase the
      * first letter as done in the method ConsoleIo::helper
      *
      * @param string $baseName
      * @return \PHPStan\Type\ObjectType
      */
-    protected function getCakeType(string $baseName): ObjectType
+    protected function getCakeType(string $baseName): Type
     {
         $baseName = ucfirst($baseName);
 

@@ -27,7 +27,7 @@ class ControllerFetchTableDynamicReturnTypeExtension extends TableLocatorDynamic
         MethodReflection $methodReflection,
         MethodCall $methodCall,
         \ReflectionClass $targetClassReflection
-    ): ObjectType|Type|null {
+    ): ?Type {
         $type = parent::getReturnTypeWithoutArgs($methodReflection, $methodCall, $targetClassReflection);
         if ($type !== null) {
             return $type;

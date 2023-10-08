@@ -35,11 +35,11 @@ trait BaseCakeRegistryReturnTrait
      * @return \PHPStan\Type\Type
      * @throws \PHPStan\ShouldNotHappenException
      */
-    protected function getRegistryReturnType(
+    public function getTypeFromMethodCall(
         MethodReflection $methodReflection,
         MethodCall $methodCall,
         Scope $scope
-    ): Type {
+    ): ?Type {
         if (count($methodCall->getArgs()) === 0) {
             return ParametersAcceptorSelector::selectSingle($methodReflection->getVariants())
                 ->getReturnType();

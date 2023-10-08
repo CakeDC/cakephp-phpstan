@@ -19,13 +19,14 @@ use PhpParser\Node\Expr\MethodCall;
 use PHPStan\Analyser\Scope;
 use PHPStan\Reflection\MethodReflection;
 use PHPStan\Type\DynamicMethodReturnTypeExtension;
-use PHPStan\Type\ObjectType;
 use PHPStan\Type\Type;
 use ReflectionException;
 
 class TableLocatorDynamicReturnTypeExtension implements DynamicMethodReturnTypeExtension
 {
-    use BaseCakeRegistryReturnTrait;
+    use BaseCakeRegistryReturnTrait {
+        getTypeFromMethodCall as getTypeFromMethodCallWithArgs;
+    }
 
     /**
      * @var string
@@ -73,7 +74,7 @@ class TableLocatorDynamicReturnTypeExtension implements DynamicMethodReturnTypeE
             return $this->getReturnTypeWithoutArgs($methodReflection, $methodCall, $targetClassReflection);
         }
 
-        return $this->getRegistryReturnType($methodReflection, $methodCall, $scope);
+        return $this->getTypeFromMethodCallWithArgs($methodReflection, $methodCall, $scope);
     }
 
     /**
@@ -90,14 +91,13 @@ class TableLocatorDynamicReturnTypeExtension implements DynamicMethodReturnTypeE
      * @param \PHPStan\Reflection\MethodReflection $methodReflection
      * @param \PhpParser\Node\Expr\MethodCall $methodCall
      * @param \ReflectionClass $targetClassReflection
-     * @return \PHPStan\Type\ObjectType|\PHPStan\Type\Type
-     * @throws \PHPStan\ShouldNotHappenException
+     * @return \PHPStan\Type\Type|null
      */
     protected function getReturnTypeWithoutArgs(
         MethodReflection $methodReflection,
         MethodCall $methodCall,
         \ReflectionClass $targetClassReflection
-    ): ObjectType|Type|null {
+    ): Type|null {
         try {
             $defaultTable = $this->getDefaultTable($targetClassReflection);
             if (is_string($defaultTable) && $defaultTable) {

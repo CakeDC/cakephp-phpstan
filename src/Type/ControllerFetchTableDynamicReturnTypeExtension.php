@@ -13,12 +13,10 @@ declare(strict_types=1);
 
 namespace CakeDC\PHPStan\Type;
 
-use PHPStan\Analyser\Scope;
+use PhpParser\Node\Expr\MethodCall;
 use PHPStan\Reflection\MethodReflection;
-use PHPStan\Reflection\ParametersAcceptorSelector;
 use PHPStan\Type\ObjectType;
 use PHPStan\Type\Type;
-use ReflectionException;
 
 class ControllerFetchTableDynamicReturnTypeExtension extends TableLocatorDynamicReturnTypeExtension
 {
@@ -26,50 +24,39 @@ class ControllerFetchTableDynamicReturnTypeExtension extends TableLocatorDynamic
      * @inheritDoc
      */
     protected function getReturnTypeWithoutArgs(
-        Scope $scope,
-        string $defaultClass,
-        string $namespaceFormat,
-        MethodReflection $methodReflection
-    ): ObjectType|Type {
-        try {
-            $defaultTable = $this->getDefaultTable($scope);
-            if (is_string($defaultTable) && $defaultTable) {
-                return $this->getCakeType($defaultTable, $defaultClass, $namespaceFormat);
-            }
-        } catch (ReflectionException) {
+        MethodReflection $methodReflection,
+        MethodCall $methodCall,
+        \ReflectionClass $targetClassReflection
+    ): ObjectType|Type|null {
+        $type = parent::getReturnTypeWithoutArgs($methodReflection, $methodCall, $targetClassReflection);
+        if ($type !== null) {
+            return $type;
         }
-        $tableClassName = $this->getDefaultTableByControllerClass($scope);
+        $tableClassName = $this->getDefaultTableByControllerClass($targetClassReflection);
         if ($tableClassName !== null) {
             return new ObjectType($tableClassName);
         }
 
-        return ParametersAcceptorSelector::selectSingle($methodReflection->getVariants())
-            ->getReturnType();
+        return null;
     }
 
     /**
-     * @param \PHPStan\Analyser\Scope $scope
+     * @param \ReflectionClass $targetClassReflection
      * @return string|null
      */
-    protected function getDefaultTableByControllerClass(Scope $scope): ?string
+    protected function getDefaultTableByControllerClass(\ReflectionClass $targetClassReflection): ?string
     {
-        $hasProperty = $scope->getClassReflection()
-            ?->getNativeReflection()
-            ?->hasProperty('defaultTable');
+        $hasProperty = $targetClassReflection->hasProperty('defaultTable');
         if (!$hasProperty) {
             return null;
         }
-        $namespace = (string)$scope->getClassReflection()
-            ?->getNativeReflection()
-            ?->getNamespaceName();
+        $namespace = $targetClassReflection->getNamespaceName();
         $pos = strrpos($namespace, '\\Controller');
         if ($pos === false) {
             return null;
         }
         $baseNamespace = substr($namespace, 0, $pos);
-        $shortName = (string)$scope->getClassReflection()
-            ?->getNativeReflection()
-            ?->getShortName();
+        $shortName = $targetClassReflection->getShortName();
         $shortName = str_replace('Controller', '', $shortName);
         $tableClassName = sprintf(
             '%s\\Model\\Table\\%sTable',

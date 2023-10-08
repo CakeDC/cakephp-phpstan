@@ -53,21 +53,8 @@ trait BaseCakeRegistryReturnTrait
         if (!method_exists($argType, 'getValue')) {
             return new ObjectType($defaultClass);
         }
-        $baseName = $argType->getValue();
-        [$plugin, $name] = $this->pluginSplit($baseName);
-        $prefixes = $plugin ? [$plugin] : ['Cake', 'App'];
-        $namespaceFormat = (array)$namespaceFormat;
-        foreach ($namespaceFormat as $format) {
-            foreach ($prefixes as $prefix) {
-                $namespace = str_replace('/', '\\', $prefix);
-                $className = sprintf($format, $namespace, $name);
-                if (class_exists($className)) {
-                    return new ObjectType($className);
-                }
-            }
-        }
 
-        return new ObjectType($defaultClass);
+        return $this->getCakeType($argType->getValue(), $defaultClass, $namespaceFormat);
     }
 
     /**
@@ -97,5 +84,29 @@ trait BaseCakeRegistryReturnTrait
     protected function pluginSplit(string $baseName): array
     {
         return pluginSplit($baseName);
+    }
+
+    /**
+     * @param string $baseName
+     * @param string $defaultClass
+     * @param array|string $namespaceFormat
+     * @return \PHPStan\Type\ObjectType
+     */
+    protected function getCakeType(string $baseName, string $defaultClass, array|string $namespaceFormat): ObjectType
+    {
+        [$plugin, $name] = $this->pluginSplit($baseName);
+        $prefixes = $plugin ? [$plugin] : ['Cake', 'App'];
+        $namespaceFormat = (array)$namespaceFormat;
+        foreach ($namespaceFormat as $format) {
+            foreach ($prefixes as $prefix) {
+                $namespace = str_replace('/', '\\', $prefix);
+                $className = sprintf($format, $namespace, $name);
+                if (class_exists($className)) {
+                    return new ObjectType($className);
+                }
+            }
+        }
+
+        return new ObjectType($defaultClass);
     }
 }

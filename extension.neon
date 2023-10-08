@@ -10,7 +10,7 @@ services:
 		tags:
 			- phpstan.broker.dynamicMethodReturnTypeExtension
 	-
-		factory: CakeDC\PHPStan\Type\TableLocatorDynamicReturnTypeExtension(Cake\Controller\Controller, fetchTable)
+		factory: CakeDC\PHPStan\Type\ControllerFetchTableDynamicReturnTypeExtension(Cake\Controller\Controller, fetchTable)
 		tags:
 			- phpstan.broker.dynamicMethodReturnTypeExtension
 	-

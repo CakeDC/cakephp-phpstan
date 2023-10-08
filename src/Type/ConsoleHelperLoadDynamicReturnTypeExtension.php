@@ -37,6 +37,14 @@ class ConsoleHelperLoadDynamicReturnTypeExtension implements DynamicMethodReturn
      * @var string
      */
     private string $methodName;
+    /**
+     * @var string
+     */
+    protected string $defaultClass;
+    /**
+     * @var string
+     */
+    protected string $namespaceFormat;
 
     /**
      * TableLocatorDynamicReturnTypeExtension constructor.
@@ -45,12 +53,14 @@ class ConsoleHelperLoadDynamicReturnTypeExtension implements DynamicMethodReturn
     {
         $this->className = ConsoleIo::class;
         $this->methodName = 'helper';
+        $this->defaultClass = Helper::class;
+        $this->namespaceFormat = '%s\\Command\Helper\\%sHelper';
     }
 
     /**
      * @param \PHPStan\Reflection\MethodReflection $methodReflection
-     * @param \PhpParser\Node\Expr\MethodCall       $methodCall
-     * @param \PHPStan\Analyser\Scope            $scope
+     * @param \PhpParser\Node\Expr\MethodCall $methodCall
+     * @param \PHPStan\Analyser\Scope $scope
      * @return \PHPStan\Type\Type
      * @throws \PHPStan\ShouldNotHappenException
      */
@@ -59,10 +69,8 @@ class ConsoleHelperLoadDynamicReturnTypeExtension implements DynamicMethodReturn
         MethodCall $methodCall,
         Scope $scope
     ): Type {
-        $defaultClass = Helper::class;
-        $namespaceFormat = '%s\\Command\Helper\\%sHelper';
 
-        return $this->getRegistryReturnType($methodReflection, $methodCall, $scope, $defaultClass, $namespaceFormat);
+        return $this->getRegistryReturnType($methodReflection, $methodCall, $scope);
     }
 
     /**
@@ -70,14 +78,12 @@ class ConsoleHelperLoadDynamicReturnTypeExtension implements DynamicMethodReturn
      * first letter as done in the method ConsoleIo::helper
      *
      * @param string $baseName
-     * @param string $defaultClass
-     * @param array<string>|string $namespaceFormat
      * @return \PHPStan\Type\ObjectType
      */
-    protected function getCakeType(string $baseName, string $defaultClass, array|string $namespaceFormat): ObjectType
+    protected function getCakeType(string $baseName): ObjectType
     {
         $baseName = ucfirst($baseName);
 
-        return $this->_getCakeType($baseName, $defaultClass, $namespaceFormat);
+        return $this->_getCakeType($baseName);
     }
 }

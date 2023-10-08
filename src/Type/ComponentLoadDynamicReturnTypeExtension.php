@@ -36,18 +36,29 @@ class ComponentLoadDynamicReturnTypeExtension implements DynamicMethodReturnType
     private string $methodName;
 
     /**
+     * @var string
+     */
+    protected string $defaultClass;
+    /**
+     * @var string
+     */
+    protected string $namespaceFormat;
+
+    /**
      * TableLocatorDynamicReturnTypeExtension constructor.
      */
     public function __construct()
     {
         $this->className = Controller::class;
         $this->methodName = 'loadComponent';
+        $this->defaultClass = Component::class;
+        $this->namespaceFormat = '%s\\Controller\Component\\%sComponent';
     }
 
     /**
      * @param \PHPStan\Reflection\MethodReflection $methodReflection
-     * @param \PhpParser\Node\Expr\MethodCall       $methodCall
-     * @param \PHPStan\Analyser\Scope            $scope
+     * @param \PhpParser\Node\Expr\MethodCall $methodCall
+     * @param \PHPStan\Analyser\Scope $scope
      * @return \PHPStan\Type\Type
      * @throws \PHPStan\ShouldNotHappenException
      */
@@ -56,9 +67,7 @@ class ComponentLoadDynamicReturnTypeExtension implements DynamicMethodReturnType
         MethodCall $methodCall,
         Scope $scope
     ): Type {
-        $defaultClass = Component::class;
-        $namespaceFormat = '%s\\Controller\Component\\%sComponent';
 
-        return $this->getRegistryReturnType($methodReflection, $methodCall, $scope, $defaultClass, $namespaceFormat);
+        return $this->getRegistryReturnType($methodReflection, $methodCall, $scope);
     }
 }

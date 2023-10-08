@@ -64,9 +64,6 @@ class TableLocatorDynamicReturnTypeExtension implements DynamicMethodReturnTypeE
         MethodCall $methodCall,
         Scope $scope
     ): ?Type {
-        $defaultClass = Table::class;
-        $namespaceFormat = '%s\\Model\\Table\\%sTable';
-
         if (count($methodCall->getArgs()) === 0) {
             $targetClassReflection = $this->getTargetClassReflection($scope, $methodCall);
             if ($targetClassReflection === null) {
@@ -76,7 +73,7 @@ class TableLocatorDynamicReturnTypeExtension implements DynamicMethodReturnTypeE
             return $this->getReturnTypeWithoutArgs($methodReflection, $methodCall, $targetClassReflection);
         }
 
-        return $this->getRegistryReturnType($methodReflection, $methodCall, $scope, $defaultClass, $namespaceFormat);
+        return $this->getRegistryReturnType($methodReflection, $methodCall, $scope);
     }
 
     /**
@@ -104,7 +101,7 @@ class TableLocatorDynamicReturnTypeExtension implements DynamicMethodReturnTypeE
         try {
             $defaultTable = $this->getDefaultTable($targetClassReflection);
             if (is_string($defaultTable) && $defaultTable) {
-                return $this->getCakeType($defaultTable, $this->defaultClass, $this->namespaceFormat);
+                return $this->getCakeType($defaultTable);
             }
         } catch (ReflectionException) {
         }

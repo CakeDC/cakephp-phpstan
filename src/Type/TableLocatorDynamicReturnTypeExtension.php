@@ -18,8 +18,10 @@ use CakeDC\PHPStan\Traits\BaseCakeRegistryReturnTrait;
 use PhpParser\Node\Expr\MethodCall;
 use PHPStan\Analyser\Scope;
 use PHPStan\Reflection\MethodReflection;
+use PHPStan\Reflection\ParametersAcceptorSelector;
 use PHPStan\Type\DynamicMethodReturnTypeExtension;
 use PHPStan\Type\Type;
+use ReflectionException;
 
 class TableLocatorDynamicReturnTypeExtension implements DynamicMethodReturnTypeExtension
 {
@@ -60,6 +62,22 @@ class TableLocatorDynamicReturnTypeExtension implements DynamicMethodReturnTypeE
     ): Type {
         $defaultClass = Table::class;
         $namespaceFormat = '%s\\Model\\Table\\%sTable';
+
+        if (count($methodCall->getArgs()) === 0) {
+            try {
+                $defaultTable = $scope->getClassReflection()
+                    ?->getNativeReflection()
+                    ?->getProperty('defaultTable')
+                    ?->getDefaultValue();
+                if ($defaultTable) {
+                    return $this->getCakeType($defaultTable, $defaultClass, $namespaceFormat);
+                }
+            } catch (ReflectionException) {
+            }
+
+            return ParametersAcceptorSelector::selectSingle($methodReflection->getVariants())
+                ->getReturnType();
+        }
 
         return $this->getRegistryReturnType($methodReflection, $methodCall, $scope, $defaultClass, $namespaceFormat);
     }

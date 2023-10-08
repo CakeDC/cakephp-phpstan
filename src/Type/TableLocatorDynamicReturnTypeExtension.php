@@ -20,6 +20,7 @@ use PHPStan\Analyser\Scope;
 use PHPStan\Reflection\MethodReflection;
 use PHPStan\Reflection\ParametersAcceptorSelector;
 use PHPStan\Type\DynamicMethodReturnTypeExtension;
+use PHPStan\Type\ObjectType;
 use PHPStan\Type\Type;
 use ReflectionException;
 
@@ -81,6 +82,7 @@ class TableLocatorDynamicReturnTypeExtension implements DynamicMethodReturnTypeE
             ?->getNativeReflection()
             ?->getProperty('defaultTable')
             ?->getDefaultValue();
+
         return $defaultTable;
     }
 
@@ -92,8 +94,12 @@ class TableLocatorDynamicReturnTypeExtension implements DynamicMethodReturnTypeE
      * @return \PHPStan\Type\ObjectType|\PHPStan\Type\Type
      * @throws \PHPStan\ShouldNotHappenException
      */
-    protected function getReturnTypeWithoutArgs(Scope $scope, string $defaultClass, string $namespaceFormat, MethodReflection $methodReflection): \PHPStan\Type\ObjectType|Type
-    {
+    protected function getReturnTypeWithoutArgs(
+        Scope $scope,
+        string $defaultClass,
+        string $namespaceFormat,
+        MethodReflection $methodReflection
+    ): ObjectType|Type {
         try {
             $defaultTable = $this->getDefaultTable($scope);
             if (is_string($defaultTable) && $defaultTable) {

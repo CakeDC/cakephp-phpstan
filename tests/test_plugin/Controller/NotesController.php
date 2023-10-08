@@ -17,7 +17,6 @@ use Cake\Controller\Controller;
 
 class NotesController extends Controller
 {
-
     /**
      * Test ControllerFetchTableDynamicReturnTypeExtension with fetchTable using controller's className to extract
      * correct table class

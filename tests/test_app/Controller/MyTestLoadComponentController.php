@@ -50,6 +50,7 @@ class MyTestLoadComponentController extends Controller
     /**
      * Test TableLocatorDynamicReturnTypeExtension with fetchTable using source $defaultTable
      * for this case is 'VeryCustomize00009Articles'
+     *
      * @return void
      */
     public function myTestWithDefaultTable()

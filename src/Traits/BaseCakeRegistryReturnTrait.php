@@ -89,7 +89,7 @@ trait BaseCakeRegistryReturnTrait
     /**
      * @param string $baseName
      * @param string $defaultClass
-     * @param array|string $namespaceFormat
+     * @param array<string>|string $namespaceFormat
      * @return \PHPStan\Type\ObjectType
      */
     protected function getCakeType(string $baseName, string $defaultClass, array|string $namespaceFormat): ObjectType

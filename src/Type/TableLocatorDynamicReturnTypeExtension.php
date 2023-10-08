@@ -69,7 +69,7 @@ class TableLocatorDynamicReturnTypeExtension implements DynamicMethodReturnTypeE
                     ?->getNativeReflection()
                     ?->getProperty('defaultTable')
                     ?->getDefaultValue();
-                if ($defaultTable) {
+                if (is_string($defaultTable) && $defaultTable) {
                     return $this->getCakeType($defaultTable, $defaultClass, $namespaceFormat);
                 }
             } catch (ReflectionException) {

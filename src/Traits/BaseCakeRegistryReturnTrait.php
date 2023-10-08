@@ -41,8 +41,7 @@ trait BaseCakeRegistryReturnTrait
         Scope $scope
     ): Type {
         if (count($methodCall->getArgs()) === 0) {
-            return ParametersAcceptorSelector::selectSingle($methodReflection->getVariants())
-                ->getReturnType();
+            return $this->getTypeWhenNotFound($methodReflection);
         }
 
         $argType = $scope->getType($methodCall->getArgs()[0]->value);
@@ -102,5 +101,16 @@ trait BaseCakeRegistryReturnTrait
         }
 
         return new ObjectType($this->defaultClass);
+    }
+
+    /**
+     * @param \PHPStan\Reflection\MethodReflection $methodReflection
+     * @return \PHPStan\Type\Type
+     * @throws \PHPStan\ShouldNotHappenException
+     */
+    protected function getTypeWhenNotFound(MethodReflection $methodReflection): Type
+    {
+        return ParametersAcceptorSelector::selectSingle($methodReflection->getVariants())
+            ->getReturnType();
     }
 }

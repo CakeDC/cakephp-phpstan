@@ -18,6 +18,13 @@ use Cake\Controller\Controller;
 class MyTestLoadComponentController extends Controller
 {
     /**
+     * This object's default table alias.
+     *
+     * @var string|null
+     */
+    protected ?string $defaultTable = 'VeryCustomize00009Articles';
+
+    /**
      * Testing ComponentLoadDynamicReturnTypeExtension
      *
      * @return void
@@ -28,7 +35,7 @@ class MyTestLoadComponentController extends Controller
     }
 
     /**
-     * Test TableLocatorDynamicReturnTypeExtension with load model
+     * Test TableLocatorDynamicReturnTypeExtension with fetchTable
      *
      * @return void
      */
@@ -38,5 +45,17 @@ class MyTestLoadComponentController extends Controller
         $latest = $this->fetchTable('CakeDC/MyPlugin.HelloWorld101010Articles')
             ->getLatestOne();
         $this->set('latest', $latest);
+    }
+
+    /**
+     * Test TableLocatorDynamicReturnTypeExtension with fetchTable using source $defaultTable
+     * for this case is 'VeryCustomize00009Articles'
+     *
+     * @return void
+     */
+    public function myTestWithDefaultTable()
+    {
+        $sample = $this->fetchTable()->newSample();
+        $this->set(compact('sample'));
     }
 }

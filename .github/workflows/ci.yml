@@ -70,4 +70,12 @@ jobs:
 
       - name: Run phpstan
         if: always()
-        run: vendor/bin/phpstan analyse --error-format=github src/
+        run: vendor/bin/phpstan analyse --debug --error-format=github src/
+
+      - name: Run phpstan integration test app
+        if: always()
+        run: vendor/bin/phpstan analyse --debug --error-format=github tests/test_app/
+
+      - name: Run phpstan integration test plugin
+        if: always()
+        run: vendor/bin/phpstan analyse --debug --error-format=github tests/test_plugin/

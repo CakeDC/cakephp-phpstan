@@ -44,10 +44,10 @@
         "cs-fix": "phpcbf -p src/ tests",
         "test": "phpunit --stderr",
         "stan-integration": [
-            "phpstan analyse tests/test_app/",
-            "phpstan analyse tests/test_plugin/"
+            "phpstan analyse --debug tests/test_app/",
+            "phpstan analyse --debug tests/test_plugin/"
         ],
-        "stan": "phpstan analyse src/",
+        "stan": "phpstan analyse --debug src/",
         "check": [
             "@cs-check",
             "@stan",

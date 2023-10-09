@@ -3,4 +3,4 @@ includes:
 
 parameters:
     level: max
-
+    checkGenericClassInNonGenericObjectType: false

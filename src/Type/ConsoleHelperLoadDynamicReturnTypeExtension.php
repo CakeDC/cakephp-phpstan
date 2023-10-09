@@ -16,15 +16,14 @@ namespace CakeDC\PHPStan\Type;
 use Cake\Console\ConsoleIo;
 use Cake\Console\Helper;
 use CakeDC\PHPStan\Traits\BaseCakeRegistryReturnTrait;
-use PhpParser\Node\Expr\MethodCall;
-use PHPStan\Analyser\Scope;
-use PHPStan\Reflection\MethodReflection;
 use PHPStan\Type\DynamicMethodReturnTypeExtension;
 use PHPStan\Type\Type;
 
 class ConsoleHelperLoadDynamicReturnTypeExtension implements DynamicMethodReturnTypeExtension
 {
-    use BaseCakeRegistryReturnTrait;
+    use BaseCakeRegistryReturnTrait {
+        getCakeType as _getCakeType;
+    }
 
     /**
      * @var string
@@ -34,6 +33,14 @@ class ConsoleHelperLoadDynamicReturnTypeExtension implements DynamicMethodReturn
      * @var string
      */
     private string $methodName;
+    /**
+     * @var string
+     */
+    protected string $defaultClass;
+    /**
+     * @var string
+     */
+    protected string $namespaceFormat;
 
     /**
      * TableLocatorDynamicReturnTypeExtension constructor.
@@ -42,23 +49,21 @@ class ConsoleHelperLoadDynamicReturnTypeExtension implements DynamicMethodReturn
     {
         $this->className = ConsoleIo::class;
         $this->methodName = 'helper';
+        $this->defaultClass = Helper::class;
+        $this->namespaceFormat = '%s\\Command\Helper\\%sHelper';
     }
 
     /**
-     * @param \PHPStan\Reflection\MethodReflection $methodReflection
-     * @param \PhpParser\Node\Expr\MethodCall       $methodCall
-     * @param \PHPStan\Analyser\Scope            $scope
-     * @return \PHPStan\Type\Type
-     * @throws \PHPStan\ShouldNotHappenException
+     * Before calling BaseCakeRegistryReturnTrait::getCakeType uppercase the
+     * first letter as done in the method ConsoleIo::helper
+     *
+     * @param string $baseName
+     * @return \PHPStan\Type\ObjectType
      */
-    public function getTypeFromMethodCall(
-        MethodReflection $methodReflection,
-        MethodCall $methodCall,
-        Scope $scope
-    ): Type {
-        $defaultClass = Helper::class;
-        $namespaceFormat = '%s\\Command\Helper\\%sHelper';
+    protected function getCakeType(string $baseName): Type
+    {
+        $baseName = ucfirst($baseName);
 
-        return $this->getRegistryReturnType($methodReflection, $methodCall, $scope, $defaultClass, $namespaceFormat);
+        return $this->_getCakeType($baseName);
     }
 }

@@ -32,42 +32,24 @@ trait BaseCakeRegistryReturnTrait
      * @param \PHPStan\Reflection\MethodReflection $methodReflection
      * @param \PhpParser\Node\Expr\MethodCall $methodCall
      * @param \PHPStan\Analyser\Scope $scope
-     * @param string $defaultClass
-     * @param array<string>|string $namespaceFormat
      * @return \PHPStan\Type\Type
      * @throws \PHPStan\ShouldNotHappenException
      */
-    protected function getRegistryReturnType(
+    public function getTypeFromMethodCall(
         MethodReflection $methodReflection,
         MethodCall $methodCall,
-        Scope $scope,
-        string $defaultClass,
-        string|array $namespaceFormat
+        Scope $scope
     ): Type {
         if (count($methodCall->getArgs()) === 0) {
-            return ParametersAcceptorSelector::selectSingle($methodReflection->getVariants())
-                ->getReturnType();
+            return $this->getTypeWhenNotFound($methodReflection);
         }
 
         $argType = $scope->getType($methodCall->getArgs()[0]->value);
         if (!method_exists($argType, 'getValue')) {
-            return new ObjectType($defaultClass);
-        }
-        $baseName = $argType->getValue();
-        [$plugin, $name] = $this->pluginSplit($baseName);
-        $prefixes = $plugin ? [$plugin] : ['Cake', 'App'];
-        $namespaceFormat = (array)$namespaceFormat;
-        foreach ($namespaceFormat as $format) {
-            foreach ($prefixes as $prefix) {
-                $namespace = str_replace('/', '\\', $prefix);
-                $className = sprintf($format, $namespace, $name);
-                if (class_exists($className)) {
-                    return new ObjectType($className);
-                }
-            }
+            return new ObjectType($this->defaultClass);
         }
 
-        return new ObjectType($defaultClass);
+        return $this->getCakeType($argType->getValue());
     }
 
     /**
@@ -97,5 +79,38 @@ trait BaseCakeRegistryReturnTrait
     protected function pluginSplit(string $baseName): array
     {
         return pluginSplit($baseName);
+    }
+
+    /**
+     * @param string $baseName
+     * @return \PHPStan\Type\ObjectType
+     */
+    protected function getCakeType(string $baseName): ObjectType
+    {
+        [$plugin, $name] = $this->pluginSplit($baseName);
+        $prefixes = $plugin ? [$plugin] : ['Cake', 'App'];
+        $namespaceFormat = (array)$this->namespaceFormat;
+        foreach ($namespaceFormat as $format) {
+            foreach ($prefixes as $prefix) {
+                $namespace = str_replace('/', '\\', $prefix);
+                $className = sprintf($format, $namespace, $name);
+                if (class_exists($className)) {
+                    return new ObjectType($className);
+                }
+            }
+        }
+
+        return new ObjectType($this->defaultClass);
+    }
+
+    /**
+     * @param \PHPStan\Reflection\MethodReflection $methodReflection
+     * @return \PHPStan\Type\Type
+     * @throws \PHPStan\ShouldNotHappenException
+     */
+    protected function getTypeWhenNotFound(MethodReflection $methodReflection): Type
+    {
+        return ParametersAcceptorSelector::selectSingle($methodReflection->getVariants())
+            ->getReturnType();
     }
 }

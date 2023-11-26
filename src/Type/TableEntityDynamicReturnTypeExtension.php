@@ -42,7 +42,6 @@ class TableEntityDynamicReturnTypeExtension implements DynamicMethodReturnTypeEx
         'newEntity',
         'newEntities',
         'newEmptyEntity',
-        'patchEntities',
         'findOrCreate',
     ];
 
@@ -96,9 +95,7 @@ class TableEntityDynamicReturnTypeExtension implements DynamicMethodReturnTypeEx
             if ($methodReflection->getName() == 'newEntities') {
                 return new ArrayType(new IntegerType(), new ObjectType($entityClass));
             }
-            if ($methodReflection->getName() == 'patchEntities') {
-                return new ArrayType(new IntegerType(), new ObjectType($entityClass));
-            }
+
             return new ObjectType($entityClass);
         }
 

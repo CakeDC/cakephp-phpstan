@@ -15,6 +15,7 @@ namespace App\Controller;
 
 use Cake\Controller\Controller;
 use Cake\Log\Log;
+use Cake\ORM\TableRegistry;
 
 class NotesController extends Controller
 {
@@ -63,6 +64,24 @@ class NotesController extends Controller
             Log::info('Accessing note after saveManyOrFail call' . $savedEntity->note);
         }
 
+        $savedMany = $this->fetchTable()->saveMany($patchedEntities);
+        if ($savedMany === false) {
+            Log::info('Testing when saveMany return false, the return type must include the false option');
+        } else {
+            foreach ($savedMany as $saved) {
+                $saved->note = 'My patched saveMany test';
+                Log::info('Accessing note after saveMany call' . $saved->note);
+            }
+        }
+        $deletedMany = $this->fetchTable()->deleteMany($patchedEntities);
+        if ($deletedMany === false) {
+            Log::info('Testing when saveMany return false, the return type must include the false option');
+        } else {
+            foreach ($deletedMany as $deleted) {
+                $deleted->note = 'My patched deleteMany test';
+                Log::info('Accessing note after deleteMany call' . $deleted->note);
+            }
+        }
         $deletedEntities = $this->fetchTable()->deleteManyOrFail($patchedEntities);
         foreach ($deletedEntities as $deletedEntity) {
             $deletedEntity->note = 'My patched deleteManyOrFail test';
@@ -74,6 +93,11 @@ class NotesController extends Controller
         } else {
             Log::info('Accessing note after save call' . $entitySaved2->note);
         }
+        $entity = $this->fetchTable('Notes')->newEmptyEntity();
+        $entity->note = 'Note using fetchTable(\'Notes\'';
+
+        $entity2 = TableRegistry::getTableLocator()->get('Notes')->newEmptyEntity();
+        $entity2->note = 'Note using fetchTable(\'Notes\')';
     }
 
     /**

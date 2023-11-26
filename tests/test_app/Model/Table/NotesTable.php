@@ -25,9 +25,16 @@ class NotesTable extends Table
      */
     public function warning(): array
     {
+        $entity = $this->get(10);
+        if ($entity->note === 'Test') {
+            $entity = $this->newEmptyEntity();
+            $entity = $this->patchEntity($entity, ['note' => 'My Warning new']);
+            $entity->user_id = 1;
+            $entity = $this->saveOrFail($entity);
+        }
         return [
             'type' => 'warning',
-            'note' => $this->get(10)->note,
+            'note' => $entity->note,
         ];
     }
 }

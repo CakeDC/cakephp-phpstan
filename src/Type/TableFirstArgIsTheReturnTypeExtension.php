@@ -29,19 +29,21 @@ class TableFirstArgIsTheReturnTypeExtension implements DynamicMethodReturnTypeEx
     use BaseCakeRegistryReturnTrait;
 
     /**
-     * @var string
-     */
-    private string $className;
-    /**
      * @var array
      */
     private array $methodNames = [
         'patchEntity',
         'save',
         'saveOrFail',
+        'saveMany',
         'saveManyOrFail',
+        'deleteMany',
         'deleteManyOrFail',
     ];
+    /**
+     * @var string
+     */
+    private string $className;
 
     /**
      * @var string
@@ -91,7 +93,7 @@ class TableFirstArgIsTheReturnTypeExtension implements DynamicMethodReturnTypeEx
         $type = $scope->getType($args[0]->value);
 
         $name = $methodReflection->getName();
-        if ($name === 'save') {
+        if (in_array($name, ['save', 'saveMany', 'deleteMany'])) {
             return new UnionType([$type, new ConstantBooleanType(false)]);
         }
 

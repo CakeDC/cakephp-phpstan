@@ -15,6 +15,9 @@ namespace App\Model\Table;
 
 use Cake\ORM\Table;
 
+/**
+ * @method \App\Model\Entity\AnonTag get($primaryKey, $options = [])
+ */
 class NotesTable extends Table
 {
     /**
@@ -22,6 +25,9 @@ class NotesTable extends Table
      */
     public function warning(): array
     {
-        return ['note' => 'warning'];
+        return [
+            'type' => 'warning',
+            'note' => $this->get(10)->note,
+        ];
     }
 }

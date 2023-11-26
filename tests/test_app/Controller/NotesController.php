@@ -37,7 +37,7 @@ class NotesController extends Controller
         $entityPatched = $this->fetchTable()->patchEntity($entity, ['user_id' => 10, 'note' => 'Other note']);
         Log::info('Accessing note after patchEntity call' . $entityPatched->note);
 
-        $emptyEntity  = $this->fetchTable()->newEmptyEntity();
+        $emptyEntity = $this->fetchTable()->newEmptyEntity();
         $emptyEntity->note = 'My Empty new entity test';
         Log::info('Accessing note after newEmptyEntity call' . $emptyEntity->note);
 
@@ -117,6 +117,6 @@ class NotesController extends Controller
             'note' => $otherNote->note,
             'user_id' => $otherNote->user_id,
         ];
-        $this->set(compact('data', 'note',));
+        $this->set(compact('data', 'note'));
     }
 }

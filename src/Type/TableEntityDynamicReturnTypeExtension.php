@@ -35,7 +35,7 @@ class TableEntityDynamicReturnTypeExtension implements DynamicMethodReturnTypeEx
      */
     private string $className;
     /**
-     * @var array
+     * @var array<string>
      */
     private array $methodNames = [
         'get',
@@ -70,7 +70,7 @@ class TableEntityDynamicReturnTypeExtension implements DynamicMethodReturnTypeEx
      */
     public function isMethodSupported(MethodReflection $methodReflection): bool
     {
-        return in_array($methodReflection->getName(),$this->methodNames);
+        return in_array($methodReflection->getName(), $this->methodNames);
     }
 
     /**

@@ -32,6 +32,7 @@ class NotesTable extends Table
             $entity->user_id = 1;
             $entity = $this->saveOrFail($entity);
         }
+
         return [
             'type' => 'warning',
             'note' => $entity->note,

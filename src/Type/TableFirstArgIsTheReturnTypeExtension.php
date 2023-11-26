@@ -32,7 +32,7 @@ class TableFirstArgIsTheReturnTypeExtension implements DynamicMethodReturnTypeEx
     use BaseCakeRegistryReturnTrait;
 
     /**
-     * @var array
+     * @var array<string>
      */
     private array $methodNames = [
         'patchEntity',
@@ -74,7 +74,7 @@ class TableFirstArgIsTheReturnTypeExtension implements DynamicMethodReturnTypeEx
      */
     public function isMethodSupported(MethodReflection $methodReflection): bool
     {
-        return in_array($methodReflection->getName(),$this->methodNames);
+        return in_array($methodReflection->getName(), $this->methodNames);
     }
 
     /**
@@ -104,6 +104,7 @@ class TableFirstArgIsTheReturnTypeExtension implements DynamicMethodReturnTypeEx
             if ($type instanceof ArrayType || $type instanceof IterableType) {
                 return new ArrayType(new IntegerType(), $type->getItemType());
             }
+
             return $this->getTypeWhenNotFound($methodReflection);
         }
 

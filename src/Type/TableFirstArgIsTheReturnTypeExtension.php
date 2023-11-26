@@ -15,18 +15,14 @@ namespace CakeDC\PHPStan\Type;
 
 use Cake\Datasource\EntityInterface;
 use Cake\ORM\Table;
-use Cake\Utility\Inflector;
 use CakeDC\PHPStan\Traits\BaseCakeRegistryReturnTrait;
 use PhpParser\Node\Expr\MethodCall;
 use PHPStan\Analyser\Scope;
 use PHPStan\Reflection\MethodReflection;
-use PHPStan\Type\ArrayType;
 use PHPStan\Type\DynamicMethodReturnTypeExtension;
-use PHPStan\Type\IntegerType;
-use PHPStan\Type\ObjectType;
 use PHPStan\Type\Type;
 
-class TableEntityDynamicReturnTypeExtension implements DynamicMethodReturnTypeExtension
+class TableFirstArgIsTheReturnTypeExtension implements DynamicMethodReturnTypeExtension
 {
     use BaseCakeRegistryReturnTrait;
 
@@ -38,12 +34,8 @@ class TableEntityDynamicReturnTypeExtension implements DynamicMethodReturnTypeEx
      * @var array
      */
     private array $methodNames = [
-        'get',
-        'newEntity',
-        'newEntities',
-        'newEmptyEntity',
-        'patchEntities',
-        'findOrCreate',
+        'patchEntity',
+        'saveOrFail',
     ];
 
     /**
@@ -86,43 +78,11 @@ class TableEntityDynamicReturnTypeExtension implements DynamicMethodReturnTypeEx
         MethodCall $methodCall,
         Scope $scope
     ): Type {
-        $className = $scope->getType($methodCall->var)->getReferencedClasses()[0] ?? null;
-        if ($className === null || $className === Table::class) {
+        $args = $methodCall->getArgs();
+        if (count($args) === 0) {
             return $this->getTypeWhenNotFound($methodReflection);
         }
-        $entityClass = $this->getEntityClassByTableClass($className);
 
-        if ($entityClass !== null && class_exists($entityClass)) {
-            if ($methodReflection->getName() == 'newEntities') {
-                return new ArrayType(new IntegerType(), new ObjectType($entityClass));
-            }
-            if ($methodReflection->getName() == 'patchEntities') {
-                return new ArrayType(new IntegerType(), new ObjectType($entityClass));
-            }
-            return new ObjectType($entityClass);
-        }
-
-        return $this->getTypeWhenNotFound($methodReflection);
-    }
-
-    /**
-     * @param string $className
-     * @return string|null
-     */
-    protected function getEntityClassByTableClass(string $className): ?string
-    {
-        $parts = explode('\\', $className);
-        $count = count($parts);
-        $nameIndex = $count - 1;
-        $folderIndex = $count - 2;
-        if ($count < 3 || $parts[$folderIndex] !== 'Table') {
-            return null;
-        }
-        $name = str_replace('Table', '', $parts[$nameIndex]);
-        $name = Inflector::singularize($name);
-        $parts[$folderIndex] = 'Entity';
-        $parts[$nameIndex] = $name;
-
-        return implode('\\', $parts);
+        return $scope->getType($args[0]->value);
     }
 }

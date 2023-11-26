@@ -22,7 +22,8 @@ class NotesController extends Controller
      * Test TableEntityDynamicReturnTypeExtension to use correct entity type (App\Model\Entity\Node)
      * Should not have errors when accessig note property after NotesTable::newEntity, NotesTable::patchEntity
      * NotesTable::newEmptyEntity, NotesTable::saveOrFail, NotesTable::findOrCreate
-     * NotesTable::newEntities, NotesTable::patchEntities, NotesTable::saveManyOrFail
+     * NotesTable::newEntities, NotesTable::patchEntities, NotesTable::saveManyOrFail, NotesTable::deleteManyOrFail,
+     * NotesTable::save
      *
      * @return void
      */
@@ -49,6 +50,29 @@ class NotesController extends Controller
         foreach ($entities as $newEntity) {
             $newEntity->note = 'My Empty new entities test';
             Log::info('Accessing note after newEntities call' . $newEntity->note);
+        }
+
+        $patchedEntities = $this->fetchTable()->patchEntities($entities, (array)$this->request->getData());
+        foreach ($patchedEntities as $patchedEntity) {
+            $patchedEntity->note = 'My patched entities test';
+            Log::info('Accessing note after patchEntities call' . $patchedEntity->note);
+        }
+        $savedEntities = $this->fetchTable()->saveManyOrFail($patchedEntities);
+        foreach ($savedEntities as $savedEntity) {
+            $savedEntity->note = 'My patched saveManyOrFail test';
+            Log::info('Accessing note after saveManyOrFail call' . $savedEntity->note);
+        }
+
+        $deletedEntities = $this->fetchTable()->deleteManyOrFail($patchedEntities);
+        foreach ($deletedEntities as $deletedEntity) {
+            $deletedEntity->note = 'My patched deleteManyOrFail test';
+            Log::info('Accessing note after deleteManyOrFail call' . $deletedEntity->note);
+        }
+        $entitySaved2 = $this->fetchTable()->save($entityPatched);
+        if ($entitySaved2 === false) {
+            Log::info('Testing when save return false, the return type must include the false option');
+        } else {
+            Log::info('Accessing note after save call' . $entitySaved2->note);
         }
     }
 

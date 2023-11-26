@@ -19,8 +19,10 @@ use CakeDC\PHPStan\Traits\BaseCakeRegistryReturnTrait;
 use PhpParser\Node\Expr\MethodCall;
 use PHPStan\Analyser\Scope;
 use PHPStan\Reflection\MethodReflection;
+use PHPStan\Type\Constant\ConstantBooleanType;
 use PHPStan\Type\DynamicMethodReturnTypeExtension;
 use PHPStan\Type\Type;
+use PHPStan\Type\UnionType;
 
 class TableFirstArgIsTheReturnTypeExtension implements DynamicMethodReturnTypeExtension
 {
@@ -35,7 +37,10 @@ class TableFirstArgIsTheReturnTypeExtension implements DynamicMethodReturnTypeEx
      */
     private array $methodNames = [
         'patchEntity',
+        'save',
         'saveOrFail',
+        'saveManyOrFail',
+        'deleteManyOrFail',
     ];
 
     /**
@@ -83,6 +88,13 @@ class TableFirstArgIsTheReturnTypeExtension implements DynamicMethodReturnTypeEx
             return $this->getTypeWhenNotFound($methodReflection);
         }
 
-        return $scope->getType($args[0]->value);
+        $type = $scope->getType($args[0]->value);
+
+        $name = $methodReflection->getName();
+        if ($name === 'save') {
+            return new UnionType([$type, new ConstantBooleanType(false)]);
+        }
+
+        return $type;
     }
 }

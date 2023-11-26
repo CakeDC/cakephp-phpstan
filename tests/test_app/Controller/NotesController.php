@@ -44,6 +44,12 @@ class NotesController extends Controller
 
         $findOrCreate = $this->fetchTable()->findOrCreate(['user_id' => 1, 'note' => 'My Note']);
         Log::info('Accessing note after findOrCreate call' . $findOrCreate->note);
+
+        $entities = $this->fetchTable()->newEntities([]);
+        foreach ($entities as $newEntity) {
+            $newEntity->note = 'My Empty new entities test';
+            Log::info('Accessing note after newEntities call' . $newEntity->note);
+        }
     }
 
     /**

@@ -40,6 +40,7 @@ class TableEntityDynamicReturnTypeExtension implements DynamicMethodReturnTypeEx
     private array $methodNames = [
         'get',
         'newEntity',
+        'newEntities',
         'newEmptyEntity',
         'patchEntity',
         'findOrCreate',

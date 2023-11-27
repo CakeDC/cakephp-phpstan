@@ -104,6 +104,7 @@ class TableFirstArgIsTheReturnTypeExtension implements DynamicMethodReturnTypeEx
             } else {
                 $types = [$type, new ConstantBooleanType(false)];
             }
+
             return new UnionType($types);
         }
         if ($methodReflection->getName() == 'patchEntities') {

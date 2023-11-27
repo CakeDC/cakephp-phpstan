@@ -16,7 +16,9 @@ namespace App\Model\Table;
 use Cake\ORM\Table;
 
 /**
- * @method \App\Model\Entity\AnonTag get($primaryKey, $options = [])
+ * @method \App\Model\Entity\Note|\Cake\Datasource\EntityInterface get($primaryKey, $options = [])
+ * @property \App\Model\Table\VeryCustomize00009ArticlesTable&\Cake\ORM\Association\HasMany $VeryCustomize00009Articles
+ * @property \App\Model\Table\UsersTable&\Cake\ORM\Association\BelongsTo $Users
  */
 class NotesTable extends Table
 {

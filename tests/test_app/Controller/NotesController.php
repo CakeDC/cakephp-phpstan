@@ -17,6 +17,9 @@ use Cake\Controller\Controller;
 use Cake\Log\Log;
 use Cake\ORM\TableRegistry;
 
+/**
+ * @property \App\Model\Table\NotesTable $Notes
+ */
 class NotesController extends Controller
 {
     /**
@@ -118,5 +121,26 @@ class NotesController extends Controller
             'user_id' => $otherNote->user_id,
         ];
         $this->set(compact('data', 'note'));
+    }
+
+    /**
+     * @return void
+     */
+    public function indexTestAssociation()
+    {
+        $note = $this->Notes->get(1);
+        $user = $this->Notes->Users->get($note->user_id);
+        $user->role = 'user';
+        $userSaved = $this->Notes->Users->saveOrFail($user);
+        $data = [
+            'role' => $userSaved->role,
+        ];
+
+        $user = $this->Notes->Users->logLastLogin($userSaved);
+        $data['lastLogin'] = $user->last_login;
+
+        $user2 = $this->fetchTable()->Users->logLastLogin($userSaved);
+        $data['lastLogin2'] = $user2->last_login;
+        $this->set(compact('data'));
     }
 }

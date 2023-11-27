@@ -98,7 +98,13 @@ class TableFirstArgIsTheReturnTypeExtension implements DynamicMethodReturnTypeEx
 
         $name = $methodReflection->getName();
         if (in_array($name, ['save', 'saveMany', 'deleteMany'])) {
-            return new UnionType([$type, new ConstantBooleanType(false)]);
+            if ($type instanceof UnionType) {
+                $types = $type->getTypes();
+                $types[] = new ConstantBooleanType(false);
+            } else {
+                $types = [$type, new ConstantBooleanType(false)];
+            }
+            return new UnionType($types);
         }
         if ($methodReflection->getName() == 'patchEntities') {
             if ($type instanceof ArrayType || $type instanceof IterableType) {

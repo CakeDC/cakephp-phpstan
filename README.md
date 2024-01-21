@@ -1,4 +1,4 @@
-# CakePHP 5 extension for PHPStan
+# CakePHP extension for PHPStan
 
 [![Build Status](https://secure.travis-ci.org/CakeDC/cakephp-phpstan.png?branch=master)](http://travis-ci.org/CakeDC/cakephp-phpstan)
 [![Downloads](https://poser.pugx.org/CakeDC/cakephp-phpstan/d/total.png)](https://packagist.org/packages/CakeDC/cakephp-phpstan)

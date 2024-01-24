@@ -59,10 +59,3 @@ Contributing
 ------------
 
 If you'd like to contribute new features, enhancements or bug fixes to the plugin, please read our [Contribution Guidelines](https://www.cakedc.com/contribution-guidelines) for detailed instructions.
-
-License
--------
-
-Copyright 2020 Cake Development Corporation (CakeDC). All rights reserved.
-
-Licensed under the [MIT](http://www.opensource.org/licenses/mit-license.php) License. Redistributions of the source code included in this repository must retain the copyright notice found in each file

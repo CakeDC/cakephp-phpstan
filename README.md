@@ -1,4 +1,4 @@
-# CakePHP 5 extension for PHPStan
+# CakePHP extension for PHPStan
 
 ![Build Status](https://github.com/CakeDC/cakephp-phpstan/actions/workflows/ci.yml/badge.svg)
 [![Downloads](https://poser.pugx.org/CakeDC/cakephp-phpstan/d/total.png)](https://packagist.org/packages/CakeDC/cakephp-phpstan)

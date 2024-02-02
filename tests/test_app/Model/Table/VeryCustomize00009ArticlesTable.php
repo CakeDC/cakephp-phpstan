@@ -44,6 +44,8 @@ class VeryCustomize00009ArticlesTable extends Table
         $this->fakeData();
         $article = $this->findByTitle('sample')->first();
         $article->set('title', 'sample two');
+        $article = $this->findByTitleAndActive('sample', true)->first();
+        $article->set('title', 'sample two');
 
         return true;
     }

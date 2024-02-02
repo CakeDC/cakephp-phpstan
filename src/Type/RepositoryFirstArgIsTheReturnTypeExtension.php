@@ -2,7 +2,7 @@
 declare(strict_types=1);
 
 /**
- * Copyright 2020, Cake Development Corporation (https://www.cakedc.com)
+ * Copyright 2023, Cake Development Corporation (https://www.cakedc.com)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace CakeDC\PHPStan\Type;
 
 use Cake\Datasource\EntityInterface;
-use Cake\ORM\Table;
 use CakeDC\PHPStan\Traits\BaseCakeRegistryReturnTrait;
 use PhpParser\Node\Expr\MethodCall;
 use PHPStan\Analyser\Scope;
@@ -27,7 +26,7 @@ use PHPStan\Type\IterableType;
 use PHPStan\Type\Type;
 use PHPStan\Type\UnionType;
 
-class TableFirstArgIsTheReturnTypeExtension implements DynamicMethodReturnTypeExtension
+class RepositoryFirstArgIsTheReturnTypeExtension implements DynamicMethodReturnTypeExtension
 {
     use BaseCakeRegistryReturnTrait;
 
@@ -59,11 +58,11 @@ class TableFirstArgIsTheReturnTypeExtension implements DynamicMethodReturnTypeEx
     protected string $namespaceFormat;
 
     /**
-     * TableLocatorDynamicReturnTypeExtension constructor.
+     * @param string $className  The target className.
      */
-    public function __construct()
+    public function __construct(string $className)
     {
-        $this->className = Table::class;
+        $this->className = $className;
         $this->defaultClass = EntityInterface::class;
         $this->namespaceFormat = '%s\\Model\Entity\\%s';
     }

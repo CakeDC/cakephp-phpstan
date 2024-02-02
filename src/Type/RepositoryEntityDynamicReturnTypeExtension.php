@@ -2,7 +2,7 @@
 declare(strict_types=1);
 
 /**
- * Copyright 2020, Cake Development Corporation (https://www.cakedc.com)
+ * Copyright 2023, Cake Development Corporation (https://www.cakedc.com)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
@@ -17,6 +17,7 @@ use Cake\Datasource\EntityInterface;
 use Cake\ORM\Table;
 use Cake\Utility\Inflector;
 use CakeDC\PHPStan\Traits\BaseCakeRegistryReturnTrait;
+use CakeDC\PHPStan\Traits\RepositoryReferenceTrait;
 use PhpParser\Node\Expr\MethodCall;
 use PHPStan\Analyser\Scope;
 use PHPStan\Reflection\MethodReflection;
@@ -26,9 +27,10 @@ use PHPStan\Type\IntegerType;
 use PHPStan\Type\ObjectType;
 use PHPStan\Type\Type;
 
-class TableEntityDynamicReturnTypeExtension implements DynamicMethodReturnTypeExtension
+class RepositoryEntityDynamicReturnTypeExtension implements DynamicMethodReturnTypeExtension
 {
     use BaseCakeRegistryReturnTrait;
+    use RepositoryReferenceTrait;
 
     /**
      * @var string
@@ -55,11 +57,11 @@ class TableEntityDynamicReturnTypeExtension implements DynamicMethodReturnTypeEx
     protected string $namespaceFormat;
 
     /**
-     * TableLocatorDynamicReturnTypeExtension constructor.
+     * @param string $className  The target className.
      */
-    public function __construct()
+    public function __construct(string $className)
     {
-        $this->className = Table::class;
+        $this->className = $className;
         $this->defaultClass = EntityInterface::class;
         $this->namespaceFormat = '%s\\Model\Entity\\%s';
     }
@@ -85,10 +87,11 @@ class TableEntityDynamicReturnTypeExtension implements DynamicMethodReturnTypeEx
         MethodCall $methodCall,
         Scope $scope
     ): Type {
-        $className = $scope->getType($methodCall->var)->getReferencedClasses()[0] ?? null;
+        $className = $this->getReferenceClass($scope, $methodCall);
         if ($className === null || $className === Table::class) {
             return $this->getTypeWhenNotFound($methodReflection);
         }
+
         $entityClass = $this->getEntityClassByTableClass($className);
 
         if ($entityClass !== null && class_exists($entityClass)) {

@@ -18,7 +18,7 @@ use Cake\ORM\Table;
 /**
  * @method \App\Model\Entity\Note|\Cake\Datasource\EntityInterface get($primaryKey, $options = [])
  * @property \App\Model\Table\VeryCustomize00009ArticlesTable&\Cake\ORM\Association\HasMany $VeryCustomize00009Articles
- * @property \App\Model\Table\UsersTable&\Cake\ORM\Association\BelongsTo $Users
+ * @property \Cake\ORM\Association\BelongsTo<\App\Model\Table\UsersTable> $Users
  */
 class NotesTable extends Table
 {

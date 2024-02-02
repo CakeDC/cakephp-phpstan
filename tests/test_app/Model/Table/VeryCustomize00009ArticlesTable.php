@@ -42,8 +42,14 @@ class VeryCustomize00009ArticlesTable extends Table
     {
         //logic to clear article
         $this->fakeData();
+        /**
+         * @var \Cake\ORM\Entity $article
+         */
         $article = $this->findByTitle('sample')->first();
         $article->set('title', 'sample two');
+        /**
+         * @var \Cake\ORM\Entity $article
+         */
         $article = $this->findByTitleAndActive('sample', true)->first();
         $article->set('title', 'sample two');
 

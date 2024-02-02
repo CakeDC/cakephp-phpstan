@@ -142,5 +142,10 @@ class NotesController extends Controller
         $user2 = $this->fetchTable()->Users->logLastLogin($userSaved);
         $data['lastLogin2'] = $user2->last_login;
         $this->set(compact('data'));
+
+        //MyUsers table return User entity as specified in phpdoc tag @method
+        $myUser = $this->fetchTable('MyUsers')->get(2);
+        $sameRole = $myUser->role === 'user';
+        $this->set(compact('sameRole'));
     }
 }

@@ -13,7 +13,6 @@ use PHPStan\Reflection\ClassMemberReflection;
 use PHPStan\Reflection\ClassReflection;
 use PHPStan\Reflection\FunctionVariant;
 use PHPStan\Reflection\MethodReflection;
-use PHPStan\Reflection\Php\DummyParameter;
 use PHPStan\TrinaryLogic;
 use PHPStan\Type\Generic\TemplateTypeMap;
 use PHPStan\Type\MixedType;
@@ -33,7 +32,7 @@ class TableFindByPropertyMethodReflection implements MethodReflection
     private ClassReflection $declaringClass;
 
     /**
-     * @var array<\CakeDC\PHPStan\Method\ParametersAcceptor>
+     * @var array<\PHPStan\Reflection\FunctionVariant>
      */
     private array $variants;
 
@@ -46,7 +45,7 @@ class TableFindByPropertyMethodReflection implements MethodReflection
         $this->name = $name;
 
         $this->declaringClass = $declaringClass;
-        $params = array_map(fn($field) => new DummyParameter(
+        $params = array_map(fn ($field) => new DummyParameter(
             $field,
             new MixedType(),
             false,
@@ -206,9 +205,9 @@ class TableFindByPropertyMethodReflection implements MethodReflection
 
     /**
      * @param string $method
-     * @return array|array<string>|string
+     * @return array<string>
      */
-    protected function getParams(string $method): string|array
+    protected function getParams(string $method): array
     {
         $method = Inflector::underscore($method);
         $fields = substr($method, 8);

@@ -8,8 +8,9 @@
 * [PHPStan](https://phpstan.org/)
 * [CakePHP](https://cakephp.org/)
 
-This extension provides following features:
 
+# General class load|fetch extensions
+Features included:
 1. Provide correct return type for `Cake\ORM\Locator\LocatorInterface::get()`
 1. Provide correct return type for `Cake\Controller\Controller::loadComponent()`
 1. Provide correct return type for `Cake\Controller\Controller::fetchTable()`
@@ -18,6 +19,79 @@ This extension provides following features:
 1. Provide correct return type for `Cake\Mailer\Mailer::fetchTable()`
 1. Provide correct return type for `Cake\View\Cell::fetchTable()`
 1. Provide correct return type for `Cake\Console\ConsoleIo::helper()`
+
+# Table class return type extensions
+### TableEntityDynamicReturnTypeExtension
+1. Provide correct return type for `Cake\ORM\Table::get` based on your table class name
+1. Provide correct return type for `Cake\ORM\Table::newEntity` based on your table class name
+1. Provide correct return type for `Cake\ORM\Table::newEntities` based on your table class name
+1. Provide correct return type for `Cake\ORM\Table::newEmptyEntity` based on your table class name
+1. Provide correct return type for `Cake\ORM\Table::findOrCreate` based on your table class name
+
+<details>
+      <summary>Examples:</summary>
+
+```php
+  //Now PHPStan know that \App\Models\Table\NotesTable::get returns \App\Model\Entity\Note
+  $note = $this->Notes->get(1);
+  $note->note = 'My new note';//No error
+
+  //Now PHPStan know that \App\Models\Table\NotesTable::newEntity returns \App\Model\Entity\Note
+  $note = $this->Notes->newEntity($data);
+  $note->note = 'My new note new entity';//No error
+
+  //Now PHPStan know that \App\Models\Table\NotesTable::newEmptyEntity returns \App\Model\Entity\Note
+  $note = $this->Notes->newEmptyEntity($data);
+  $note->note = 'My new note new empty entity';//No error
+
+   //Now PHPStan know that \App\Models\Table\NotesTable::findOrCreate returns \App\Model\Entity\Note
+  $note = $this->Notes->findOrCreate($data);
+  $note->note = 'My entity found or created';//No error
+
+  //Now PHPStan know that \App\Models\Table\NotesTable::newEntities returns \App\Model\Entity\Note[]
+  $notes = $this->Notes->newEntities($data);
+  foreach ($notes as $note) {
+    $note->note = 'My new note';//No error
+  }
+```
+</details>
+
+### TableFirstArgIsTheReturnTypeExtension
+1. Provide correct return type for `Cake\ORM\Table::patchEntity` based on the first argument passed
+1. Provide correct return type for `Cake\ORM\Table::patchEntities` based on the first argument passed
+1. Provide correct return type for `Cake\ORM\Table::save` based on the first argument passed
+1. Provide correct return type for `Cake\ORM\Table::saveOrFail` based on the first argument passed
+1. Provide correct return type for `Cake\ORM\Table::saveMany` based on the first argument passed
+1. Provide correct return type for `Cake\ORM\Table::saveManyOrFail` based on the first argument passed
+1. Provide correct return type for `Cake\ORM\Table::deleteMany` based on the first argument passed
+1. Provide correct return type for `Cake\ORM\Table::deleteManyOrFail` based on the first argument passed
+
+
+<details>
+      <summary>Examples:</summary>
+
+```php
+  //Now PHPStan know that \App\Models\Table\NotesTable::get returns \App\Model\Entity\Note
+  $note = $this->Notes->get(1);
+  $notes = $this->Notes->newEntities($data);
+
+  //Since PHPStan knows the type of $note, these methods call use the same type as return type:
+  $note = $this->Notes->patchEntity($note, $data);
+  $text = $note->note;//No error.
+
+  $note = $this->Notes->save($note);
+  $text = $note->note;//No error.
+
+  $note = $this->Notes->saveOrFail($note);
+  $text = $note->note;//No error.
+  //Since PHPStan knows the type of $notes, these methods call use the same type as return type:
+  $notes = $this->Notes->patchEntities($notes);
+  $notes = $this->Notes->saveMany($notes);
+  $notes = $this->Notes->saveManyOrFail($notes);
+  $notes = $this->Notes->deleteMany($notes);
+  $notes = $this->Notes->deleteManyOrFail($notes);
+```
+</details>
 
 ## Installation
 

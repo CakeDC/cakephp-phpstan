@@ -34,6 +34,22 @@ services:
 		tags:
 			- phpstan.broker.dynamicMethodReturnTypeExtension
 	-
+		factory: CakeDC\PHPStan\Type\RepositoryEntityDynamicReturnTypeExtension(Cake\ORM\Table)
+		tags:
+			- phpstan.broker.dynamicMethodReturnTypeExtension
+	-
+		factory: CakeDC\PHPStan\Type\RepositoryEntityDynamicReturnTypeExtension(Cake\ORM\Association)
+		tags:
+			- phpstan.broker.dynamicMethodReturnTypeExtension
+	-
+		factory: CakeDC\PHPStan\Type\RepositoryFirstArgIsTheReturnTypeExtension(Cake\ORM\Table)
+		tags:
+			- phpstan.broker.dynamicMethodReturnTypeExtension
+	-
+		factory: CakeDC\PHPStan\Type\RepositoryFirstArgIsTheReturnTypeExtension(Cake\ORM\Association)
+		tags:
+			- phpstan.broker.dynamicMethodReturnTypeExtension
+	-
 		class: CakeDC\PHPStan\Type\ComponentLoadDynamicReturnTypeExtension
 		tags:
 			- phpstan.broker.dynamicMethodReturnTypeExtension

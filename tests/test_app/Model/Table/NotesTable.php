@@ -15,6 +15,11 @@ namespace App\Model\Table;
 
 use Cake\ORM\Table;
 
+/**
+ * @method \App\Model\Entity\Note|\Cake\Datasource\EntityInterface get($primaryKey, $options = [])
+ * @property \App\Model\Table\VeryCustomize00009ArticlesTable&\Cake\ORM\Association\HasMany $VeryCustomize00009Articles
+ * @property \Cake\ORM\Association\BelongsTo<\App\Model\Table\UsersTable> $Users
+ */
 class NotesTable extends Table
 {
     /**
@@ -22,6 +27,17 @@ class NotesTable extends Table
      */
     public function warning(): array
     {
-        return ['note' => 'warning'];
+        $entity = $this->get(10);
+        if ($entity->note === 'Test') {
+            $entity = $this->newEmptyEntity();
+            $entity = $this->patchEntity($entity, ['note' => 'My Warning new']);
+            $entity->user_id = 1;
+            $entity = $this->saveOrFail($entity);
+        }
+
+        return [
+            'type' => 'warning',
+            'note' => $entity->note,
+        ];
     }
 }

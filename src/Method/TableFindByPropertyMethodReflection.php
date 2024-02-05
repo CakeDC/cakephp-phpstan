@@ -7,11 +7,15 @@ declare(strict_types=1);
 
 namespace CakeDC\PHPStan\Method;
 
+use Cake\ORM\Query\SelectQuery;
+use Cake\Utility\Inflector;
 use PHPStan\Reflection\ClassMemberReflection;
 use PHPStan\Reflection\ClassReflection;
+use PHPStan\Reflection\FunctionVariant;
 use PHPStan\Reflection\MethodReflection;
-use PHPStan\Reflection\TrivialParametersAcceptor;
 use PHPStan\TrinaryLogic;
+use PHPStan\Type\Generic\TemplateTypeMap;
+use PHPStan\Type\MixedType;
 use PHPStan\Type\ObjectType;
 use PHPStan\Type\Type;
 
@@ -28,13 +32,39 @@ class TableFindByPropertyMethodReflection implements MethodReflection
     private ClassReflection $declaringClass;
 
     /**
+     * @var array<\PHPStan\Reflection\FunctionVariant>
+     */
+    private array $variants;
+
+    /**
      * @param string $name
      * @param \PHPStan\Reflection\ClassReflection $declaringClass
      */
     public function __construct(string $name, ClassReflection $declaringClass)
     {
         $this->name = $name;
+
         $this->declaringClass = $declaringClass;
+        $params = array_map(fn ($field) => new DummyParameter(
+            $field,
+            new MixedType(),
+            false,
+            null,
+            false,
+            null
+        ), $this->getParams($name));
+
+        $returnType = new ObjectType(SelectQuery::class);
+
+        $this->variants = [
+            new FunctionVariant(
+                TemplateTypeMap::createEmpty(),
+                null,
+                $params,
+                false,
+                $returnType
+            ),
+        ];
     }
 
     /**
@@ -122,7 +152,7 @@ class TableFindByPropertyMethodReflection implements MethodReflection
      */
     public function getVariants(): array
     {
-        return [new TrivialParametersAcceptor()];
+        return $this->variants;
     }
 
     /**
@@ -171,5 +201,24 @@ class TableFindByPropertyMethodReflection implements MethodReflection
     public function hasSideEffects(): TrinaryLogic
     {
         return TrinaryLogic::createNo();
+    }
+
+    /**
+     * @param string $method
+     * @return array<string>
+     */
+    protected function getParams(string $method): array
+    {
+        $method = Inflector::underscore($method);
+        $fields = substr($method, 8);
+        if (str_contains($fields, '_and_')) {
+            return explode('_and_', $fields);
+        }
+
+        if (str_contains($fields, '_or_')) {
+            return explode('_or_', $fields);
+        }
+
+        return [$fields];
     }
 }

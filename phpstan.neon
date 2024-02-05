@@ -1,6 +1,8 @@
 includes:
     - extension.neon
-
+rules:
+    - Symplify\PHPStanRules\Rules\Explicit\NoMixedPropertyFetcherRule
+    - Symplify\PHPStanRules\Rules\Explicit\NoMixedMethodCallerRule
 parameters:
     level: max
     checkGenericClassInNonGenericObjectType: false

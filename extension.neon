@@ -57,3 +57,6 @@ services:
 		class: CakeDC\PHPStan\Type\ConsoleHelperLoadDynamicReturnTypeExtension
 		tags:
 			- phpstan.broker.dynamicMethodReturnTypeExtension
+
+rules:
+	- CakeDC\PHPStan\Rule\Model\AddBehaviorRule

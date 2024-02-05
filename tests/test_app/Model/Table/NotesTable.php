@@ -23,6 +23,19 @@ use Cake\ORM\Table;
 class NotesTable extends Table
 {
     /**
+     * @inheritDoc
+     */
+    public function initialize(array $config): void
+    {
+        parent::initialize($config);
+
+        $this->setTable('notes');
+        $this->setDisplayField('note');
+        $this->setPrimaryKey('id');
+        $this->addBehavior('Timestamp');
+    }
+
+    /**
      * @return string[]
      */
     public function warning(): array

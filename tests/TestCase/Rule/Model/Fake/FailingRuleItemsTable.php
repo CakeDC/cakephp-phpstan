@@ -72,6 +72,7 @@ class FailingRuleItemsTable extends Table//@codingStandardsIgnoreLine
             'propertyName' => 13,
             'sourceTable' => 'Users',
             'targetTable' => new \stdClass(),
+            'strategy' => false,
         ]);
     }
 }

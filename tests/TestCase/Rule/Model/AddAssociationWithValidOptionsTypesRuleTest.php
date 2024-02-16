@@ -84,6 +84,10 @@ class AddAssociationWithValidOptionsTypesRuleTest extends RuleTestCase
                 'Call to CakeDC\PHPStan\Test\TestCase\Rule\Model\Fake\FailingRuleItemsTable::belongsTo with option "targetTable" (Cake\ORM\Table) does not accept stdClass.',
                 62
             ],
+            [
+                'Call to CakeDC\PHPStan\Test\TestCase\Rule\Model\Fake\FailingRuleItemsTable::belongsTo with option "strategy" (string) does not accept false.',
+                62
+            ],
         ]);
     }
 

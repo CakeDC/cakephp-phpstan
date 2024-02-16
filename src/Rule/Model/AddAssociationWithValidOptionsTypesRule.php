@@ -25,7 +25,9 @@ class AddAssociationWithValidOptionsTypesRule implements Rule
     {
         $this->ruleLevelHelper = $ruleLevelHelper;
     }
-    protected array $targetMethods = ['belongsTo'];
+    protected array $targetMethods = [
+        'belongsTo' => BelongsTo::class,
+    ];
 
     /**
      * @return string
@@ -47,7 +49,7 @@ class AddAssociationWithValidOptionsTypesRule implements Rule
         if (!$node->name instanceof Node\Identifier) {
             return [];
         }
-        if (!in_array($node->name->name, $this->targetMethods) || !isset($args[0]) || !$args[0] instanceof Arg) {
+        if (!isset($this->targetMethods[$node->name->name])) {
             return [];
         }
         $reference = $scope->getType($node->var)->getReferencedClasses()[0] ?? null;
@@ -74,8 +76,9 @@ class AddAssociationWithValidOptionsTypesRule implements Rule
             'propertyName',
             'sourceTable',
             'targetTable',
+            'strategy',
         ];
-        $items = [];
+        $errors = [];
         foreach ($args[1]->value->items as $item) {
             if (
                 !$item instanceof Node\Expr\ArrayItem
@@ -84,24 +87,43 @@ class AddAssociationWithValidOptionsTypesRule implements Rule
                 continue;
             }
             if (in_array($item->key->value, $maps)) {
-                $object = new ObjectType(BelongsTo::class);
-                $propertyType = $object->getClassReflection()
-                    ->getProperty('_' . $item->key->value, $scope)
-                    ->getWritableType();
-                $assignedValueType = $scope->getType($item->value);
-                $accepts = $this->ruleLevelHelper->acceptsWithReason($propertyType, $assignedValueType, true);
-                if (!$accepts->result) {
-                    $propertyDescription = sprintf(
-                        'Call to %s::%s with option "%s"',
-                        $reference,
-                        $node->name->name,
-                        $item->key->value
-                    );
-                    $verbosityLevel = VerbosityLevel::getRecommendedLevelByType($propertyType, $assignedValueType);
-                    $items[] = RuleErrorBuilder::message(sprintf('%s (%s) does not accept %s.', $propertyDescription, $propertyType->describe($verbosityLevel), $assignedValueType->describe($verbosityLevel)))->acceptsReasonsTip($accepts->reasons)->build();
+                $error = $this->processPropertyTypeCheck($node, $item, $scope, $reference);
+                if ($error) {
+                    $errors[] = $error;
                 }
             }
         }
-        return $items;
+        return $errors;
+    }
+
+    /**
+     * @param \PhpParser\Node\Expr\MethodCall $node
+     * @param \PhpParser\Node\Expr\ArrayItem $item
+     * @param \PHPStan\Analyser\Scope $scope
+     * @param string $reference
+     * @return \PHPStan\Rules\RuleError|null
+     * @throws \PHPStan\Reflection\MissingPropertyFromReflectionException
+     * @throws \PHPStan\ShouldNotHappenException
+     */
+    protected function processPropertyTypeCheck(MethodCall $node, Node\Expr\ArrayItem $item, Scope $scope, string $reference): ?\PHPStan\Rules\RuleError
+    {
+        $object = new ObjectType($this->targetMethods[$node->name->name]);
+        $propertyType = $object->getClassReflection()
+            ->getProperty('_' . $item->key->value, $scope)
+            ->getWritableType();
+        $assignedValueType = $scope->getType($item->value);
+        $accepts = $this->ruleLevelHelper->acceptsWithReason($propertyType, $assignedValueType, true);
+        if ($accepts->result) {
+            return null;
+        }
+        $propertyDescription = sprintf(
+            'Call to %s::%s with option "%s"',
+            $reference,
+            $node->name->name,
+            $item->key->value
+        );
+        $verbosityLevel = VerbosityLevel::getRecommendedLevelByType($propertyType, $assignedValueType);
+
+        return RuleErrorBuilder::message(sprintf('%s (%s) does not accept %s.', $propertyDescription, $propertyType->describe($verbosityLevel), $assignedValueType->describe($verbosityLevel)))->acceptsReasonsTip($accepts->reasons)->build();
     }
 }

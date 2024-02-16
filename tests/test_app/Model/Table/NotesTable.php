@@ -33,6 +33,7 @@ class NotesTable extends Table
         $this->setDisplayField('note');
         $this->setPrimaryKey('id');
         $this->addBehavior('Timestamp');
+        $this->belongsTo('Users', ['dependent' => true]);
     }
 
     /**

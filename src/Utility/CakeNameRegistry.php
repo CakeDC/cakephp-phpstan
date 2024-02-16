@@ -55,4 +55,15 @@ class CakeNameRegistry
             '%s\\ORM\\Behavior\\%sBehavior',
         ]);
     }
+
+    /**
+     * @param string $name
+     * @return string|null
+     */
+    public static function getTableClassName(string $name): ?string
+    {
+        return static::getClassName($name, [
+            '%s\\Model\\Table\\%sTable',
+        ]);
+    }
 }

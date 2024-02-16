@@ -60,3 +60,5 @@ services:
 
 rules:
 	- CakeDC\PHPStan\Rule\Model\AddBehaviorRule
+	- CakeDC\PHPStan\Rule\Model\AddAssociationRule
+	- CakeDC\PHPStan\Rule\Model\AddAssociationWithValidOptionsTypesRule

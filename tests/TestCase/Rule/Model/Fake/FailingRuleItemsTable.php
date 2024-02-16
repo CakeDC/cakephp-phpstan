@@ -14,7 +14,9 @@ declare(strict_types=1);
 namespace CakeDC\PHPStan\Test\TestCase\Rule\Model\Fake;
 
 use App\Model\Table\VeryCustomize00009ArticlesTable;
+use Cake\ORM\Locator\TableLocator;
 use Cake\ORM\Table;
+use Cake\ORM\TableRegistry;
 
 class FailingRuleItemsTable extends Table//@codingStandardsIgnoreLine
 {
@@ -45,6 +47,31 @@ class FailingRuleItemsTable extends Table//@codingStandardsIgnoreLine
         $this->belongsTo('Fantasies');//Invalid model
         $this->belongsTo('Articles', [
             'className' => VeryCustomize00009ArticlesTable::class,
+            'cascadeCallbacks' => true,
+            'conditions' => ['Articles.active' => 1],
+            'dependent' => true,
+            'finder' => 'recent',
+            'bindingKey' => ['my_binding_key'],
+            'foreignKey' => 'my_foreign_key',
+            'joinType' => 'INNER',
+            'tableLocator' => new TableLocator(),
+            'propertyName' => 'my_property_name',
+            'sourceTable' => $this,
+            'targetTable' => TableRegistry::getTableLocator()->get('Articles'),
+        ]);
+        $this->belongsTo('Users', [
+            'className' => false,
+            'cascadeCallbacks' => 1,//Can't be integer, it should be bool
+            'conditions' => 'Users.active = 1',//Can't be string, it should be Closure or array
+            'dependent' => 0,//Must be
+            'finder' => fn() => 'f',
+            'bindingKey' => 10,
+            'foreignKey' => 11,
+            'joinType' => 12,
+            'tableLocator' => new \stdClass(),
+            'propertyName' => 13,
+            'sourceTable' => 'Users',
+            'targetTable' => new \stdClass(),
         ]);
     }
 }

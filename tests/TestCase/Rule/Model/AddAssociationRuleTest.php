@@ -34,7 +34,7 @@ class AddAssociationRuleTest extends RuleTestCase
         $this->analyse([__DIR__ . '/Fake/FailingRuleItemsTable.php'], [
             [
                 'Call to CakeDC\PHPStan\Test\TestCase\Rule\Model\Fake\FailingRuleItemsTable::belongsTo could not find the model class for "Fantasies"',
-                45, // asserted error line
+                47, // asserted error line
             ],
         ]);
 

@@ -93,7 +93,7 @@ class AddAssociationRule implements Rule
             if (
                 !$item instanceof Node\Expr\ArrayItem
                 || !$item->key instanceof String_
-                || !$item->key->value === 'className'
+                || $item->key->value !== 'className'
             ) {
                 continue;
 

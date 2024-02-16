@@ -24,7 +24,16 @@ use PHPStan\Rules\RuleErrorBuilder;
 
 class AddAssociationRule implements Rule
 {
-    protected array $targetMethods = ['belongsTo'];
+    /**
+     * @var array|string[]
+     */
+    protected array $targetMethods = [
+        'belongsTo',
+        'belongsToMany',
+        'hasMany',
+        'hasOne',
+    ];
+
     /**
      * @return string
      */

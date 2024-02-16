@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 /**
@@ -20,6 +19,7 @@ use Cake\ORM\Association\HasMany;
 use Cake\ORM\Locator\TableLocator;
 use Cake\ORM\Table;
 use Cake\ORM\TableRegistry;
+use stdClass;
 
 class FailingRuleItemsTable extends Table//@codingStandardsIgnoreLine
 {
@@ -67,14 +67,14 @@ class FailingRuleItemsTable extends Table//@codingStandardsIgnoreLine
             'cascadeCallbacks' => 1,//Can't be integer, it should be bool
             'conditions' => 'Users.active = 1',//Can't be string, it should be Closure or array
             'dependent' => 0,//Must be
-            'finder' => fn() => 'f',
+            'finder' => fn () => 'f',
             'bindingKey' => 10,
             'foreignKey' => 11,
             'joinType' => 12,
-            'tableLocator' => new \stdClass(),
+            'tableLocator' => new stdClass(),
             'propertyName' => 13,
             'sourceTable' => 'Users',
-            'targetTable' => new \stdClass(),
+            'targetTable' => new stdClass(),
             'strategy' => false,
         ]);
         $this->hasMany('MyUsers', [
@@ -96,11 +96,11 @@ class FailingRuleItemsTable extends Table//@codingStandardsIgnoreLine
         ]);
         $this->belongsToMany('SadUsers', [
             'className' => UsersTable::class,
-            'targetForeignKey' => fn() => 10,
-            'through' => new \stdClass(),
-            'saveStrategy' => fn() => 'na',
+            'targetForeignKey' => fn () => 10,
+            'through' => new stdClass(),
+            'saveStrategy' => fn () => 'na',
             'sort' => false,
-            'junction' => fn() => 'my_users_failing',
+            'junction' => fn () => 'my_users_failing',
         ]);
         $this->hasOne('MainArticles', [
             'className' => VeryCustomize00009ArticlesTable::class,
@@ -121,14 +121,14 @@ class FailingRuleItemsTable extends Table//@codingStandardsIgnoreLine
             'cascadeCallbacks' => 1,//Can't be integer, it should be bool
             'conditions' => 'parent_id = id',//Can't be string, it should be Closure or array
             'dependent' => 0,//Must be
-            'finder' => fn() => 'f',
+            'finder' => fn () => 'f',
             'bindingKey' => 10,
             'foreignKey' => 11,
             'joinType' => 12,
-            'tableLocator' => new \stdClass(),
+            'tableLocator' => new stdClass(),
             'propertyName' => 13,
             'sourceTable' => 'Users',
-            'targetTable' => new \stdClass(),
+            'targetTable' => new stdClass(),
             'strategy' => false,
             'saveStrategy' => HasMany::SAVE_REPLACE,
             'sort' => ['MyUsers.first_name' => 'ASC'],

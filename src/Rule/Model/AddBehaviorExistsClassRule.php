@@ -22,18 +22,8 @@ use PHPStan\Analyser\Scope;
 use PHPStan\Rules\Rule;
 use PHPStan\Rules\RuleErrorBuilder;
 
-class AddAssociationRule implements Rule
+class AddBehaviorExistsClassRule implements Rule
 {
-    /**
-     * @var array|string[]
-     */
-    protected array $targetMethods = [
-        'belongsTo',
-        'belongsToMany',
-        'hasMany',
-        'hasOne',
-    ];
-
     /**
      * @return string
      */
@@ -54,8 +44,7 @@ class AddAssociationRule implements Rule
         if (!$node->name instanceof Node\Identifier) {
             return [];
         }
-
-        if (!in_array($node->name->name, $this->targetMethods) || !isset($args[0]) || !$args[0] instanceof Arg) {
+        if ($node->name->name !== 'addBehavior' || !isset($args[0]) || !$args[0] instanceof Arg) {
             return [];
         }
         $reference = $scope->getType($node->var)->getReferencedClasses()[0] ?? null;
@@ -66,19 +55,18 @@ class AddAssociationRule implements Rule
         if (!$nameArg->value instanceof String_) {
             return [];
         }
-        $className = $this->getInputClassName($nameArg->value, $args);
-        if (CakeNameRegistry::getTableClassName($className)) {
+        $behaviorName = $this->getInputClassName($nameArg->value, $args);
+        if (CakeNameRegistry::getBehaviorClassName($behaviorName)) {
             return [];
         }
 
         return [
             RuleErrorBuilder::message(sprintf(
-                'Call to %s::%s could not find the model class for "%s"',
+                'Call to %s::addBehavior could not find the behavior class for "%s"',
                 $reference,
-                $node->name->name,
-                $className,
+                $behaviorName,
             ))
-                ->identifier('cake.addAssociation')
+                ->identifier('cake.addBehavior')
                 ->build(),
         ];
     }
@@ -98,21 +86,15 @@ class AddAssociationRule implements Rule
         ) {
             return $behaviorName;
         }
+
         foreach ($args[1]->value->items as $item) {
             if (
-                !$item instanceof Node\Expr\ArrayItem
-                || !$item->key instanceof String_
-                || $item->key->value !== 'className'
+                $item instanceof Node\Expr\ArrayItem
+                && $item->key instanceof String_
+                && $item->key->value === 'className'
+                && $item->value instanceof String_
             ) {
-                continue;
-
-            }
-            if ($item->value instanceof String_) {
                 return $item->value->value;
-            }
-
-            if ($item->value instanceof Node\Expr\ClassConstFetch) {
-                return (string)$item->value->class;
             }
         }
 

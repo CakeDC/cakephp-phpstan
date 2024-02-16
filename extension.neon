@@ -59,6 +59,6 @@ services:
 			- phpstan.broker.dynamicMethodReturnTypeExtension
 
 rules:
-	- CakeDC\PHPStan\Rule\Model\AddBehaviorRule
-	- CakeDC\PHPStan\Rule\Model\AddAssociationRule
-	- CakeDC\PHPStan\Rule\Model\AddAssociationWithValidOptionsTypesRule
+	- CakeDC\PHPStan\Rule\Model\AddAssociationExistsTableClassRule
+	- CakeDC\PHPStan\Rule\Model\AddAssociationMatchOptionsTypesRule
+	- CakeDC\PHPStan\Rule\Model\AddBehaviorExistsClassRule

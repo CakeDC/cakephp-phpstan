@@ -1,21 +1,23 @@
 <?php
+declare(strict_types=1);
 
 namespace CakeDC\PHPStan\Test\TestCase\Rule\Model;
 
-use CakeDC\PHPStan\Rule\Model\AddAssociationRule;
-use CakeDC\PHPStan\Rule\Model\AddAssociationWithValidOptionsTypesRule;
-use PhpParser\Node\Expr\MethodCall;
+use CakeDC\PHPStan\Rule\Model\AddAssociationMatchOptionsTypesRule;
 use PHPStan\Rules\Properties\PropertyReflectionFinder;
 use PHPStan\Rules\Rule;
 use PHPStan\Rules\RuleLevelHelper;
 use PHPStan\Testing\RuleTestCase;
 
-class AddAssociationWithValidOptionsTypesRuleTest extends RuleTestCase
+class AddAssociationMatchOptionsTypesRuleTest extends RuleTestCase
 {
+    /**
+     * @return \PHPStan\Rules\Rule
+     */
     protected function getRule(): Rule
     {
         // getRule() method needs to return an instance of the tested rule
-        return new AddAssociationWithValidOptionsTypesRule(
+        return new AddAssociationMatchOptionsTypesRule(
             new RuleLevelHelper(
                 $this->createReflectionProvider(),
                 true,
@@ -30,6 +32,9 @@ class AddAssociationWithValidOptionsTypesRuleTest extends RuleTestCase
         );
     }
 
+    /**
+     * @return void
+     */
     public function testRule(): void
     {
         // first argument: path to the example file that contains some errors that should be reported by MyRule
@@ -186,5 +191,4 @@ class AddAssociationWithValidOptionsTypesRuleTest extends RuleTestCase
             ],
         ]);
     }
-
 }

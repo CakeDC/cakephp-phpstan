@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace CakeDC\PHPStan\Rule\Model;
 
@@ -7,26 +8,36 @@ use Cake\ORM\Association\BelongsToMany;
 use Cake\ORM\Association\HasMany;
 use Cake\ORM\Association\HasOne;
 use PhpParser\Node;
+use PhpParser\Node\Expr\ArrayItem;
 use PhpParser\Node\Expr\MethodCall;
 use PhpParser\Node\Scalar\String_;
 use PHPStan\Analyser\Scope;
+use PHPStan\Reflection\ClassReflection;
 use PHPStan\Rules\Rule;
+use PHPStan\Rules\RuleError;
 use PHPStan\Rules\RuleErrorBuilder;
 use PHPStan\Rules\RuleLevelHelper;
 use PHPStan\Type\ObjectType;
 use PHPStan\Type\VerbosityLevel;
 
-class AddAssociationWithValidOptionsTypesRule implements Rule
+class AddAssociationMatchOptionsTypesRule implements Rule
 {
     /**
-     * @var RuleLevelHelper
+     * @var \PHPStan\Rules\RuleLevelHelper
      */
-    private $ruleLevelHelper;
+    private RuleLevelHelper $ruleLevelHelper;
 
+    /**
+     * @param \PHPStan\Rules\RuleLevelHelper $ruleLevelHelper
+     */
     public function __construct(RuleLevelHelper $ruleLevelHelper)
     {
         $this->ruleLevelHelper = $ruleLevelHelper;
     }
+
+    /**
+     * @var array<string, string>
+     */
     protected array $targetMethods = [
         'belongsTo' => BelongsTo::class,
         'belongsToMany' => BelongsToMany::class,
@@ -72,13 +83,19 @@ class AddAssociationWithValidOptionsTypesRule implements Rule
         $errors = [];
         foreach ($args[1]->value->items as $item) {
             if (
-                !$item instanceof Node\Expr\ArrayItem
+                !$item instanceof ArrayItem
                 || !$item->key instanceof String_
             ) {
                 continue;
             }
             if (isset($properties[$item->key->value])) {
-                $error = $this->processPropertyTypeCheck($properties[$item->key->value], $node, $item, $scope, $reference, );
+                $error = $this->processPropertyTypeCheck(
+                    $properties[$item->key->value],
+                    $node,
+                    $item,
+                    $scope,
+                    $reference
+                );
                 if ($error) {
                     $errors[] = $error;
                 }
@@ -93,6 +110,7 @@ class AddAssociationWithValidOptionsTypesRule implements Rule
                     ->build();
             }
         }
+
         return $errors;
     }
 
@@ -106,17 +124,26 @@ class AddAssociationWithValidOptionsTypesRule implements Rule
      * @throws \PHPStan\Reflection\MissingPropertyFromReflectionException
      * @throws \PHPStan\ShouldNotHappenException
      */
-    protected function processPropertyTypeCheck(string $property, MethodCall $node, Node\Expr\ArrayItem $item, Scope $scope, string $reference): ?\PHPStan\Rules\RuleError
-    {
+    protected function processPropertyTypeCheck(
+        string $property,
+        MethodCall $node,
+        ArrayItem $item,
+        Scope $scope,
+        string $reference
+    ): ?RuleError {
+        assert($node->name instanceof Node\Identifier);
         $object = new ObjectType($this->targetMethods[$node->name->name]);
-        $propertyType = $object->getClassReflection()
+        $classReflection = $object->getClassReflection();
+        assert($classReflection instanceof ClassReflection);
+        $propertyType = $classReflection
             ->getProperty('_' . $property, $scope)
             ->getWritableType();
         $assignedValueType = $scope->getType($item->value);
-        $accepts = $this->ruleLevelHelper->acceptsWithReason($propertyType, $assignedValueType, true);
+        $accepts = $this->ruleLevelHelper->acceptsWithReason($propertyType, $assignedValueType, true);//@phpstan-ignore-line
         if ($accepts->result) {
             return null;
         }
+        assert($item->key instanceof String_);
         $propertyDescription = sprintf(
             'Call to %s::%s with option "%s"',
             $reference,
@@ -125,7 +152,14 @@ class AddAssociationWithValidOptionsTypesRule implements Rule
         );
         $verbosityLevel = VerbosityLevel::getRecommendedLevelByType($propertyType, $assignedValueType);
 
-        return RuleErrorBuilder::message(sprintf('%s (%s) does not accept %s.', $propertyDescription, $propertyType->describe($verbosityLevel), $assignedValueType->describe($verbosityLevel)))
+        return RuleErrorBuilder::message(
+            sprintf(
+                '%s (%s) does not accept %s.',
+                $propertyDescription,
+                $propertyType->describe($verbosityLevel),
+                $assignedValueType->describe($verbosityLevel)
+            )
+        )
             ->acceptsReasonsTip($accepts->reasons)
             ->identifier('cake.addAssociationWithValidOption.invalidType')
             ->build();
@@ -133,7 +167,7 @@ class AddAssociationWithValidOptionsTypesRule implements Rule
 
     /**
      * @param string $methodName
-     * @return array
+     * @return array<string, string>
      */
     protected function getPropertiesTypeCheck(string $methodName): array
     {

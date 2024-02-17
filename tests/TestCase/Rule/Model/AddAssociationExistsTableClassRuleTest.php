@@ -39,11 +39,11 @@ class AddAssociationExistsTableClassRuleTest extends RuleTestCase
         // each error consists of the asserted error message, and the asserted error file line
         $this->analyse([__DIR__ . '/Fake/FailingRuleItemsTable.php'], [
             [
-                'Call to CakeDC\PHPStan\Test\TestCase\Rule\Model\Fake\FailingRuleItemsTable::belongsTo could not find the model class for "Fantasies"',
+                'Call to CakeDC\PHPStan\Test\TestCase\Rule\Model\Fake\FailingRuleItemsTable::belongsTo could not find the class for "Fantasies"',
                 50, // asserted error line
             ],
             [
-                'Call to CakeDC\PHPStan\Test\TestCase\Rule\Model\Fake\FailingRuleItemsTable::hasOne could not find the model class for "ParentUsers"',
+                'Call to CakeDC\PHPStan\Test\TestCase\Rule\Model\Fake\FailingRuleItemsTable::hasOne could not find the class for "ParentUsers"',
                 119,
             ],
         ]);

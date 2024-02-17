@@ -39,15 +39,15 @@ class AddBehaviorExistsClassRuleTest extends RuleTestCase
         // each error consists of the asserted error message, and the asserted error file line
         $this->analyse([__DIR__ . '/Fake/FailingRuleItemsTable.php'], [
             [
-                'Call to CakeDC\PHPStan\Test\TestCase\Rule\Model\Fake\FailingRuleItemsTable::addBehavior could not find the behavior class for "Timtamp"',
+                'Call to CakeDC\PHPStan\Test\TestCase\Rule\Model\Fake\FailingRuleItemsTable::addBehavior could not find the class for "Timtamp"',
                 37, // asserted error line
             ],
             [
-                'Call to CakeDC\PHPStan\Test\TestCase\Rule\Model\Fake\FailingRuleItemsTable::addBehavior could not find the behavior class for "MyTreeBehavior"',
+                'Call to CakeDC\PHPStan\Test\TestCase\Rule\Model\Fake\FailingRuleItemsTable::addBehavior could not find the class for "MyTreeBehavior"',
                 38, // asserted error line
             ],
             [
-                'Call to CakeDC\PHPStan\Test\TestCase\Rule\Model\Fake\FailingRuleItemsTable::addBehavior could not find the behavior class for "Cake\Behavior\TranslateBehavior"',
+                'Call to CakeDC\PHPStan\Test\TestCase\Rule\Model\Fake\FailingRuleItemsTable::addBehavior could not find the class for "Cake\Behavior\TranslateBehavior"',
                 41, // asserted error line
             ],
         ]);

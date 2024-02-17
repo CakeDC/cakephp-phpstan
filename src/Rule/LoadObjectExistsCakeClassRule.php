@@ -29,16 +29,6 @@ abstract class LoadObjectExistsCakeClassRule implements Rule
     protected string $identifier;
 
     /**
-     * @var string
-     */
-    protected string $sourceClassSuffix;
-
-    /**
-     * @var array<string>
-     */
-    protected array $sourceMethods;
-
-    /**
      * @return string
      */
     public function getNodeType(): string
@@ -58,18 +48,25 @@ abstract class LoadObjectExistsCakeClassRule implements Rule
         if (!$node->name instanceof Node\Identifier) {
             return [];
         }
-        if (!in_array($node->name->name, $this->sourceMethods) || !isset($args[0]) || !$args[0] instanceof Arg) {
-            return [];
-        }
         $reference = $scope->getType($node->var)->getReferencedClasses()[0] ?? null;
-        if ($reference === null || !str_ends_with($reference, $this->sourceClassSuffix)) {
+        if ($reference === null) {
             return [];
         }
-        $nameArg = $args[0];
-        if (!$nameArg->value instanceof String_) {
+        $details = $this->getDetails($reference, $args);
+
+        if (
+            $details === null
+            || !in_array($node->name->name, $details['sourceMethods'])
+            || !$details['alias'] instanceof Arg
+            || !$details['alias']->value instanceof String_
+        ) {
             return [];
         }
-        $inputClassName = $this->getInputClassName($nameArg->value, $args);
+
+        $inputClassName = $this->getInputClassName(
+            $details['alias']->value,
+            $details['options']
+        );
         if ($this->getTargetClassName($inputClassName)) {
             return [];
         }
@@ -88,20 +85,20 @@ abstract class LoadObjectExistsCakeClassRule implements Rule
 
     /**
      * @param \PhpParser\Node\Scalar\String_ $nameArg
-     * @param array<\PhpParser\Node\Arg> $args
+     * @param \PhpParser\Node\Arg|null $options
      * @return string
      */
-    protected function getInputClassName(String_ $nameArg, array $args): string
+    protected function getInputClassName(String_ $nameArg, ?Arg $options): string
     {
-        $behaviorName = $nameArg->value;
+        $className = $nameArg->value;
 
         if (
-            !isset($args[1])
-            || !$args[1]->value instanceof Node\Expr\Array_
+            $options === null
+            || !$options->value instanceof Node\Expr\Array_
         ) {
-            return $behaviorName;
+            return $className;
         }
-        foreach ($args[1]->value->items as $item) {
+        foreach ($options->value->items as $item) {
             if (
                 !$item instanceof Node\Expr\ArrayItem
                 || !$item->key instanceof String_
@@ -120,7 +117,7 @@ abstract class LoadObjectExistsCakeClassRule implements Rule
             }
         }
 
-        return $behaviorName;
+        return $className;
     }
 
     /**
@@ -128,4 +125,11 @@ abstract class LoadObjectExistsCakeClassRule implements Rule
      * @return string|null
      */
     abstract protected function getTargetClassName(string $name): ?string;
+
+    /**
+     * @param string $reference
+     * @param array<\PhpParser\Node\Arg> $args
+     * @return array{'alias': ?\PhpParser\Node\Arg, 'options': ?\PhpParser\Node\Arg, 'sourceMethods':array<string>}|null
+     */
+    abstract protected function getDetails(string $reference, array $args): ?array;
 }

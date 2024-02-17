@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace CakeDC\PHPStan\Rule\Model;
 
+use Cake\ORM\BehaviorRegistry;
 use CakeDC\PHPStan\Rule\LoadObjectExistsCakeClassRule;
 use CakeDC\PHPStan\Utility\CakeNameRegistry;
 
@@ -24,23 +25,47 @@ class AddBehaviorExistsClassRule extends LoadObjectExistsCakeClassRule
     protected string $identifier = 'cake.addBehavior.existClass';
 
     /**
-     * @var string
-     */
-    protected string $sourceClassSuffix = 'Table';
-
-    /**
      * @var array<string>
      */
-    protected array $sourceMethods = [
+    protected array $tableSourceMethods = [
         'addBehavior',
     ];
 
     /**
-     * @param string $name
-     * @return string|null
+     * @var array<string>
+     */
+    protected array $behaviorRegistryMethods = [
+        'load',
+    ];
+
+    /**
+     * @inheritDoc
      */
     protected function getTargetClassName(string $name): ?string
     {
         return CakeNameRegistry::getBehaviorClassName($name);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    protected function getDetails(string $reference, array $args): ?array
+    {
+        if (str_ends_with($reference, 'Table')) {
+            return [
+                'alias' => $args[0] ?? null,
+                'options' => $args[1] ?? null,
+                'sourceMethods' => $this->tableSourceMethods,
+            ];
+        }
+        if ($reference === BehaviorRegistry::class) {
+            return [
+                'alias' => $args[0] ?? null,
+                'options' => $args[1] ?? null,
+                'sourceMethods' => $this->behaviorRegistryMethods,
+            ];
+        }
+
+        return null;
     }
 }

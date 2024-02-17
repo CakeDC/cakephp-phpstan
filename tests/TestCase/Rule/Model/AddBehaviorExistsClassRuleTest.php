@@ -50,6 +50,10 @@ class AddBehaviorExistsClassRuleTest extends RuleTestCase
                 'Call to CakeDC\PHPStan\Test\TestCase\Rule\Model\Fake\FailingRuleItemsTable::addBehavior could not find the class for "Cake\Behavior\TranslateBehavior"',
                 41, // asserted error line
             ],
+            [
+                'Call to Cake\ORM\BehaviorRegistry::load could not find the class for "Cake\Behavior\TransmateBehavior"',
+                139,
+            ],
         ]);
     }
 }

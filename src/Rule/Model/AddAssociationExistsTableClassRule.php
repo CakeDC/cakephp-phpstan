@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace CakeDC\PHPStan\Rule\Model;
 
+use Cake\ORM\AssociationCollection;
 use CakeDC\PHPStan\Rule\LoadObjectExistsCakeClassRule;
 use CakeDC\PHPStan\Utility\CakeNameRegistry;
 
@@ -24,14 +25,9 @@ class AddAssociationExistsTableClassRule extends LoadObjectExistsCakeClassRule
     protected string $identifier = 'cake.addAssociation.existClass';
 
     /**
-     * @var string
-     */
-    protected string $sourceClassSuffix = 'Table';
-
-    /**
      * @var array<string>
      */
-    protected array $sourceMethods = [
+    protected array $tableSourceMethods = [
         'belongsTo',
         'belongsToMany',
         'hasMany',
@@ -39,11 +35,38 @@ class AddAssociationExistsTableClassRule extends LoadObjectExistsCakeClassRule
     ];
 
     /**
-     * @param string $name
-     * @return string|null
+     * @var array<string>
+     */
+    protected array $associationCollectionMethods = ['load'];
+
+    /**
+     * @inheritDoc
      */
     protected function getTargetClassName(string $name): ?string
     {
         return CakeNameRegistry::getTableClassName($name);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    protected function getDetails(string $reference, array $args): ?array
+    {
+        if (str_ends_with($reference, 'Table')) {
+            return [
+                'alias' => $args[0] ?? null,
+                'options' => $args[1] ?? null,
+                'sourceMethods' => $this->tableSourceMethods,
+            ];
+        }
+        if ($reference === AssociationCollection::class) {
+            return [
+                'alias' => $args[1] ?? null,
+                'options' => $args[2] ?? null,
+                'sourceMethods' => $this->associationCollectionMethods,
+            ];
+        }
+
+        return null;
     }
 }

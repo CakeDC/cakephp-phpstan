@@ -46,6 +46,10 @@ class AddAssociationExistsTableClassRuleTest extends RuleTestCase
                 'Call to CakeDC\PHPStan\Test\TestCase\Rule\Model\Fake\FailingRuleItemsTable::hasOne could not find the class for "ParentUsers"',
                 119,
             ],
+            [
+                'Call to Cake\ORM\AssociationCollection::load could not find the class for "CrazyUsers"',
+                138,
+            ],
         ]);
     }
 }

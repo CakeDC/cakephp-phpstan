@@ -135,5 +135,14 @@ class FailingRuleItemsTable extends Table//@codingStandardsIgnoreLine
             'junction' => 'my_valid_junction_table',
             'somethingElse' => 'an_invalid_option_key',
         ]);
+        $this->associations()->load(HasMany::class, 'CrazyUsers');
+        $this->behaviors()->load('Transmate', [
+            'className' => 'Cake\Behavior\TransmateBehavior',//invalid full className
+        ]);
+        $this->associations()->load(HasMany::class, 'MasterUsers', [
+            'className' => MyUsersTable::class,//valid
+            'conditions' => ['MasterUsers.is_master' => true],
+        ]);
+        $this->behaviors()->load('Tree');//valid
     }
 }

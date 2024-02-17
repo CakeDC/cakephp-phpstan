@@ -40,19 +40,19 @@ class AddBehaviorExistsClassRuleTest extends RuleTestCase
         $this->analyse([__DIR__ . '/Fake/FailingRuleItemsTable.php'], [
             [
                 'Call to CakeDC\PHPStan\Test\TestCase\Rule\Model\Fake\FailingRuleItemsTable::addBehavior could not find the class for "Timtamp"',
-                37, // asserted error line
-            ],
-            [
-                'Call to CakeDC\PHPStan\Test\TestCase\Rule\Model\Fake\FailingRuleItemsTable::addBehavior could not find the class for "MyTreeBehavior"',
                 38, // asserted error line
             ],
             [
+                'Call to CakeDC\PHPStan\Test\TestCase\Rule\Model\Fake\FailingRuleItemsTable::addBehavior could not find the class for "MyTreeBehavior"',
+                39, // asserted error line
+            ],
+            [
                 'Call to CakeDC\PHPStan\Test\TestCase\Rule\Model\Fake\FailingRuleItemsTable::addBehavior could not find the class for "Cake\Behavior\TranslateBehavior"',
-                41, // asserted error line
+                42, // asserted error line
             ],
             [
                 'Call to Cake\ORM\BehaviorRegistry::load could not find the class for "Cake\Behavior\TransmateBehavior"',
-                139,
+                140,
             ],
         ]);
     }

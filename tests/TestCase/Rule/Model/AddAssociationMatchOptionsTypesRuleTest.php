@@ -43,151 +43,219 @@ class AddAssociationMatchOptionsTypesRuleTest extends RuleTestCase
         $this->analyse([__DIR__ . '/Fake/FailingRuleItemsTable.php'], [
             [
                 'Call to CakeDC\PHPStan\Test\TestCase\Rule\Model\Fake\FailingRuleItemsTable::belongsTo with option "className" (string) does not accept false.',
-                65,
+                66,
             ],
             [
                 'Call to CakeDC\PHPStan\Test\TestCase\Rule\Model\Fake\FailingRuleItemsTable::belongsTo with option "cascadeCallbacks" (bool) does not accept int.',
-                65,
+                66,
             ],
             [
                 'Call to CakeDC\PHPStan\Test\TestCase\Rule\Model\Fake\FailingRuleItemsTable::belongsTo with option "conditions" (array|Closure) does not accept \'Users.active = 1\'.',
-                65,
+                66,
             ],
             [
                 'Call to CakeDC\PHPStan\Test\TestCase\Rule\Model\Fake\FailingRuleItemsTable::belongsTo with option "dependent" (bool) does not accept int.',
-                65,
+                66,
             ],
             [
                 'Call to CakeDC\PHPStan\Test\TestCase\Rule\Model\Fake\FailingRuleItemsTable::belongsTo with option "finder" (array|string) does not accept Closure.',
-                65,
+                66,
             ],
             [
                 'Call to CakeDC\PHPStan\Test\TestCase\Rule\Model\Fake\FailingRuleItemsTable::belongsTo with option "bindingKey" (array<string>|string) does not accept int.',
-                65,
+                66,
             ],
             [
                 'Call to CakeDC\PHPStan\Test\TestCase\Rule\Model\Fake\FailingRuleItemsTable::belongsTo with option "foreignKey" (array<string>|string|false) does not accept 11.',
-                65,
+                66,
             ],
             [
                 'Call to CakeDC\PHPStan\Test\TestCase\Rule\Model\Fake\FailingRuleItemsTable::belongsTo with option "joinType" (string) does not accept int.',
-                65,
+                66,
             ],
             [
                 'Call to CakeDC\PHPStan\Test\TestCase\Rule\Model\Fake\FailingRuleItemsTable::belongsTo with option "tableLocator" (Cake\ORM\Locator\LocatorInterface|null) does not accept stdClass.',
-                65,
+                66,
             ],
             [
                 'Call to CakeDC\PHPStan\Test\TestCase\Rule\Model\Fake\FailingRuleItemsTable::belongsTo with option "propertyName" (string) does not accept int.',
-                65,
+                66,
             ],
             [
                 'Call to CakeDC\PHPStan\Test\TestCase\Rule\Model\Fake\FailingRuleItemsTable::belongsTo with option "sourceTable" (Cake\ORM\Table) does not accept string.',
-                65,
+                66,
             ],
             [
                 'Call to CakeDC\PHPStan\Test\TestCase\Rule\Model\Fake\FailingRuleItemsTable::belongsTo with option "targetTable" (Cake\ORM\Table) does not accept stdClass.',
-                65,
+                66,
             ],
             [
                 'Call to CakeDC\PHPStan\Test\TestCase\Rule\Model\Fake\FailingRuleItemsTable::belongsTo with option "strategy" (string) does not accept false.',
-                65,
+                66,
             ],
             [
                 'Call to CakeDC\PHPStan\Test\TestCase\Rule\Model\Fake\FailingRuleItemsTable::hasMany with option "saveStrategy" (string) does not accept int.',
-                84,
+                85,
             ],
             [
                 'Call to CakeDC\PHPStan\Test\TestCase\Rule\Model\Fake\FailingRuleItemsTable::hasMany with option "sort" (array<Cake\Database\ExpressionInterface|string>|Cake\Database\ExpressionInterface|Closure|string|null) does not accept true.',
-                84,
+                85,
             ],
             [
                 'Call to CakeDC\PHPStan\Test\TestCase\Rule\Model\Fake\FailingRuleItemsTable::belongsToMany with option "targetForeignKey" (array<string>|string|null) does not accept Closure.',
-                97,
+                98,
             ],
             [
                 'Call to CakeDC\PHPStan\Test\TestCase\Rule\Model\Fake\FailingRuleItemsTable::belongsToMany with option "through" (Cake\ORM\Table|string|null) does not accept stdClass.',
-                97,
+                98,
             ],
             [
                 'Call to CakeDC\PHPStan\Test\TestCase\Rule\Model\Fake\FailingRuleItemsTable::belongsToMany with option "saveStrategy" (string) does not accept Closure.',
-                97,
+                98,
             ],
             [
                 'Call to CakeDC\PHPStan\Test\TestCase\Rule\Model\Fake\FailingRuleItemsTable::belongsToMany with option "sort" (array<Cake\Database\ExpressionInterface|string>|Cake\Database\ExpressionInterface|Closure|string|null) does not accept false.',
-                97,
+                98,
             ],
             [
                 'Call to CakeDC\PHPStan\Test\TestCase\Rule\Model\Fake\FailingRuleItemsTable::belongsToMany with option "junction" (string) does not accept Closure.',
-                97,
+                98,
             ],
             [
                 'Call to CakeDC\PHPStan\Test\TestCase\Rule\Model\Fake\FailingRuleItemsTable::hasOne with option "className" (string) does not accept false.',
-                119,
+                120,
             ],
             [
                 'Call to CakeDC\PHPStan\Test\TestCase\Rule\Model\Fake\FailingRuleItemsTable::hasOne with option "cascadeCallbacks" (bool) does not accept int.',
-                119,
+                120,
             ],
             [
                 'Call to CakeDC\PHPStan\Test\TestCase\Rule\Model\Fake\FailingRuleItemsTable::hasOne with option "conditions" (array|Closure) does not accept \'parent_id = id\'.',
-                119,
+                120,
             ],
             [
                 'Call to CakeDC\PHPStan\Test\TestCase\Rule\Model\Fake\FailingRuleItemsTable::hasOne with option "dependent" (bool) does not accept int.',
-                119,
+                120,
             ],
             [
                 'Call to CakeDC\PHPStan\Test\TestCase\Rule\Model\Fake\FailingRuleItemsTable::hasOne with option "finder" (array|string) does not accept Closure.',
-                119,
+                120,
             ],
             [
                 'Call to CakeDC\PHPStan\Test\TestCase\Rule\Model\Fake\FailingRuleItemsTable::hasOne with option "bindingKey" (array<string>|string) does not accept int.',
-                119,
+                120,
             ],
             [
                 'Call to CakeDC\PHPStan\Test\TestCase\Rule\Model\Fake\FailingRuleItemsTable::hasOne with option "foreignKey" (array<string>|string|false) does not accept 11.',
-                119,
+                120,
             ],
             [
                 'Call to CakeDC\PHPStan\Test\TestCase\Rule\Model\Fake\FailingRuleItemsTable::hasOne with option "joinType" (string) does not accept int.',
-                119,
+                120,
             ],
             [
                 'Call to CakeDC\PHPStan\Test\TestCase\Rule\Model\Fake\FailingRuleItemsTable::hasOne with option "tableLocator" (Cake\ORM\Locator\LocatorInterface|null) does not accept stdClass.',
-                119,
+                120,
             ],
             [
                 'Call to CakeDC\PHPStan\Test\TestCase\Rule\Model\Fake\FailingRuleItemsTable::hasOne with option "propertyName" (string) does not accept int.',
-                119,
+                120,
             ],
             [
                 'Call to CakeDC\PHPStan\Test\TestCase\Rule\Model\Fake\FailingRuleItemsTable::hasOne with option "sourceTable" (Cake\ORM\Table) does not accept string.',
-                119,
+                120,
             ],
             [
                 'Call to CakeDC\PHPStan\Test\TestCase\Rule\Model\Fake\FailingRuleItemsTable::hasOne with option "targetTable" (Cake\ORM\Table) does not accept stdClass.',
-                119,
+                120,
             ],
             [
                 'Call to CakeDC\PHPStan\Test\TestCase\Rule\Model\Fake\FailingRuleItemsTable::hasOne with option "strategy" (string) does not accept false.',
-                119,
+                120,
             ],
             [
                 'Call to CakeDC\PHPStan\Test\TestCase\Rule\Model\Fake\FailingRuleItemsTable::hasOne with unknown option "saveStrategy".',
-                119,
+                120,
             ],
             [
                 'Call to CakeDC\PHPStan\Test\TestCase\Rule\Model\Fake\FailingRuleItemsTable::hasOne with unknown option "sort".',
-                119,
+                120,
             ],
             [
                 'Call to CakeDC\PHPStan\Test\TestCase\Rule\Model\Fake\FailingRuleItemsTable::hasOne with unknown option "junction".',
-                119,
+                120,
             ],
             [
                 'Call to CakeDC\PHPStan\Test\TestCase\Rule\Model\Fake\FailingRuleItemsTable::hasOne with unknown option "somethingElse".',
-                119,
+                120,
+            ],
+            [
+                'Call to Cake\ORM\AssociationCollection::load with option "className" (string) does not accept false.',
+                148,
+            ],
+            [
+                'Call to Cake\ORM\AssociationCollection::load with option "cascadeCallbacks" (bool) does not accept int.',
+                148,
+            ],
+            [
+                'Call to Cake\ORM\AssociationCollection::load with option "conditions" (array|Closure) does not accept \'parent_id = id\'.',
+                148,
+            ],
+            [
+                'Call to Cake\ORM\AssociationCollection::load with option "dependent" (bool) does not accept int.',
+                148,
+            ],
+            [
+                'Call to Cake\ORM\AssociationCollection::load with option "finder" (array|string) does not accept Closure.',
+                148,
+            ],
+            [
+                'Call to Cake\ORM\AssociationCollection::load with option "bindingKey" (array<string>|string) does not accept int.',
+                148,
+            ],
+            [
+                'Call to Cake\ORM\AssociationCollection::load with option "foreignKey" (array<string>|string|false) does not accept 11.',
+                148,
+            ],
+            [
+                'Call to Cake\ORM\AssociationCollection::load with option "joinType" (string) does not accept int.',
+                148,
+            ],
+            [
+                'Call to Cake\ORM\AssociationCollection::load with option "tableLocator" (Cake\ORM\Locator\LocatorInterface|null) does not accept stdClass.',
+                148,
+            ],
+            [
+                'Call to Cake\ORM\AssociationCollection::load with option "propertyName" (string) does not accept int.',
+                148,
+            ],
+            [
+                'Call to Cake\ORM\AssociationCollection::load with option "sourceTable" (Cake\ORM\Table) does not accept string.',
+                148,
+            ],
+            [
+                'Call to Cake\ORM\AssociationCollection::load with option "targetTable" (Cake\ORM\Table) does not accept stdClass.',
+                148,
+            ],
+            [
+                'Call to Cake\ORM\AssociationCollection::load with option "strategy" (string) does not accept false.',
+                148,
+            ],
+            [
+                'Call to Cake\ORM\AssociationCollection::load with unknown option "saveStrategy".',
+                148,
+            ],
+            [
+                'Call to Cake\ORM\AssociationCollection::load with unknown option "sort".',
+                148,
+            ],
+            [
+                'Call to Cake\ORM\AssociationCollection::load with unknown option "junction".',
+                148,
+            ],
+            [
+                'Call to Cake\ORM\AssociationCollection::load with unknown option "somethingElse".',
+                148,
             ],
         ]);
     }

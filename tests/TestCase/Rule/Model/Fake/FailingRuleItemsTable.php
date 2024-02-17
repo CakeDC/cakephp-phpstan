@@ -16,6 +16,7 @@ use App\Model\Table\MyUsersTable;
 use App\Model\Table\UsersTable;
 use App\Model\Table\VeryCustomize00009ArticlesTable;
 use Cake\ORM\Association\HasMany;
+use Cake\ORM\Association\HasOne;
 use Cake\ORM\Locator\TableLocator;
 use Cake\ORM\Table;
 use Cake\ORM\TableRegistry;
@@ -144,5 +145,39 @@ class FailingRuleItemsTable extends Table//@codingStandardsIgnoreLine
             'conditions' => ['MasterUsers.is_master' => true],
         ]);
         $this->behaviors()->load('Tree');//valid
+        $this->associations()->load(HasOne::class, 'PalUsers', [
+            'className' => false,
+            'cascadeCallbacks' => 1,//Can't be integer, it should be bool
+            'conditions' => 'parent_id = id',//Can't be string, it should be Closure or array
+            'dependent' => 0,//Must be
+            'finder' => fn () => 'f',
+            'bindingKey' => 10,
+            'foreignKey' => 11,
+            'joinType' => 12,
+            'tableLocator' => new stdClass(),
+            'propertyName' => 13,
+            'sourceTable' => 'Users',
+            'targetTable' => new stdClass(),
+            'strategy' => false,
+            'saveStrategy' => HasMany::SAVE_REPLACE,
+            'sort' => ['MyUsers.first_name' => 'ASC'],
+            'junction' => 'my_valid_junction_table',
+            'somethingElse' => 'an_invalid_option_key',
+        ]);
+        $this->associations()->load(HasOne::class, 'FunArticles', [
+            'className' => VeryCustomize00009ArticlesTable::class,
+            'cascadeCallbacks' => true,
+            'conditions' => ['MainArticles.is_sad' => false],
+            'dependent' => true,
+            'finder' => 'recent',
+            'bindingKey' => ['my_binding_key'],
+            'foreignKey' => 'my_foreign_key',
+            'joinType' => 'INNER',
+            'tableLocator' => new TableLocator(),
+            'propertyName' => 'my_property_name',
+            'sourceTable' => $this,
+            'targetTable' => TableRegistry::getTableLocator()->get('Articles'),
+        ]);
+        $this->associations()->load(HasOne::class, 'Notes');
     }
 }

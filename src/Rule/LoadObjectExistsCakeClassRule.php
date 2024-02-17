@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace CakeDC\PHPStan\Rule;
 
+use CakeDC\PHPStan\Rule\Traits\ParseClassNameFromArgTrait;
 use PhpParser\Node;
 use PhpParser\Node\Arg;
 use PhpParser\Node\Expr\MethodCall;
@@ -23,6 +24,8 @@ use PHPStan\Rules\RuleErrorBuilder;
 
 abstract class LoadObjectExistsCakeClassRule implements Rule
 {
+    use ParseClassNameFromArgTrait;
+
     /**
      * @var string
      */
@@ -106,14 +109,9 @@ abstract class LoadObjectExistsCakeClassRule implements Rule
             ) {
                 continue;
             }
-            if ($item->value instanceof String_) {
-                return $item->value->value;
-            }
-
-            if ($item->value instanceof Node\Expr\ClassConstFetch) {
-                assert($item->value->class instanceof Node\Name);
-
-                return $item->value->class->toString();
+            $name = $this->parseClassNameFromExprTrait($item->value);
+            if ($name !== null) {
+                return $name;
             }
         }
 

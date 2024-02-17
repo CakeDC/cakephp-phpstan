@@ -7,7 +7,10 @@ use Cake\ORM\Association\BelongsTo;
 use Cake\ORM\Association\BelongsToMany;
 use Cake\ORM\Association\HasMany;
 use Cake\ORM\Association\HasOne;
+use Cake\ORM\AssociationCollection;
+use CakeDC\PHPStan\Rule\Traits\ParseClassNameFromArgTrait;
 use PhpParser\Node;
+use PhpParser\Node\Arg;
 use PhpParser\Node\Expr\ArrayItem;
 use PhpParser\Node\Expr\MethodCall;
 use PhpParser\Node\Scalar\String_;
@@ -22,6 +25,8 @@ use PHPStan\Type\VerbosityLevel;
 
 class AddAssociationMatchOptionsTypesRule implements Rule
 {
+    use ParseClassNameFromArgTrait;
+
     /**
      * @var \PHPStan\Rules\RuleLevelHelper
      */
@@ -38,7 +43,7 @@ class AddAssociationMatchOptionsTypesRule implements Rule
     /**
      * @var array<string, string>
      */
-    protected array $targetMethods = [
+    protected array $tableSourceMethods = [
         'belongsTo' => BelongsTo::class,
         'belongsToMany' => BelongsToMany::class,
         'hasMany' => HasMany::class,
@@ -65,23 +70,23 @@ class AddAssociationMatchOptionsTypesRule implements Rule
         if (!$node->name instanceof Node\Identifier) {
             return [];
         }
-        if (!isset($this->targetMethods[$node->name->name])) {
-            return [];
-        }
         $reference = $scope->getType($node->var)->getReferencedClasses()[0] ?? null;
-        if ($reference === null || !str_ends_with($reference, 'Table')) {
+        if ($reference === null) {
             return [];
         }
-
+        $details = $this->getDetails($reference, $node->name->name, $args);
+        if ($details === null || $details['type'] === null) {
+            return [];
+        }
         if (
-            !isset($args[1])
-            || !$args[1]->value instanceof Node\Expr\Array_
+            $details['options'] === null
+            || !$details['options']->value instanceof Node\Expr\Array_
         ) {
             return [];
         }
-        $properties = $this->getPropertiesTypeCheck($node->name->name);
+        $properties = $this->getPropertiesTypeCheck($details['type']);
         $errors = [];
-        foreach ($args[1]->value->items as $item) {
+        foreach ($details['options']->value->items as $item) {
             if (
                 !$item instanceof ArrayItem
                 || !$item->key instanceof String_
@@ -90,11 +95,10 @@ class AddAssociationMatchOptionsTypesRule implements Rule
             }
             if (isset($properties[$item->key->value])) {
                 $error = $this->processPropertyTypeCheck(
+                    $details,
                     $properties[$item->key->value],
-                    $node,
                     $item,
-                    $scope,
-                    $reference
+                    $scope
                 );
                 if ($error) {
                     $errors[] = $error;
@@ -115,24 +119,56 @@ class AddAssociationMatchOptionsTypesRule implements Rule
     }
 
     /**
+     * @param string $reference
+     * @param string $methodName
+     * @param array<\PhpParser\Node\Arg> $args
+     * @return array{'alias': ?string, 'options': ?\PhpParser\Node\Arg, 'type': ?string, 'reference':string, 'methodName':string}|null
+     */
+    protected function getDetails(string $reference, string $methodName, array $args): ?array
+    {
+        if (str_ends_with($reference, 'Table')) {
+            return [
+                'alias' => isset($args[0]) ? $this->parseClassNameFromExprTrait($args[0]->value) : null,
+                'options' => $args[1] ?? null,
+                'type' => $this->tableSourceMethods[$methodName] ?? null,
+                'reference' => $reference,
+                'methodName' => $methodName,
+            ];
+        }
+        if (
+            $reference === AssociationCollection::class
+            && $methodName === 'load'
+            && isset($args[0])
+            && $args[0] instanceof Arg
+        ) {
+            return [
+                'alias' => isset($args[1]) ? $this->parseClassNameFromExprTrait($args[1]->value) : null,
+                'options' => $args[2] ?? null,
+                'type' => $this->parseClassNameFromExprTrait($args[0]->value),
+                'reference' => $reference,
+                'methodName' => $methodName,
+            ];
+        }
+
+        return null;
+    }
+
+    /**
+     * @param array{'alias': ?string, 'options': ?\PhpParser\Node\Arg, 'type': string, 'reference':string, 'methodName':string} $details
      * @param string $property
-     * @param \PhpParser\Node\Expr\MethodCall $node
      * @param \PhpParser\Node\Expr\ArrayItem $item
      * @param \PHPStan\Analyser\Scope $scope
-     * @param string $reference
      * @return \PHPStan\Rules\RuleError|null
      * @throws \PHPStan\Reflection\MissingPropertyFromReflectionException
      * @throws \PHPStan\ShouldNotHappenException
      */
     protected function processPropertyTypeCheck(
+        array $details,
         string $property,
-        MethodCall $node,
         ArrayItem $item,
-        Scope $scope,
-        string $reference
+        Scope $scope
     ): ?RuleError {
-        assert($node->name instanceof Node\Identifier);
-        $object = new ObjectType($this->targetMethods[$node->name->name]);
+        $object = new ObjectType($details['type']);
         $classReflection = $object->getClassReflection();
         assert($classReflection instanceof ClassReflection);
         $propertyType = $classReflection
@@ -146,8 +182,8 @@ class AddAssociationMatchOptionsTypesRule implements Rule
         assert($item->key instanceof String_);
         $propertyDescription = sprintf(
             'Call to %s::%s with option "%s"',
-            $reference,
-            $node->name->name,
+            $details['reference'],
+            $details['methodName'],
             $item->key->value
         );
         $verbosityLevel = VerbosityLevel::getRecommendedLevelByType($propertyType, $assignedValueType);
@@ -166,10 +202,10 @@ class AddAssociationMatchOptionsTypesRule implements Rule
     }
 
     /**
-     * @param string $methodName
+     * @param string $type
      * @return array<string, string>
      */
-    protected function getPropertiesTypeCheck(string $methodName): array
+    protected function getPropertiesTypeCheck(string $type): array
     {
         $properties = [
             'cascadeCallbacks',
@@ -187,12 +223,12 @@ class AddAssociationMatchOptionsTypesRule implements Rule
             'strategy',
         ];
         $properties = array_combine($properties, $properties);
-        if ($methodName === 'belongsToMany') {
+        if ($type === BelongsToMany::class) {
             $properties['targetForeignKey'] = 'targetForeignKey';
             $properties['through'] = 'through';
             $properties['junction'] = 'junctionTableName';
         }
-        if ($methodName === 'hasMany' || $methodName === 'belongsToMany') {
+        if ($type === HasMany::class || $type === BelongsToMany::class) {
             $properties['saveStrategy'] = 'saveStrategy';
             $properties['sort'] = 'sort';
         }

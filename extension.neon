@@ -1,4 +1,5 @@
-
+includes:
+	- rules.neon
 services:
 	-
 		class: CakeDC\PHPStan\Method\AssociationTableMixinClassReflectionExtension
@@ -57,8 +58,3 @@ services:
 		class: CakeDC\PHPStan\Type\ConsoleHelperLoadDynamicReturnTypeExtension
 		tags:
 			- phpstan.broker.dynamicMethodReturnTypeExtension
-
-rules:
-	- CakeDC\PHPStan\Rule\Model\AddAssociationExistsTableClassRule
-	- CakeDC\PHPStan\Rule\Model\AddAssociationMatchOptionsTypesRule
-	- CakeDC\PHPStan\Rule\Model\AddBehaviorExistsClassRule

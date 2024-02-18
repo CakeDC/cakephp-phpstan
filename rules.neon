@@ -3,12 +3,14 @@ parameters:
 	 	addAssociationExistsTableClassRule: true
 	 	addAssociationMatchOptionsTypesRule: true
 	 	addBehaviorExistsClassRule: true
+	 	tableGetMatchOptionsTypesRule: true
 
 parametersSchema:
 	cakeDC: structure([
 		addAssociationExistsTableClassRule: anyOf(bool(), arrayOf(bool()))
 		addAssociationMatchOptionsTypesRule: anyOf(bool(), arrayOf(bool()))
 		addBehaviorExistsClassRule: anyOf(bool(), arrayOf(bool()))
+		tableGetMatchOptionsTypesRule: anyOf(bool(), arrayOf(bool()))
 	])
 
 conditionalTags:
@@ -18,6 +20,8 @@ conditionalTags:
 		phpstan.rules.rule: %cakeDC.addAssociationMatchOptionsTypesRule%
 	CakeDC\PHPStan\Rule\Model\AddBehaviorExistsClassRule:
 		phpstan.rules.rule: %cakeDC.addBehaviorExistsClassRule%
+	CakeDC\PHPStan\Rule\Model\TableGetMatchOptionsTypesRule:
+		phpstan.rules.rule: %cakeDC.tableGetMatchOptionsTypesRule%
 
 services:
 	-
@@ -26,3 +30,5 @@ services:
 		class: CakeDC\PHPStan\Rule\Model\AddAssociationMatchOptionsTypesRule
 	-
 		class: CakeDC\PHPStan\Rule\Model\AddBehaviorExistsClassRule
+	-
+		class: CakeDC\PHPStan\Rule\Model\TableGetMatchOptionsTypesRule

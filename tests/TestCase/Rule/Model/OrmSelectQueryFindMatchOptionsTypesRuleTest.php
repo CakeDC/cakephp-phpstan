@@ -55,6 +55,9 @@ class OrmSelectQueryFindMatchOptionsTypesRuleTest extends RuleTestCase
             ['Call to App\Model\Table\NotesTable::find with option "conditions" (array|Cake\Database\ExpressionInterface|Closure|string|null) does not accept false.', 65],
             ['Call to App\Model\Table\NotesTable::find with option "limit" (Cake\Database\ExpressionInterface|int|null) does not accept stdClass.', 65],
             ['Call to App\Model\Table\NotesTable::find with option "group" (array|Cake\Database\ExpressionInterface|string) does not accept true.', 65],
+            ['Call to Cake\ORM\Query\SelectQuery::find with option "select" (array|Cake\Database\ExpressionInterface|Cake\ORM\Association|Cake\ORM\Table|Closure|float|int|string) does not accept false.', 77],
+            ['Call to Cake\ORM\Query\SelectQuery::find with option "conditions" (array|Cake\Database\ExpressionInterface|Closure|string|null) does not accept stdClass.', 77],
+            ['Call to Cake\ORM\Query\SelectQuery::find with option "offset" (Cake\Database\ExpressionInterface|int|null) does not accept string.', 77],
         ]);
     }
 }

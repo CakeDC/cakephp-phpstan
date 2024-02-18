@@ -15,8 +15,7 @@ class TableGetMatchOptionsTypesRule extends OrmSelectQueryFindMatchOptionsTypesR
     {
         if (str_ends_with($reference, 'Table') && $methodName === 'get') {
             $lastOptionPosition = 4;
-            $argNamesIgnore = ['primaryKey', 'finder', 'cache', 'cacheKey'];
-            $options = $this->getOptions($args, $lastOptionPosition, $argNamesIgnore);
+            $options = $this->getOptions($args, $lastOptionPosition);
 
             return [
                 'options' => $options,

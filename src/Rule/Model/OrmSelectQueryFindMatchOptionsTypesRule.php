@@ -69,6 +69,7 @@ class OrmSelectQueryFindMatchOptionsTypesRule implements Rule
      * @param \PhpParser\Node $node
      * @param \PHPStan\Analyser\Scope $scope
      * @return array<\PHPStan\Rules\RuleError>
+     * @throws \PHPStan\ShouldNotHappenException
      */
     public function processNode(Node $node, Scope $scope): array
     {
@@ -86,9 +87,13 @@ class OrmSelectQueryFindMatchOptionsTypesRule implements Rule
         if ($details === null || empty($details['options'])) {
             return [];
         }
+        $paramNamesIgnore = $this->getParamNamesIgnore($scope, $node);
 
         $errors = [];
         foreach ($details['options'] as $name => $item) {
+            if (in_array($name, $paramNamesIgnore)) {
+                continue;
+            }
             if (isset($this->queryOptionsMap[$name])) {
                 $assignedValueType = $scope->getType($item);
                 $methodReflection = $this->getTargetMethod($scope, $this->queryOptionsMap[$name]);
@@ -115,10 +120,12 @@ class OrmSelectQueryFindMatchOptionsTypesRule implements Rule
      */
     protected function getDetails(string $reference, string $methodName, array $args): ?array
     {
-        if (str_ends_with($reference, 'Table') && $methodName === 'find') {
+        if (
+            (str_ends_with($reference, 'Table') || $reference === SelectQuery::class)
+            && $methodName === 'find'
+        ) {
             $lastOptionPosition = 1;
-            $argNamesIgnore = ['type'];
-            $options = $this->getOptions($args, $lastOptionPosition, $argNamesIgnore);
+            $options = $this->getOptions($args, $lastOptionPosition);
 
             return [
                 'options' => $options,
@@ -192,14 +199,13 @@ class OrmSelectQueryFindMatchOptionsTypesRule implements Rule
 
     /**
      * @param \PhpParser\Node\Arg $arg
-     * @param array<string> $notArgsNames
      * @param array<\PhpParser\Node\Expr> $options
      * @return array<\PhpParser\Node\Expr>
      */
-    protected function extractOptionsUnpackedArray(Node\Arg $arg, array $notArgsNames, array $options): array
+    protected function extractOptionsUnpackedArray(Node\Arg $arg, array $options): array
     {
         if ($arg->value instanceof Array_ && $arg->unpack) {
-            $options = $this->getOptionsFromArray($arg->value, $notArgsNames, $options);
+            $options = $this->getOptionsFromArray($arg->value, $options);
         }
 
         return $options;
@@ -209,7 +215,7 @@ class OrmSelectQueryFindMatchOptionsTypesRule implements Rule
      * @param array<\PhpParser\Node\Arg> $args
      * @return array<\PhpParser\Node\Expr>
      */
-    protected function getOptions(array $args, int $optionsArgPosition, array $argNamesIgnore): array
+    protected function getOptions(array $args, int $optionsArgPosition): array
     {
         $lastArgPos = $optionsArgPosition;
         $totalArgsMethod = $optionsArgPosition + 1;
@@ -219,13 +225,13 @@ class OrmSelectQueryFindMatchOptionsTypesRule implements Rule
             && $args[$lastArgPos]->value instanceof Array_
             && $args[$lastArgPos]->unpack !== true
         ) {
-            return $this->getOptionsFromArray($args[$lastArgPos]->value, $argNamesIgnore, $options);
+            return $this->getOptionsFromArray($args[$lastArgPos]->value, $options);
         }
         foreach ($args as $arg) {
-            if ($arg->name && !in_array($arg->name->name, $argNamesIgnore)) {
+            if ($arg->name) {
                 $options[$arg->name->name] = $arg->value;
             }
-            $options = $this->extractOptionsUnpackedArray($arg, $argNamesIgnore, $options);
+            $options = $this->extractOptionsUnpackedArray($arg, $options);
         }
 
         return $options;
@@ -233,18 +239,42 @@ class OrmSelectQueryFindMatchOptionsTypesRule implements Rule
 
     /**
      * @param \PhpParser\Node\Expr\Array_ $source
-     * @param array<string> $notArgsNames
      * @param array<\PhpParser\Node\Expr> $options
      * @return array<\PhpParser\Node\Expr>
      */
-    protected function getOptionsFromArray(Array_ $source, array $notArgsNames, array $options): array
+    protected function getOptionsFromArray(Array_ $source, array $options): array
     {
         foreach ($source->items as $item) {
-            if (isset($item->key) && $item->key instanceof String_ && !in_array($item->key->value, $notArgsNames)) {
+            if (isset($item->key) && $item->key instanceof String_) {
                 $options[$item->key->value] = $item->value;
             }
         }
 
         return $options;
+    }
+
+    /**
+     * @param \PHPStan\Analyser\Scope $scope
+     * @param \PhpParser\Node\Expr\MethodCall $node
+     * @return array<string>
+     */
+    protected function getParamNamesIgnore(Scope $scope, MethodCall $node): array
+    {
+        assert($node->name instanceof Node\Identifier);
+        $methodReflection = $scope->getMethodReflection($scope->getType($node->var), $node->name->toString());
+        if ($methodReflection === null) {
+            return [];
+        }
+
+        $parameters = $methodReflection
+            ->getVariants()[0]->getParameters();
+        $names = [];
+        foreach ($parameters as $parameter) {
+            if (!$parameter->isVariadic()) {
+                $names[] = $parameter->getName();
+            }
+        }
+
+        return $names;
     }
 }

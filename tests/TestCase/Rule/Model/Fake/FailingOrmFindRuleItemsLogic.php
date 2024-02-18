@@ -65,13 +65,20 @@ class FailingOrmFindRuleItemsLogic //@codingStandardsIgnoreLine
         $Table->find(
             'all', //some good options but not all
             select: ['Notes.id', 'Notes.note', 'Notes.created'],
-            conditions: false,//bad
+            conditions: false, //bad
             order: ['Notes.id' => 'DESC'],
-            limit: new stdClass(),//bad
+            limit: new stdClass(), //bad
             offset: 3,
-            group: true,//bad
+            group: true, //bad
             contain: ['Users'],
             page: 3
+        );
+        $query = $Table->find();
+        $query->find(//bad information
+            'all',
+            select: false,
+            conditions: new stdClass(),
+            offset: '23',
         );
     }
 }

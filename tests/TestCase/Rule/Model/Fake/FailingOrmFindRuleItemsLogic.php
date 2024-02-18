@@ -15,7 +15,7 @@ namespace CakeDC\PHPStan\Test\TestCase\Rule\Model\Fake;
 use Cake\ORM\Locator\LocatorAwareTrait;
 use stdClass;
 
-class FailingTableGetRuleItemsLogic //@codingStandardsIgnoreLine
+class FailingOrmFindRuleItemsLogic //@codingStandardsIgnoreLine
 {
     use LocatorAwareTrait;
 
@@ -26,16 +26,16 @@ class FailingTableGetRuleItemsLogic //@codingStandardsIgnoreLine
     {
         /** @var \App\Model\Table\NotesTable $Table */
         $Table = $this->getTableLocator()->get('Notes');
-        $Table->get(1, finder: 'all', cache: 'my_cache');
-        $Table->get(2, 'all', ...[
+        $Table->find(type: 'all');
+        $Table->find('all', ...[
            'order' => ['Notes.id' => 'DESC'],
         ]);
-        $Table->get(1, 'all', 'other_cache', ...[
-           'order' => ['Notes.id' => 'DESC'],
+        $Table->find('all', ...[
+           'select' => ['Notes.id', 'Notes.name'],
         ]);
-        $Table->get(1, order: ['Notes.name' => 'ASC']);//Good
-        $Table->get(
-            1, //Bad options
+        $Table->find('all', order: ['Notes.name' => 'ASC']);//Good
+        $Table->find(//bad information
+            'all',
             select: true,
             fields: false,
             conditions: new stdClass(),
@@ -51,8 +51,8 @@ class FailingTableGetRuleItemsLogic //@codingStandardsIgnoreLine
             contain: true,
             page: 'Other'
         );
-        $Table->get(
-            1, //Good options
+        $Table->find(
+            'all', //Good options
             select: ['Notes.id', 'Notes.note', 'Notes.created'],
             conditions: ['Notes.active' => 1],
             order: ['Notes.id' => 'DESC'],
@@ -62,18 +62,16 @@ class FailingTableGetRuleItemsLogic //@codingStandardsIgnoreLine
             contain: ['Users'],
             page: 3
         );
-        $Table->get(1, 'all', ...[
-           'order' => false,
-           'limit' => 'Something',
-        ]);
-        $Table->get(1, 'all', 'other_cache', null, ...[
-           'conditions' => new stdClass(),
-           'offset' => 'Nothing',
-        ]);
-        $Table->get(1, 'all', 'other_cache', null, [
-           'fields' => false,
-           'contain' => true,
-        ]);
-        $Table->find('all', fields: false, contain: true);
+        $Table->find(
+            'all', //some good options but not all
+            select: ['Notes.id', 'Notes.note', 'Notes.created'],
+            conditions: false,//bad
+            order: ['Notes.id' => 'DESC'],
+            limit: new stdClass(),//bad
+            offset: 3,
+            group: true,//bad
+            contain: ['Users'],
+            page: 3
+        );
     }
 }

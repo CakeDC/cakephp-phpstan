@@ -8,6 +8,31 @@
 * [PHPStan](https://phpstan.org/)
 * [CakePHP](https://cakephp.org/)
 
+Provide services and rules for a better PHPStan analyze on CakePHP applications, includes services to resolve types (Table, Helpers, Behaviors, etc)
+and multiple rules.
+
+# Installation
+
+To use this extension, require it through [Composer](https://getcomposer.org/):
+
+```
+composer require --dev cakedc/cakephp-phpstan
+```
+
+
+If you also install [phpstan/extension-installer](https://github.com/phpstan/extension-installer), then you're all set!
+
+<details>
+    <summary>Manual installation</summary>
+
+If you don't want to use `phpstan/extension-installer`, include `extension.neon` in your project's PHPStan config:
+```
+includes:
+    - vendor/cakedc/cakephp-phpstan/extension.neon
+```
+
+</details>
+
 
 # General class load|fetch extensions
 Features included:
@@ -123,28 +148,6 @@ parameters:
 	cakeDC:
 	 	addAssociationExistsTableClassRule: false
 ```
-
-## Installation
-
-To use this extension, require it through [Composer](https://getcomposer.org/):
-
-```
-composer require --dev cakedc/cakephp-phpstan
-```
-
-
-If you also install [phpstan/extension-installer](https://github.com/phpstan/extension-installer), then you're all set!
-
-<details>
-    <summary>Manual installation</summary>
-
-If you don't want to use `phpstan/extension-installer`, include `extension.neon` in your project's PHPStan config:
-```
-includes:
-    - vendor/cakedc/cakephp-phpstan/extension.neon
-```
-
-</details>
 
 ### Tips
 To make your life easier make sure to have `@mixin` and `@method` annotations in your table classes.

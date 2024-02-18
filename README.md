@@ -93,6 +93,37 @@ Features included:
 ```
 </details>
 
+# Rules
+All rules provided by this library are included in [rules.neon](rules.neon) and are enabled by default:
+
+### AddAssociationExistsTableClassRule
+This rule check if the target association has a valid table class when calling to Table::belongsTo,
+Table::hasMany, Table::belongsToMany, Table::hasOne and AssociationCollection::load.
+
+### AddAssociationMatchOptionsTypesRule
+This rule check if association options are valid option types based on what each class expects. This cover calls to Table::belongsTo,
+Table::hasMany, Table::belongsToMany, Table::hasOne and AssociationCollection::load.
+
+### AddBehaviorExistsClassRule
+This rule check if the target behavior has a valid table class when calling to Table::addBehavior and BehaviorRegistry::load.
+
+### OrmSelectQueryFindMatchOptionsTypesRule
+This rule check if the options (args) passed to Table::find and SelectQuery are valid find options types.
+
+### TableGetMatchOptionsTypesRule
+This rule check if the options (args) passed to Table::get are valid find options types.
+
+
+### How to disable a rule
+Each rule has a parameter in cakeDC 'namespace' to enable or disable, it is the same name of the
+rule with first letter in lowercase.
+For example to disable the rule AddAssociationExistsTableClassRule you should have
+```
+parameters:
+	cakeDC:
+	 	addAssociationExistsTableClassRule: false
+```
+
 ## Installation
 
 To use this extension, require it through [Composer](https://getcomposer.org/):

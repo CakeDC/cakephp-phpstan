@@ -41,11 +41,12 @@ class NotesTable extends Table
      */
     public function warning(): array
     {
-        $entity = $this->get(10);
+        $entity = $this->get(10, cache: 'my_cache');
         if ($entity->note === 'Test') {
             $entity = $this->newEmptyEntity();
             $entity = $this->patchEntity($entity, ['note' => 'My Warning new']);
             $entity->user_id = 1;
+            $this->Users->find('all', order: ['Users.id' => 'DESC'], limit: 12);
             $entity = $this->saveOrFail($entity);
         }
 

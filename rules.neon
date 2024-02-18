@@ -4,6 +4,7 @@ parameters:
 	 	addAssociationMatchOptionsTypesRule: true
 	 	addBehaviorExistsClassRule: true
 	 	tableGetMatchOptionsTypesRule: true
+	 	ormSelectQueryFindMatchOptionsTypesRule: true
 
 parametersSchema:
 	cakeDC: structure([
@@ -11,6 +12,7 @@ parametersSchema:
 		addAssociationMatchOptionsTypesRule: anyOf(bool(), arrayOf(bool()))
 		addBehaviorExistsClassRule: anyOf(bool(), arrayOf(bool()))
 		tableGetMatchOptionsTypesRule: anyOf(bool(), arrayOf(bool()))
+		ormSelectQueryFindMatchOptionsTypesRule: anyOf(bool(), arrayOf(bool()))
 	])
 
 conditionalTags:
@@ -22,6 +24,8 @@ conditionalTags:
 		phpstan.rules.rule: %cakeDC.addBehaviorExistsClassRule%
 	CakeDC\PHPStan\Rule\Model\TableGetMatchOptionsTypesRule:
 		phpstan.rules.rule: %cakeDC.tableGetMatchOptionsTypesRule%
+	CakeDC\PHPStan\Rule\Model\OrmSelectQueryFindMatchOptionsTypesRule:
+		phpstan.rules.rule: %cakeDC.ormSelectQueryFindMatchOptionsTypesRule%
 
 services:
 	-
@@ -32,3 +36,5 @@ services:
 		class: CakeDC\PHPStan\Rule\Model\AddBehaviorExistsClassRule
 	-
 		class: CakeDC\PHPStan\Rule\Model\TableGetMatchOptionsTypesRule
+	-
+		class: CakeDC\PHPStan\Rule\Model\OrmSelectQueryFindMatchOptionsTypesRule

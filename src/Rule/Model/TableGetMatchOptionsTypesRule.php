@@ -166,7 +166,7 @@ class TableGetMatchOptionsTypesRule implements Rule
             )
         )
             ->acceptsReasonsTip($accepts->reasons)
-            ->identifier('cake.addAssociationWithValidOption.invalidType')
+            ->identifier('cake.tableGetMatchOptionsTypes.invalidType')
             ->build();
     }
 

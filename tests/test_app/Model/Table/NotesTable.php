@@ -35,6 +35,9 @@ class NotesTable extends Table
         $this->setPrimaryKey('id');
         $this->addBehavior('Timestamp');
         $this->belongsTo('Users', ['dependent' => true, 'className' => MyUsersTable::class]);
+        $this->belongsTo('MyUsers', [
+            'dependent' => true,
+        ]);
     }
 
     /**

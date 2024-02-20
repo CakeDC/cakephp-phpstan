@@ -13,6 +13,23 @@ use Cake\ORM\Table;
 class UsersTable extends Table
 {
     /**
+     * @inheritDoc
+     */
+    public function initialize(array $config): void
+    {
+        parent::initialize($config);
+
+        $this->setTable('users');
+        $this->setDisplayField('name');
+        $this->setPrimaryKey('id');
+        $this->addBehavior('Timestamp');
+        $this->hasMany('Articles', [
+            'dependent' => true,
+            'className' => VeryCustomize00009ArticlesTable::class,
+        ]);
+    }
+
+    /**
      * @param \App\Model\Entity\User $user
      * @return \App\Model\Entity\User
      */

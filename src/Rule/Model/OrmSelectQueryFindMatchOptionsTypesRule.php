@@ -3,6 +3,11 @@ declare(strict_types=1);
 
 namespace CakeDC\PHPStan\Rule\Model;
 
+use Cake\ORM\Association;
+use Cake\ORM\Association\BelongsTo;
+use Cake\ORM\Association\BelongsToMany;
+use Cake\ORM\Association\HasMany;
+use Cake\ORM\Association\HasOne;
 use Cake\ORM\Query\SelectQuery;
 use CakeDC\PHPStan\Rule\Traits\ParseClassNameFromArgTrait;
 use PhpParser\Node;
@@ -28,7 +33,10 @@ class OrmSelectQueryFindMatchOptionsTypesRule implements Rule
      * @var \PHPStan\Rules\RuleLevelHelper
      */
     protected RuleLevelHelper $ruleLevelHelper;
-
+    /**
+     * @var array<string>
+     */
+    protected array $targetMethods = ['find'];
     /**
      * @var array<string>
      */
@@ -47,6 +55,16 @@ class OrmSelectQueryFindMatchOptionsTypesRule implements Rule
         'having' => 'having',
         'contain' => 'contain',
         'page' => 'page',
+    ];
+    /**
+     * @var array<string>
+     */
+    protected array $associationTypes = [
+        BelongsTo::class,
+        BelongsToMany::class,
+        HasMany::class,
+        HasOne::class,
+        Association::class,
     ];
 
     /**
@@ -75,14 +93,14 @@ class OrmSelectQueryFindMatchOptionsTypesRule implements Rule
     {
         assert($node instanceof MethodCall);
         $args = $node->getArgs();
-        if (!$node->name instanceof Node\Identifier) {
+        if (!$node->name instanceof Node\Identifier || !in_array($node->name->name, $this->targetMethods)) {
             return [];
         }
-        $reference = $scope->getType($node->var)->getReferencedClasses()[0] ?? null;
-        if ($reference === null) {
+        $referenceClasses = $scope->getType($node->var)->getReferencedClasses();
+        if (empty($referenceClasses)) {
             return [];
         }
-        $details = $this->getDetails($reference, $node->name->name, $args);
+        $details = $this->getDetails($referenceClasses, $node->name->name, $args);
 
         if ($details === null || empty($details['options'])) {
             return [];
@@ -113,16 +131,18 @@ class OrmSelectQueryFindMatchOptionsTypesRule implements Rule
     }
 
     /**
-     * @param string $reference
+     * @param array<string> $referenceClasses
      * @param string $methodName
      * @param array<\PhpParser\Node\Arg> $args
      * @return array{'options': array<\PhpParser\Node\Expr>, 'reference':string, 'methodName':string}|null
      */
-    protected function getDetails(string $reference, string $methodName, array $args): ?array
+    protected function getDetails(array $referenceClasses, string $methodName, array $args): ?array
     {
+        $reference = $this->getReference($referenceClasses);
         if (
-            (str_ends_with($reference, 'Table') || $reference === SelectQuery::class)
-            && $methodName === 'find'
+            str_ends_with($reference, 'Table')
+            || $reference === SelectQuery::class
+            || in_array($reference, $this->associationTypes)
         ) {
             $lastOptionPosition = 1;
             $options = $this->getOptions($args, $lastOptionPosition);
@@ -276,5 +296,19 @@ class OrmSelectQueryFindMatchOptionsTypesRule implements Rule
         }
 
         return $names;
+    }
+
+    /**
+     * @param array $referenceClasses
+     * @return mixed
+     */
+    protected function getReference(array $referenceClasses): mixed
+    {
+        $reference = $referenceClasses[0];
+        //Is association generic? ex: Cake\ORM\Association\BelongsTo<App\Model\Table\UsersTable>
+        if (isset($referenceClasses[1]) && in_array($reference, $this->associationTypes)) {
+            $reference = $referenceClasses[1];
+        }
+        return $reference;
     }
 }

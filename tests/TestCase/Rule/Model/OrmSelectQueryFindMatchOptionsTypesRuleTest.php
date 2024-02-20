@@ -58,6 +58,17 @@ class OrmSelectQueryFindMatchOptionsTypesRuleTest extends RuleTestCase
             ['Call to Cake\ORM\Query\SelectQuery::find with option "select" (array|Cake\Database\ExpressionInterface|Cake\ORM\Association|Cake\ORM\Table|Closure|float|int|string) does not accept false.', 77],
             ['Call to Cake\ORM\Query\SelectQuery::find with option "conditions" (array|Cake\Database\ExpressionInterface|Closure|string|null) does not accept stdClass.', 77],
             ['Call to Cake\ORM\Query\SelectQuery::find with option "offset" (Cake\Database\ExpressionInterface|int|null) does not accept string.', 77],
+            ['Call to App\Model\Table\UsersTable::find with option "conditions" (array|Cake\Database\ExpressionInterface|Closure|string|null) does not accept false.', 83],
+            ['Call to App\Model\Table\UsersTable::find with option "limit" (Cake\Database\ExpressionInterface|int|null) does not accept stdClass.', 83],
+            ['Call to App\Model\Table\UsersTable::find with option "page" (int) does not accept string.', 83],
         ]);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public static function getAdditionalConfigFiles(): array
+    {
+        return [__DIR__ . '/../../../../extension.neon'];
     }
 }

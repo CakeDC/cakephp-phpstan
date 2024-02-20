@@ -80,5 +80,13 @@ class FailingOrmFindRuleItemsLogic //@codingStandardsIgnoreLine
             conditions: new stdClass(),
             offset: '23',
         );
+        $Table->Users->find('all',
+            select: ['Notes.id', 'Notes.note', 'Notes.created'],
+            conditions: false, //bad
+            order: ['Notes.id' => 'DESC'],
+            limit: new stdClass(), //bad
+            offset: 3,
+            page: '22',
+        );
     }
 }

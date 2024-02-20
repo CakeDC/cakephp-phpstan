@@ -138,13 +138,6 @@ This rule check if the options (args) passed to Table::find and SelectQuery are 
 ### TableGetMatchOptionsTypesRule
 This rule check if the options (args) passed to Table::get are valid find options types.
 
-# PHPDoc Extensions
-### TableAssociationTypeNodeResolverExtension
-Fix intersection association phpDoc to correct generic object type, ex:
-
-Change `\Cake\ORM\Association\BelongsTo&\App\Model\Table\UsersTable` to `\Cake\ORM\Association\BelongsTo<\App\Model\Table\UsersTable>`
-
-
 ### How to disable a rule
 Each rule has a parameter in cakeDC 'namespace' to enable or disable, it is the same name of the
 rule with first letter in lowercase.
@@ -154,6 +147,13 @@ parameters:
 	cakeDC:
 	 	addAssociationExistsTableClassRule: false
 ```
+
+# PHPDoc Extensions
+### TableAssociationTypeNodeResolverExtension
+Fix intersection association phpDoc to correct generic object type, ex:
+
+Change `\Cake\ORM\Association\BelongsTo&\App\Model\Table\UsersTable` to `\Cake\ORM\Association\BelongsTo<\App\Model\Table\UsersTable>`
+
 
 ### Tips
 To make your life easier make sure to have `@mixin` and `@method` annotations in your table classes.

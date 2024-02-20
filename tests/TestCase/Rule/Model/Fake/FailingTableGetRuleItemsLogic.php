@@ -75,5 +75,9 @@ class FailingTableGetRuleItemsLogic //@codingStandardsIgnoreLine
            'contain' => true,
         ]);
         $Table->find('all', fields: false, contain: true);
+        $Table->MyUsers->get(2, 'all', 'somethid', null, [
+            'groupBy' => false,
+            'having' => new stdClass(),
+        ]);
     }
 }

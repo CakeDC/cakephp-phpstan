@@ -5,15 +5,19 @@ namespace CakeDC\PHPStan\Rule\Model;
 
 class TableGetMatchOptionsTypesRule extends OrmSelectQueryFindMatchOptionsTypesRule
 {
+
     /**
-     * @param string $reference
-     * @param string $methodName
-     * @param array<\PhpParser\Node\Arg> $args
-     * @return array{'options': array<\PhpParser\Node\Expr>, 'reference':string, 'methodName':string}|null
+     * @var array<string>
      */
-    protected function getDetails(string $reference, string $methodName, array $args): ?array
+    protected array $targetMethods = ['get'];
+
+    /**
+     * @inheritDoc
+     */
+    protected function getDetails(array $referenceClasses, string $methodName, array $args): ?array
     {
-        if (str_ends_with($reference, 'Table') && $methodName === 'get') {
+        $reference = $this->getReference($referenceClasses);
+        if (str_ends_with($reference, 'Table') || in_array($reference, $this->associationTypes)) {
             $lastOptionPosition = 4;
             $options = $this->getOptions($args, $lastOptionPosition);
 

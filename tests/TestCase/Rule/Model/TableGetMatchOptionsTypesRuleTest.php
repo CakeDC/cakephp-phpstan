@@ -58,6 +58,16 @@ class TableGetMatchOptionsTypesRuleTest extends RuleTestCase
             ['Call to App\Model\Table\NotesTable::get with option "offset" (Cake\Database\ExpressionInterface|int|null) does not accept string.', 69],
             ['Call to App\Model\Table\NotesTable::get with option "fields" (array|Cake\Database\ExpressionInterface|Cake\ORM\Association|Cake\ORM\Table|Closure|float|int|string) does not accept false.', 73],
             ['Call to App\Model\Table\NotesTable::get with option "contain" (array|string) does not accept true.', 73],
+            ['Call to App\Model\Table\UsersTable::get with option "groupBy" (array|Cake\Database\ExpressionInterface|string) does not accept false.', 78],
+            ['Call to App\Model\Table\UsersTable::get with option "having" (array|Cake\Database\ExpressionInterface|Closure|string|null) does not accept stdClass.', 78],
         ]);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public static function getAdditionalConfigFiles(): array
+    {
+        return [__DIR__ . '/../../../../extension.neon'];
     }
 }

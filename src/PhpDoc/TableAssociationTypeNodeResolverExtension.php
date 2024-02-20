@@ -19,7 +19,7 @@ use PHPStan\Type\ObjectType;
 use PHPStan\Type\Type;
 
 /**
- * Fix intersection association phpDoc to correct type, ex:
+ * Fix intersection association phpDoc to correct generic object type, ex:
  *
  * Change `\Cake\ORM\Association\BelongsTo&\App\Model\Table\UsersTable` to `\Cake\ORM\Association\BelongsTo<\App\Model\Table\UsersTable>`
  *

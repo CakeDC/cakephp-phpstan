@@ -299,10 +299,10 @@ class OrmSelectQueryFindMatchOptionsTypesRule implements Rule
     }
 
     /**
-     * @param array $referenceClasses
-     * @return mixed
+     * @param array<string> $referenceClasses
+     * @return string
      */
-    protected function getReference(array $referenceClasses): mixed
+    protected function getReference(array $referenceClasses): string
     {
         $reference = $referenceClasses[0];
         //Is association generic? ex: Cake\ORM\Association\BelongsTo<App\Model\Table\UsersTable>

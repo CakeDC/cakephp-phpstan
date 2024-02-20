@@ -19,6 +19,7 @@ use Cake\ORM\Table;
  * @method \App\Model\Entity\Note|\Cake\Datasource\EntityInterface get(mixed $primaryKey, array|string $finder = 'all',CacheInterface|string|null $cache = null,\Closure|string|null $cacheKey = null, mixed ...$args)
  * @property \App\Model\Table\VeryCustomize00009ArticlesTable&\Cake\ORM\Association\HasMany $VeryCustomize00009Articles
  * @property \Cake\ORM\Association\BelongsTo<\App\Model\Table\UsersTable> $Users
+ * @property \Cake\ORM\Association\BelongsTo&\App\Model\Table\UsersTable $MyUsers
  */
 class NotesTable extends Table
 {
@@ -41,9 +42,15 @@ class NotesTable extends Table
      */
     public function warning(): array
     {
+        $user = $this->MyUsers->get(1);
+        $user->name = 'John';
+        $this->MyUsers->logLastLogin($user);
+        $article = $this->MyUsers->Articles->newSample();
+        $article->id = '002';
         $entity = $this->get(10, cache: 'my_cache');
         if ($entity->note === 'Test') {
             $entity = $this->newEmptyEntity();
+            $entity->user = $user;
             $entity = $this->patchEntity($entity, ['note' => 'My Warning new']);
             $entity->user_id = 1;
             $this->Users->find('all', order: ['Users.id' => 'DESC'], limit: 12);

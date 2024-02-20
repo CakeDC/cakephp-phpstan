@@ -7,6 +7,9 @@ use App\Model\Entity\User;
 use Cake\I18n\DateTime;
 use Cake\ORM\Table;
 
+/**
+ * @property \App\Model\Table\VeryCustomize00009ArticlesTable&\Cake\ORM\Association\HasMany $Articles
+ */
 class UsersTable extends Table
 {
     /**

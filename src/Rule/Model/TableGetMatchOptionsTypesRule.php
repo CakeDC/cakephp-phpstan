@@ -5,7 +5,6 @@ namespace CakeDC\PHPStan\Rule\Model;
 
 class TableGetMatchOptionsTypesRule extends OrmSelectQueryFindMatchOptionsTypesRule
 {
-
     /**
      * @var array<string>
      */

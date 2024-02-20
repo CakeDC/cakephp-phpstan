@@ -309,6 +309,7 @@ class OrmSelectQueryFindMatchOptionsTypesRule implements Rule
         if (isset($referenceClasses[1]) && in_array($reference, $this->associationTypes)) {
             $reference = $referenceClasses[1];
         }
+
         return $reference;
     }
 }

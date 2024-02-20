@@ -13,18 +13,15 @@ declare(strict_types=1);
 
 namespace CakeDC\PHPStan\Traits;
 
+use CakeDC\PHPStan\Utility\CakeNameRegistry;
 use PhpParser\Node\Expr\MethodCall;
 use PHPStan\Analyser\Scope;
 use PHPStan\Reflection\MethodReflection;
 use PHPStan\Reflection\ParametersAcceptorSelector;
 use PHPStan\Type\ObjectType;
 use PHPStan\Type\Type;
-use function Cake\Core\pluginSplit;
-use function class_exists;
 use function count;
 use function method_exists;
-use function sprintf;
-use function str_replace;
 
 trait BaseCakeRegistryReturnTrait
 {
@@ -73,31 +70,13 @@ trait BaseCakeRegistryReturnTrait
 
     /**
      * @param string $baseName
-     * @return array
-     * @psalm-return array{string|null, string}
-     */
-    protected function pluginSplit(string $baseName): array
-    {
-        return pluginSplit($baseName);
-    }
-
-    /**
-     * @param string $baseName
      * @return \PHPStan\Type\ObjectType
      */
     protected function getCakeType(string $baseName): ObjectType
     {
-        [$plugin, $name] = $this->pluginSplit($baseName);
-        $prefixes = $plugin ? [$plugin] : ['Cake', 'App'];
-        $namespaceFormat = (array)$this->namespaceFormat;
-        foreach ($namespaceFormat as $format) {
-            foreach ($prefixes as $prefix) {
-                $namespace = str_replace('/', '\\', $prefix);
-                $className = sprintf($format, $namespace, $name);
-                if (class_exists($className)) {
-                    return new ObjectType($className);
-                }
-            }
+        $className = CakeNameRegistry::getClassName($baseName, $this->namespaceFormat);
+        if ($className !== null) {
+            return new ObjectType($className);
         }
 
         return new ObjectType($this->defaultClass);

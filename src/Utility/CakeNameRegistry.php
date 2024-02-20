@@ -22,7 +22,7 @@ class CakeNameRegistry
      * @param array<string>|string $namespaceFormat
      * @return string|null
      */
-    protected static function getClassName(string $baseName, string|array $namespaceFormat): ?string
+    public static function getClassName(string $baseName, string|array $namespaceFormat): ?string
     {
         if (str_contains($baseName, '\\')) {
             return class_exists($baseName) ? $baseName : null;

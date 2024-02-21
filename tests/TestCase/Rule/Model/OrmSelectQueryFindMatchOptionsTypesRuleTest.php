@@ -61,6 +61,17 @@ class OrmSelectQueryFindMatchOptionsTypesRuleTest extends RuleTestCase
             ['Call to App\Model\Table\UsersTable::find with option "conditions" (array|Cake\Database\ExpressionInterface|Closure|string|null) does not accept false.', 83],
             ['Call to App\Model\Table\UsersTable::find with option "limit" (Cake\Database\ExpressionInterface|int|null) does not accept stdClass.', 83],
             ['Call to App\Model\Table\UsersTable::find with option "page" (int) does not accept string.', 83],
+            ['Call to App\Model\Table\NotesTable::find with option "groupField" (array|Closure|string|null) does not accept false.', 95],
+            ['Call to App\Model\Table\NotesTable::find with option "keyField" (array|Closure|string|null) does not accept false.', 96],
+            ['Call to App\Model\Table\NotesTable::find with option "valueField" (array|Closure|string|null) does not accept stdClass.', 96],
+            ['Call to App\Model\Table\NotesTable::find with option "groupField" (array|Closure|string|null) does not accept true.', 96],
+            ['Call to Cake\ORM\Query\SelectQuery::find with option "groupField" (array|Closure|string|null) does not accept false.', 104],
+            ['Call to Cake\ORM\Query\SelectQuery::find with option "keyField" (array|Closure|string|null) does not accept false.', 105],
+            ['Call to Cake\ORM\Query\SelectQuery::find with option "valueField" (array|Closure|string|null) does not accept stdClass.', 105],
+            ['Call to Cake\ORM\Query\SelectQuery::find with option "groupField" (array|Closure|string|null) does not accept true.', 105],
+            ['Call to App\Model\Table\NotesTable::find with option "parentField" (array|Closure|string) does not accept false.', 114],
+            ['Call to App\Model\Table\NotesTable::find with option "keyField" (array|Closure|string|null) does not accept false.', 115],
+            ['Call to App\Model\Table\NotesTable::find with option "parentField" (array|Closure|string) does not accept true.', 115],
         ]);
     }
 

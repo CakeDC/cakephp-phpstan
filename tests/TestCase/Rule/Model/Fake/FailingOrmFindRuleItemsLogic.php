@@ -89,5 +89,35 @@ class FailingOrmFindRuleItemsLogic //@codingStandardsIgnoreLine
             offset: 3,
             page: '22',
         );
+        $Table->find('list');
+        $Table->find('list', keyField: 'id', valueField: 'name', groupField: 'parent_id');
+        $Table->find('list', groupField: 'name');
+        $Table->find('list', groupField: false);
+        $Table->find(
+            'list',
+            fields: ['Notes.id', 'Notes.note', 'Notes.created'],
+            keyField: false,
+            valueField: new stdClass(),
+            groupField: true,
+        );
+        $Table->find()->find('list', groupField: 'name');
+        $Table->find()->find('list', groupField: false);
+        $Table->find()->find(
+            'list',
+            fields: ['Notes.id', 'Notes.note', 'Notes.created'],
+            keyField: false,
+            valueField: new stdClass(),
+            groupField: true,
+        );
+        $Table->find('threaded', keyField: 'id', parentField: 'parent_id');
+        $Table->find('threaded', parentField: 'parent_id');
+        $Table->find('threaded', parentField: false);
+        $Table->find(
+            'threaded',
+            fields: ['Notes.id', 'Notes.note', 'Notes.created'],
+            keyField: false,
+            parentField: true,
+        );
+        $Table->find('threaded');//all options are optional, this is okay.
     }
 }

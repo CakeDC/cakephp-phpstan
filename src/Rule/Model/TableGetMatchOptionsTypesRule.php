@@ -21,6 +21,7 @@ class TableGetMatchOptionsTypesRule extends OrmSelectQueryFindMatchOptionsTypesR
             $options = $this->getOptions($args, $lastOptionPosition);
 
             return [
+                'finder' => null,
                 'options' => $options,
                 'reference' => $reference,
                 'methodName' => $methodName,

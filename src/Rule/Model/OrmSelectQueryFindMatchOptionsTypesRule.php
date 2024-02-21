@@ -9,6 +9,7 @@ use Cake\ORM\Association\BelongsToMany;
 use Cake\ORM\Association\HasMany;
 use Cake\ORM\Association\HasOne;
 use Cake\ORM\Query\SelectQuery;
+use Cake\ORM\Table;
 use CakeDC\PHPStan\Rule\Traits\ParseClassNameFromArgTrait;
 use PhpParser\Node;
 use PhpParser\Node\Expr\Array_;
@@ -88,6 +89,7 @@ class OrmSelectQueryFindMatchOptionsTypesRule implements Rule
      * @param \PHPStan\Analyser\Scope $scope
      * @return array<\PHPStan\Rules\RuleError>
      * @throws \PHPStan\ShouldNotHappenException
+     * @throws \PHPStan\Reflection\MissingMethodFromReflectionException
      */
     public function processNode(Node $node, Scope $scope): array
     {
@@ -106,24 +108,35 @@ class OrmSelectQueryFindMatchOptionsTypesRule implements Rule
             return [];
         }
         $paramNamesIgnore = $this->getParamNamesIgnore($scope, $node);
-
+        $specificFinderOptions = $this->getSpecificFinderOptions($details, $scope);
         $errors = [];
         foreach ($details['options'] as $name => $item) {
             if (in_array($name, $paramNamesIgnore)) {
                 continue;
             }
-            if (isset($this->queryOptionsMap[$name])) {
-                $assignedValueType = $scope->getType($item);
-                $methodReflection = $this->getTargetMethod($scope, $this->queryOptionsMap[$name]);
-                $error = $this->processPropertyTypeCheck(
-                    $methodReflection,
-                    $assignedValueType,
-                    $details,
-                    $name
+            $parameterType = $this->getExpectedType($name, $scope, $specificFinderOptions);
+            $error = $parameterType ? $this->processPropertyTypeCheck(
+                $parameterType,
+                $scope->getType($item),
+                $details,
+                $name
+            ) : null;
+
+            if ($error) {
+                $errors[] = $error;
+            }
+        }
+        foreach ($specificFinderOptions as $requireOptionName => $parameter) {
+            if (!$parameter->isOptional() && !array_key_exists($requireOptionName, $details['options'])) {
+                $errorMessage = sprintf(
+                    'Call to %s::%s is missing required finder option "%s".',
+                    $details['reference'],
+                    $details['methodName'],
+                    $requireOptionName
                 );
-                if ($error) {
-                    $errors[] = $error;
-                }
+                $errors[] = RuleErrorBuilder::message($errorMessage)
+                    ->identifier('cake.tableGetMatchOptionsTypes.invalidType')
+                    ->build();
             }
         }
 
@@ -134,7 +147,7 @@ class OrmSelectQueryFindMatchOptionsTypesRule implements Rule
      * @param array<string> $referenceClasses
      * @param string $methodName
      * @param array<\PhpParser\Node\Arg> $args
-     * @return array{'options': array<\PhpParser\Node\Expr>, 'reference':string, 'methodName':string}|null
+     * @return array{'options': array<\PhpParser\Node\Expr>, 'reference':string, 'methodName':string, 'finder': string|null}|null
      */
     protected function getDetails(array $referenceClasses, string $methodName, array $args): ?array
     {
@@ -145,9 +158,14 @@ class OrmSelectQueryFindMatchOptionsTypesRule implements Rule
             || in_array($reference, $this->associationTypes)
         ) {
             $lastOptionPosition = 1;
+            $finder = 'all';
+            if (isset($args[0]) && $args[0]->value instanceof String_) {
+                $finder = $args[0]->value->value;
+            }
             $options = $this->getOptions($args, $lastOptionPosition);
 
             return [
+                'finder' => $finder,
                 'options' => $options,
                 'reference' => $reference,
                 'methodName' => $methodName,
@@ -158,7 +176,7 @@ class OrmSelectQueryFindMatchOptionsTypesRule implements Rule
     }
 
     /**
-     * @param \PHPStan\Reflection\Php\PhpMethodReflection $methodReflection
+     * @param \PHPStan\Type\Type $inputType
      * @param \PHPStan\Type\Type $assignedValueType
      * @param array{'reference':string, 'methodName':string} $details
      * @param string $property
@@ -166,14 +184,12 @@ class OrmSelectQueryFindMatchOptionsTypesRule implements Rule
      * @throws \PHPStan\ShouldNotHappenException
      */
     protected function processPropertyTypeCheck(
-        PhpMethodReflection $methodReflection,
+        Type $inputType,
         Type $assignedValueType,
         array $details,
         string $property
     ): ?RuleError {
-        $parameter = $methodReflection->getVariants()[0]->getParameters()[0];
-        $parameterType = $parameter->getType();
-        $accepts = $this->ruleLevelHelper->acceptsWithReason($parameterType, $assignedValueType, true);//@phpstan-ignore-line
+        $accepts = $this->ruleLevelHelper->acceptsWithReason($inputType, $assignedValueType, true);//@phpstan-ignore-line
 
         if ($accepts->result) {
             return null;
@@ -184,13 +200,13 @@ class OrmSelectQueryFindMatchOptionsTypesRule implements Rule
             $details['methodName'],
             $property
         );
-        $verbosityLevel = VerbosityLevel::getRecommendedLevelByType($parameterType, $assignedValueType);
+        $verbosityLevel = VerbosityLevel::getRecommendedLevelByType($inputType, $assignedValueType);
 
         return RuleErrorBuilder::message(
             sprintf(
                 '%s (%s) does not accept %s.',
                 $propertyDescription,
-                $parameterType->describe($verbosityLevel),
+                $inputType->describe($verbosityLevel),
                 $assignedValueType->describe($verbosityLevel)
             )
         )
@@ -311,5 +327,64 @@ class OrmSelectQueryFindMatchOptionsTypesRule implements Rule
         }
 
         return $reference;
+    }
+
+    /**
+     * @param array{'options': array<\PhpParser\Node\Expr>, 'reference':string, 'methodName':string, 'finder': string|null} $details
+     * @param \PHPStan\Analyser\Scope $scope
+     * @return array<string, \PHPStan\Reflection\ParameterReflectionWithPhpDocs>
+     */
+    protected function getSpecificFinderOptions(array $details, Scope $scope): array
+    {
+        $specificFinderOptions = [];
+        $finder = $details['finder'];
+        if (!$finder || $finder === 'all') {
+            return [];
+        }
+        $tableClass = $details['reference'];
+        if (!str_ends_with($details['reference'], 'Table')) {
+            $tableClass = Table::class;
+        }
+        $object = new ObjectType($tableClass);
+        $finderMethod = 'find' . $finder;
+        if ($object->hasMethod($finderMethod)->no()) {
+            return [];
+        }
+        $method = $object->getMethod($finderMethod, $scope);
+        $parameters = $method->getVariants()[0]->getParameters();
+        if (!isset($parameters[1])) {
+            return [];
+        }
+        foreach ($parameters as $key => $param) {
+            if ($key === 0) {
+                continue;
+            }
+            $specificFinderOptions[$param->getName()] = $param;
+        }
+
+        return $specificFinderOptions;
+    }
+
+    /**
+     * @param string|int $name
+     * @param \PHPStan\Analyser\Scope $scope
+     * @param array<string, \PHPStan\Reflection\ParameterReflectionWithPhpDocs> $specificFinderOptions
+     * @return \PHPStan\Type\Type|null
+     * @throws \PHPStan\Reflection\MissingMethodFromReflectionException
+     */
+    protected function getExpectedType(int|string $name, Scope $scope, array $specificFinderOptions): ?Type
+    {
+        if (isset($this->queryOptionsMap[$name])) {
+            $methodReflection = $this->getTargetMethod($scope, $this->queryOptionsMap[$name]);
+            $parameter = $methodReflection->getVariants()[0]->getParameters()[0];
+
+            return $parameter->getType();
+        }
+
+        if (isset($specificFinderOptions[$name])) {
+            return $specificFinderOptions[$name]->getType();
+        }
+
+        return null;
     }
 }

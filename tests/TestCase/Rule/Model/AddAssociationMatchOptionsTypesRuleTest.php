@@ -118,7 +118,7 @@ class AddAssociationMatchOptionsTypesRuleTest extends RuleTestCase
                 98,
             ],
             [
-                'Call to CakeDC\PHPStan\Test\TestCase\Rule\Model\Fake\FailingRuleItemsTable::belongsToMany with option "junction" (string) does not accept Closure.',
+                'Call to CakeDC\PHPStan\Test\TestCase\Rule\Model\Fake\FailingRuleItemsTable::belongsToMany with option "joinTable" (string) does not accept Closure.',
                 98,
             ],
             [
@@ -182,7 +182,7 @@ class AddAssociationMatchOptionsTypesRuleTest extends RuleTestCase
                 120,
             ],
             [
-                'Call to CakeDC\PHPStan\Test\TestCase\Rule\Model\Fake\FailingRuleItemsTable::hasOne with unknown option "junction".',
+                'Call to CakeDC\PHPStan\Test\TestCase\Rule\Model\Fake\FailingRuleItemsTable::hasOne with unknown option "joinTable".',
                 120,
             ],
             [
@@ -250,7 +250,7 @@ class AddAssociationMatchOptionsTypesRuleTest extends RuleTestCase
                 148,
             ],
             [
-                'Call to Cake\ORM\AssociationCollection::load with unknown option "junction".',
+                'Call to Cake\ORM\AssociationCollection::load with unknown option "joinTable".',
                 148,
             ],
             [

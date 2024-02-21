@@ -226,7 +226,7 @@ class AddAssociationMatchOptionsTypesRule implements Rule
         if ($type === BelongsToMany::class) {
             $properties['targetForeignKey'] = 'targetForeignKey';
             $properties['through'] = 'through';
-            $properties['junction'] = 'junctionTableName';
+            $properties['joinTable'] = 'junctionTableName';
         }
         if ($type === HasMany::class || $type === BelongsToMany::class) {
             $properties['saveStrategy'] = 'saveStrategy';

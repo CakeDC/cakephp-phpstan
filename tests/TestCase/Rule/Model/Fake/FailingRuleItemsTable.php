@@ -93,7 +93,7 @@ class FailingRuleItemsTable extends Table//@codingStandardsIgnoreLine
             'through' => 'MyUsers',
             'saveStrategy' => HasMany::SAVE_REPLACE,
             'sort' => ['MyUsers.first_name' => 'ASC'],
-            'junction' => 'my_valid_junction_table',
+            'joinTable' => 'my_valid_junction_table',
         ]);
         $this->belongsToMany('SadUsers', [
             'className' => UsersTable::class,
@@ -101,7 +101,7 @@ class FailingRuleItemsTable extends Table//@codingStandardsIgnoreLine
             'through' => new stdClass(),
             'saveStrategy' => fn () => 'na',
             'sort' => false,
-            'junction' => fn () => 'my_users_failing',
+            'joinTable' => fn () => 'my_users_failing',
         ]);
         $this->hasOne('MainArticles', [
             'className' => VeryCustomize00009ArticlesTable::class,
@@ -133,7 +133,7 @@ class FailingRuleItemsTable extends Table//@codingStandardsIgnoreLine
             'strategy' => false,
             'saveStrategy' => HasMany::SAVE_REPLACE,
             'sort' => ['MyUsers.first_name' => 'ASC'],
-            'junction' => 'my_valid_junction_table',
+            'joinTable' => 'my_valid_junction_table',
             'somethingElse' => 'an_invalid_option_key',
         ]);
         $this->associations()->load(HasMany::class, 'CrazyUsers');
@@ -161,7 +161,7 @@ class FailingRuleItemsTable extends Table//@codingStandardsIgnoreLine
             'strategy' => false,
             'saveStrategy' => HasMany::SAVE_REPLACE,
             'sort' => ['MyUsers.first_name' => 'ASC'],
-            'junction' => 'my_valid_junction_table',
+            'joinTable' => 'my_valid_junction_table',
             'somethingElse' => 'an_invalid_option_key',
         ]);
         $this->associations()->load(HasOne::class, 'FunArticles', [

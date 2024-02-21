@@ -72,6 +72,12 @@ class OrmSelectQueryFindMatchOptionsTypesRuleTest extends RuleTestCase
             ['Call to App\Model\Table\NotesTable::find with option "parentField" (array|Closure|string) does not accept false.', 114],
             ['Call to App\Model\Table\NotesTable::find with option "keyField" (array|Closure|string|null) does not accept false.', 115],
             ['Call to App\Model\Table\NotesTable::find with option "parentField" (array|Closure|string) does not accept true.', 115],
+            ['Call to App\Model\Table\NotesTable::find with option "year" (int|string) does not accept float.', 128],
+            ['Call to App\Model\Table\NotesTable::find with option "fun" (bool) does not accept int.', 128],
+            ['Call to App\Model\Table\NotesTable::find is missing required finder option "year".', 134],
+            ['Call to App\Model\Table\NotesTable::find is missing required finder option "fun".', 134],
+            ['Call to App\Model\Table\NotesTable::find is missing required finder option "year".', 138],
+            ['Call to App\Model\Table\NotesTable::find is missing required finder option "fun".', 138],
         ]);
     }
 

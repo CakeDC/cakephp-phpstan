@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace App\Model\Table;
 
+use Cake\ORM\Query\SelectQuery;
 use Cake\ORM\Table;
 
 /**
@@ -64,5 +65,27 @@ class NotesTable extends Table
             'type' => 'warning',
             'note' => $entity->note,
         ];
+    }
+
+    /**
+     * @param \Cake\ORM\Query\SelectQuery $query
+     * @param string|int $year
+     * @param bool $fun
+     * @return \Cake\ORM\Query\SelectQuery
+     */
+    public function findFeatured(SelectQuery $query, string|int $year, bool $fun): SelectQuery
+    {
+        $where = [
+            'year <=' => $year,
+        ];
+        if ($fun === true) {
+            $where[] = $query->newExpr()->in(
+                'type',
+                ['funny_stuff', 'funny_songs', 'funny_messages']
+            );
+        }
+
+        return $query->where($where)
+            ->orderBy(['Notes.created' => 'DESC']);
     }
 }

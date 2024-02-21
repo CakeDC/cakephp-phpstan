@@ -103,12 +103,14 @@ class OrmSelectQueryFindMatchOptionsTypesRule implements Rule
             return [];
         }
         $details = $this->getDetails($referenceClasses, $node->name->name, $args);
-
-        if ($details === null || empty($details['options'])) {
+        if ($details === null) {
             return [];
         }
-        $paramNamesIgnore = $this->getParamNamesIgnore($scope, $node);
         $specificFinderOptions = $this->getSpecificFinderOptions($details, $scope);
+        if (empty($details['options'])) {
+            return $this->checkMissingRequiredOptions($specificFinderOptions, $details, []);
+        }
+        $paramNamesIgnore = $this->getParamNamesIgnore($scope, $node);
         $errors = [];
         foreach ($details['options'] as $name => $item) {
             if (in_array($name, $paramNamesIgnore)) {
@@ -126,21 +128,8 @@ class OrmSelectQueryFindMatchOptionsTypesRule implements Rule
                 $errors[] = $error;
             }
         }
-        foreach ($specificFinderOptions as $requireOptionName => $parameter) {
-            if (!$parameter->isOptional() && !array_key_exists($requireOptionName, $details['options'])) {
-                $errorMessage = sprintf(
-                    'Call to %s::%s is missing required finder option "%s".',
-                    $details['reference'],
-                    $details['methodName'],
-                    $requireOptionName
-                );
-                $errors[] = RuleErrorBuilder::message($errorMessage)
-                    ->identifier('cake.tableGetMatchOptionsTypes.invalidType')
-                    ->build();
-            }
-        }
 
-        return $errors;
+        return $this->checkMissingRequiredOptions($specificFinderOptions, $details, $errors);
     }
 
     /**
@@ -259,6 +248,7 @@ class OrmSelectQueryFindMatchOptionsTypesRule implements Rule
         if (
             count($args) === $totalArgsMethod
             && $args[$lastArgPos]->value instanceof Array_
+            && !$args[$lastArgPos]->name
             && $args[$lastArgPos]->unpack !== true
         ) {
             return $this->getOptionsFromArray($args[$lastArgPos]->value, $options);
@@ -386,5 +376,31 @@ class OrmSelectQueryFindMatchOptionsTypesRule implements Rule
         }
 
         return null;
+    }
+
+    /**
+     * @param array<string, \PHPStan\Reflection\ParameterReflectionWithPhpDocs> $specificFinderOptions
+     * @param array{'options': array<\PhpParser\Node\Expr>, 'reference':string, 'methodName':string, 'finder': string|null} $details
+     * @param array<\PHPStan\Rules\RuleError> $errors
+     * @return array<\PHPStan\Rules\RuleError>
+     * @throws \PHPStan\ShouldNotHappenException
+     */
+    protected function checkMissingRequiredOptions(array $specificFinderOptions, array $details, array $errors): array
+    {
+        foreach ($specificFinderOptions as $requireOptionName => $parameter) {
+            if (!$parameter->isOptional() && !array_key_exists($requireOptionName, $details['options'])) {
+                $errorMessage = sprintf(
+                    'Call to %s::%s is missing required finder option "%s".',
+                    $details['reference'],
+                    $details['methodName'],
+                    $requireOptionName
+                );
+                $errors[] = RuleErrorBuilder::message($errorMessage)
+                    ->identifier('cake.tableGetMatchOptionsTypes.invalidType')
+                    ->build();
+            }
+        }
+
+        return $errors;
     }
 }

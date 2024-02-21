@@ -119,5 +119,24 @@ class FailingOrmFindRuleItemsLogic //@codingStandardsIgnoreLine
             parentField: true,
         );
         $Table->find('threaded');//all options are optional, this is okay.
+        $Table->find(
+            'featured', //custom finder is known
+            fields: ['Notes.id', 'Notes.note', 'Notes.created'],
+            year: 2024,
+            fun: true
+        );
+        $Table->find(
+            'featured', //custom finder is known but options are invalid
+            fields: ['Notes.id', 'Notes.note', 'Notes.created'],
+            year: 10.0,
+            fun: 1
+        );
+        $Table->find(
+            'featured', //custom finder is known but required options are missing only have basic find options
+            fields: ['Notes.id', 'Notes.note', 'Notes.created'],
+        );
+        $Table->find(
+            'featured', //custom finder is known but required options are missing
+        );
     }
 }

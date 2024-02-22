@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace CakeDC\PHPStan\Test\TestCase\Rule\Model;
 
+use Cake\Core\Configure;
 use CakeDC\PHPStan\Rule\Model\AddAssociationMatchOptionsTypesRule;
 use PHPStan\Rules\Properties\PropertyReflectionFinder;
 use PHPStan\Rules\Rule;
@@ -37,6 +38,10 @@ class AddAssociationMatchOptionsTypesRuleTest extends RuleTestCase
      */
     public function testRule(): void
     {
+        $messageThrough = 'Call to CakeDC\PHPStan\Test\TestCase\Rule\Model\Fake\FailingRuleItemsTable::belongsToMany with option "through" (Cake\ORM\Table|string|null) does not accept stdClass.';
+        if (version_compare(Configure::version(), '5.0.5', '<')) {
+            $messageThrough = 'Call to CakeDC\PHPStan\Test\TestCase\Rule\Model\Fake\FailingRuleItemsTable::belongsToMany with option "through" (Cake\ORM\Table|string) does not accept stdClass.';
+        }
         // first argument: path to the example file that contains some errors that should be reported by MyRule
         // second argument: an array of expected errors,
         // each error consists of the asserted error message, and the asserted error file line
@@ -106,7 +111,7 @@ class AddAssociationMatchOptionsTypesRuleTest extends RuleTestCase
                 98,
             ],
             [
-                'Call to CakeDC\PHPStan\Test\TestCase\Rule\Model\Fake\FailingRuleItemsTable::belongsToMany with option "through" (Cake\ORM\Table|string|null) does not accept stdClass.',
+                $messageThrough,
                 98,
             ],
             [

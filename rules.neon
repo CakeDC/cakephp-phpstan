@@ -1,0 +1,40 @@
+parameters:
+	cakeDC:
+	 	addAssociationExistsTableClassRule: true
+	 	addAssociationMatchOptionsTypesRule: true
+	 	addBehaviorExistsClassRule: true
+	 	tableGetMatchOptionsTypesRule: true
+	 	ormSelectQueryFindMatchOptionsTypesRule: true
+
+parametersSchema:
+	cakeDC: structure([
+		addAssociationExistsTableClassRule: anyOf(bool(), arrayOf(bool()))
+		addAssociationMatchOptionsTypesRule: anyOf(bool(), arrayOf(bool()))
+		addBehaviorExistsClassRule: anyOf(bool(), arrayOf(bool()))
+		tableGetMatchOptionsTypesRule: anyOf(bool(), arrayOf(bool()))
+		ormSelectQueryFindMatchOptionsTypesRule: anyOf(bool(), arrayOf(bool()))
+	])
+
+conditionalTags:
+	CakeDC\PHPStan\Rule\Model\AddAssociationExistsTableClassRule:
+		phpstan.rules.rule: %cakeDC.addAssociationExistsTableClassRule%
+	CakeDC\PHPStan\Rule\Model\AddAssociationMatchOptionsTypesRule:
+		phpstan.rules.rule: %cakeDC.addAssociationMatchOptionsTypesRule%
+	CakeDC\PHPStan\Rule\Model\AddBehaviorExistsClassRule:
+		phpstan.rules.rule: %cakeDC.addBehaviorExistsClassRule%
+	CakeDC\PHPStan\Rule\Model\TableGetMatchOptionsTypesRule:
+		phpstan.rules.rule: %cakeDC.tableGetMatchOptionsTypesRule%
+	CakeDC\PHPStan\Rule\Model\OrmSelectQueryFindMatchOptionsTypesRule:
+		phpstan.rules.rule: %cakeDC.ormSelectQueryFindMatchOptionsTypesRule%
+
+services:
+	-
+		class: CakeDC\PHPStan\Rule\Model\AddAssociationExistsTableClassRule
+	-
+		class: CakeDC\PHPStan\Rule\Model\AddAssociationMatchOptionsTypesRule
+	-
+		class: CakeDC\PHPStan\Rule\Model\AddBehaviorExistsClassRule
+	-
+		class: CakeDC\PHPStan\Rule\Model\TableGetMatchOptionsTypesRule
+	-
+		class: CakeDC\PHPStan\Rule\Model\OrmSelectQueryFindMatchOptionsTypesRule

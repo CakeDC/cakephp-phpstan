@@ -114,7 +114,7 @@ class NotesController extends Controller
     {
         $data = $this->fetchTable()->warning();
         $note = $this->fetchTable()->get(1)->note;
-        $otherNote = $this->fetchTable()->get(2);
+        $otherNote = $this->fetchTable()->get(2, contain: ['Users']);
 
         $data['note2'] = [
             'note' => $otherNote->note,

@@ -1,4 +1,5 @@
-
+includes:
+	- rules.neon
 services:
 	-
 		class: CakeDC\PHPStan\Method\AssociationTableMixinClassReflectionExtension
@@ -57,3 +58,7 @@ services:
 		class: CakeDC\PHPStan\Type\ConsoleHelperLoadDynamicReturnTypeExtension
 		tags:
 			- phpstan.broker.dynamicMethodReturnTypeExtension
+	-
+		class: CakeDC\PHPStan\PhpDoc\TableAssociationTypeNodeResolverExtension
+		tags:
+			- phpstan.phpDoc.typeNodeResolverExtension

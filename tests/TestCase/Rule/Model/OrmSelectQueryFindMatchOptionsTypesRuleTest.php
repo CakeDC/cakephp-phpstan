@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace CakeDC\PHPStan\Test\TestCase\Rule\Model;
 
-use Cake\Core\Configure;
 use CakeDC\PHPStan\Rule\Model\OrmSelectQueryFindMatchOptionsTypesRule;
 use PHPStan\Rules\Rule;
 use PHPStan\Rules\RuleLevelHelper;

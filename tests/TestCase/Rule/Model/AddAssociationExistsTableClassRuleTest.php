@@ -54,6 +54,22 @@ class AddAssociationExistsTableClassRuleTest extends RuleTestCase
                 'Call to Cake\ORM\AssociationCollection::load could not find the class for "PalUsers"',
                 148,
             ],
+            [
+                'Call to CakeDC\PHPStan\Test\TestCase\Rule\Model\Fake\FailingRuleItemsTable::hasOne could not find the class for "Articles"',
+                187,
+            ],
+            [
+                'Call to CakeDC\PHPStan\Test\TestCase\Rule\Model\Fake\FailingRuleItemsTable::hasOne could not find the class for "SomeArticles"',
+                191,
+            ],
         ]);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public static function getAdditionalConfigFiles(): array
+    {
+        return [__DIR__ . '/../../../../extension.neon'];
     }
 }

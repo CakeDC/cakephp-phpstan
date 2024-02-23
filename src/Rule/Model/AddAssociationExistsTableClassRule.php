@@ -16,6 +16,9 @@ namespace CakeDC\PHPStan\Rule\Model;
 use Cake\ORM\AssociationCollection;
 use CakeDC\PHPStan\Rule\LoadObjectExistsCakeClassRule;
 use CakeDC\PHPStan\Utility\CakeNameRegistry;
+use CakeDC\PHPStan\Visitor\AddAssociationSetClassNameVisitor;
+use PhpParser\Node\Expr;
+use PhpParser\Node\Expr\MethodCall;
 
 class AddAssociationExistsTableClassRule extends LoadObjectExistsCakeClassRule
 {
@@ -65,6 +68,19 @@ class AddAssociationExistsTableClassRule extends LoadObjectExistsCakeClassRule
                 'options' => $args[2] ?? null,
                 'sourceMethods' => $this->associationCollectionMethods,
             ];
+        }
+
+        return null;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    protected function getInputClassNameFromNode(MethodCall $node): ?string
+    {
+        $setClassNameValue = $node->getAttribute(AddAssociationSetClassNameVisitor::ATTRIBUTE_NAME);
+        if ($setClassNameValue instanceof Expr) {
+            return $this->parseClassNameFromExprTrait($setClassNameValue);
         }
 
         return null;

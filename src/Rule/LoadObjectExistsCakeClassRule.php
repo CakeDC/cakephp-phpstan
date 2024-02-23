@@ -66,10 +66,13 @@ abstract class LoadObjectExistsCakeClassRule implements Rule
             return [];
         }
 
-        $inputClassName = $this->getInputClassName(
-            $details['alias']->value,
-            $details['options']
-        );
+        $inputClassName = $this->getInputClassNameFromNode($node);
+        if ($inputClassName === null) {
+            $inputClassName = $this->getInputClassName(
+                $details['alias']->value,
+                $details['options']
+            );
+        }
         if ($this->getTargetClassName($inputClassName)) {
             return [];
         }
@@ -130,4 +133,13 @@ abstract class LoadObjectExistsCakeClassRule implements Rule
      * @return array{'alias': ?\PhpParser\Node\Arg, 'options': ?\PhpParser\Node\Arg, 'sourceMethods':array<string>}|null
      */
     abstract protected function getDetails(string $reference, array $args): ?array;
+
+    /**
+     * @param \PhpParser\Node\Expr\MethodCall $node
+     * @return string|null
+     */
+    protected function getInputClassNameFromNode(MethodCall $node): ?string
+    {
+        return null;
+    }
 }

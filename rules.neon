@@ -16,6 +16,8 @@ parametersSchema:
 	])
 
 conditionalTags:
+	CakeDC\PHPStan\Visitor\AddAssociationSetClassNameVisitor:
+		phpstan.parser.richParserNodeVisitor: %cakeDC.addAssociationExistsTableClassRule%
 	CakeDC\PHPStan\Rule\Model\AddAssociationExistsTableClassRule:
 		phpstan.rules.rule: %cakeDC.addAssociationExistsTableClassRule%
 	CakeDC\PHPStan\Rule\Model\AddAssociationMatchOptionsTypesRule:
@@ -28,6 +30,8 @@ conditionalTags:
 		phpstan.rules.rule: %cakeDC.ormSelectQueryFindMatchOptionsTypesRule%
 
 services:
+	-
+		class: CakeDC\PHPStan\Visitor\AddAssociationSetClassNameVisitor
 	-
 		class: CakeDC\PHPStan\Rule\Model\AddAssociationExistsTableClassRule
 	-

@@ -179,5 +179,21 @@ class FailingRuleItemsTable extends Table//@codingStandardsIgnoreLine
             'targetTable' => TableRegistry::getTableLocator()->get('Articles'),
         ]);
         $this->associations()->load(HasOne::class, 'Notes');
+        $this->hasOne('BakedArticles', [
+            'cascadeCallbacks' => true,
+            'conditions' => ['BakedArticles.baked' => 1],
+        ])->setClassName(VeryCustomize00009ArticlesTable::class);
+
+        $this->hasOne('CakeArticles', [
+            'cascadeCallbacks' => true,
+            'conditions' => ['CakeArticles.category_id' => 10],
+        ])->setClassName('Articles');
+        $this->hasOne('CakeArticles')
+            ->setFinder('myFinder')
+            ->setClassName('SomeArticles');
+        $this->associations()->load(HasOne::class, 'CleanArticles', [
+            'cascadeCallbacks' => true,
+            'conditions' => ['CleanArticles.clean' => 1],
+        ])->setClassName(VeryCustomize00009ArticlesTable::class);
     }
 }

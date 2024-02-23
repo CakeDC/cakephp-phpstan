@@ -53,8 +53,7 @@ class AddAssociationSetClassNameVisitor extends NodeVisitorAbstract
     }
 
     /**
-     * @param \PhpParser\Node $node
-     * @return null
+     * @inheritDoc
      */
     public function leaveNode(Node $node)
     {

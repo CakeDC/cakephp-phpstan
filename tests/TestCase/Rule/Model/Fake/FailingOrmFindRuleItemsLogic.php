@@ -138,5 +138,8 @@ class FailingOrmFindRuleItemsLogic //@codingStandardsIgnoreLine
         $Table->find(
             'featured', //custom finder is known but required options are missing
         );
+        $Table->find(
+            'unkonwn',
+        );
     }
 }

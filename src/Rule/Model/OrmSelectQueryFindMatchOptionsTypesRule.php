@@ -337,7 +337,7 @@ class OrmSelectQueryFindMatchOptionsTypesRule implements Rule
         }
         $object = new ObjectType($tableClass);
         $finderMethod = 'find' . $finder;
-        if ($object->hasMethod($finderMethod)->no()) {
+        if (!$object->hasMethod($finderMethod)->yes()) {
             return [];
         }
         $method = $object->getMethod($finderMethod, $scope);

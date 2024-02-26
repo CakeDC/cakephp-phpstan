@@ -11,6 +11,7 @@ use Cake\ORM\Association\HasOne;
 use Cake\ORM\Query\SelectQuery;
 use Cake\ORM\Table;
 use CakeDC\PHPStan\Rule\Traits\ParseClassNameFromArgTrait;
+use InvalidArgumentException;
 use PhpParser\Node;
 use PhpParser\Node\Expr\Array_;
 use PhpParser\Node\Expr\MethodCall;
@@ -104,7 +105,11 @@ class OrmSelectQueryFindMatchOptionsTypesRule implements Rule
         if (empty($referenceClasses)) {
             return [];
         }
-        $details = $this->getDetails($referenceClasses, $node->name->name, $args);
+        try {
+            $details = $this->getDetails($referenceClasses, $node->name->name, $args);
+        } catch (InvalidArgumentException) {
+            return [];
+        }
         if ($details === null) {
             return [];
         }
@@ -275,6 +280,8 @@ class OrmSelectQueryFindMatchOptionsTypesRule implements Rule
         foreach ($source->items as $item) {
             if (isset($item->key) && $item->key instanceof String_) {
                 $options[$item->key->value] = $item->value;
+            } else {
+                throw new InvalidArgumentException('Rule is ignored because one option key is not string');
             }
         }
 

@@ -200,5 +200,15 @@ class FailingOrmFindRuleItemsLogic //@codingStandardsIgnoreLine
             sort: ['Notes.note' => 'ASC'],
             myType: 19
         );
+        $field = $Table->getTypeTestTwoArgsButNotLegacy();
+        $value = 'featured';
+        $Table->find('twoArgsButNotLegacy', [$field => $value]);
+        $Table->find('twoArgsButNotLegacy', [$field => 'test']);
+        $Table->find('twoArgsButNotLegacy', [$Table->getTypeTestTwoArgsButNotLegacy() => $value]);
+        $Table->find('twoArgsButNotLegacy', [$Table->getTypeTestTwoArgsButNotLegacy() => 'sample']);
+        $Table->find('twoArgsButNotLegacy', ...[$field => $value]);
+        $Table->find('twoArgsButNotLegacy', ...[$field => 'test']);
+        $Table->find('twoArgsButNotLegacy', ...[$Table->getTypeTestTwoArgsButNotLegacy() => $value]);
+        $Table->find('twoArgsButNotLegacy', ...[$Table->getTypeTestTwoArgsButNotLegacy() => 'sample']);
     }
 }

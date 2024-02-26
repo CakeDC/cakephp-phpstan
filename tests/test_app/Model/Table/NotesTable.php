@@ -149,4 +149,12 @@ class NotesTable extends Table
             $args['groupLabel'] ?? 'note',
         ]);
     }
+
+    /**
+     * @return string
+     */
+    public function getTypeTestTwoArgsButNotLegacy(): string
+    {
+        return 'myType';
+    }
 }

@@ -141,5 +141,64 @@ class FailingOrmFindRuleItemsLogic //@codingStandardsIgnoreLine
         $Table->find(
             'unkonwn',
         );
+        $Table->find('legacy');//Legacy should ignore params check
+        $Table->find('legacy', [//Legacy should ignore params check
+            'sort' => ['Notes.note' => 'ASC'],
+        ]);
+        $Table->find('legacy', [//Legacy should ignore params check
+            'sort' => ['Notes.note' => 'ASC'],
+            'type' => 'featured',
+            'active' => false,
+        ]);
+        $Table->find('optionsPacked');
+        $Table->find('optionsPacked', [//Legacy should ignore params check
+            'sort' => ['Notes.note' => 'ASC'],
+        ]);
+        $Table->find('optionsPacked', [//Legacy should ignore params check
+            'sort' => ['Notes.note' => 'ASC'],
+            'labelField' => 'id',
+        ]);
+        $Table->find('optionsPacked', [//Legacy should ignore params check
+            'sort' => ['Notes.note' => 'ASC'],
+            'labelField' => 'id',
+        ]);
+        $Table->find(
+            'optionsPacked',
+            sort: ['Notes.note' => 'ASC'],
+            labelField: 'id'
+        );
+        $Table->find(
+            'optionsPacked',
+            sort: ['Notes.note' => 'ASC'],
+            labelField: 'id'
+        );
+        $Table->find('argsPacked');
+        $Table->find(
+            'argsPacked',
+            sort: ['Notes.note' => 'ASC'],
+            groupLabel: 'type'
+        );
+        $Table->find('argsPacked', [
+            'sort' => ['Notes.note' => 'ASC'],
+            'groupLabel' => 'id',
+        ]);
+        $Table->find('twoArgsButNotLegacy', [
+            'sort' => ['Notes.note' => 'ASC'],
+            'myType' => 'featured',
+        ]);
+        $Table->find('twoArgsButNotLegacy', [
+            'sort' => ['Notes.note' => 'ASC'],
+        ]);
+        $Table->find(
+            'twoArgsButNotLegacy',
+            sort: ['Notes.note' => 'ASC'],
+            myType: 'featured'
+        );
+        $Table->find('twoArgsButNotLegacy');
+        $Table->find(
+            'twoArgsButNotLegacy',
+            sort: ['Notes.note' => 'ASC'],
+            myType: 19
+        );
     }
 }

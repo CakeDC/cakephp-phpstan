@@ -78,6 +78,9 @@ class OrmSelectQueryFindMatchOptionsTypesRuleTest extends RuleTestCase
             ['Call to App\Model\Table\NotesTable::find is missing required finder option "fun".', 134],
             ['Call to App\Model\Table\NotesTable::find is missing required finder option "year".', 138],
             ['Call to App\Model\Table\NotesTable::find is missing required finder option "fun".', 138],
+            ['Call to App\Model\Table\NotesTable::find is missing required finder option "myType".', 189],
+            ['Call to App\Model\Table\NotesTable::find is missing required finder option "myType".', 197],
+            ['Call to App\Model\Table\NotesTable::find with option "myType" (string) does not accept int.', 198],
         ]);
     }
 

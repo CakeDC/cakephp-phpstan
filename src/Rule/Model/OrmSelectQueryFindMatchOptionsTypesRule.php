@@ -22,6 +22,8 @@ use PHPStan\Rules\Rule;
 use PHPStan\Rules\RuleError;
 use PHPStan\Rules\RuleErrorBuilder;
 use PHPStan\Rules\RuleLevelHelper;
+use PHPStan\Type\ArrayType;
+use PHPStan\Type\MixedType;
 use PHPStan\Type\ObjectType;
 use PHPStan\Type\Type;
 use PHPStan\Type\VerbosityLevel;
@@ -342,13 +344,27 @@ class OrmSelectQueryFindMatchOptionsTypesRule implements Rule
         }
         $method = $object->getMethod($finderMethod, $scope);
         $parameters = $method->getVariants()[0]->getParameters();
+
         if (!isset($parameters[1])) {
             return [];
         }
+        if (count($parameters) === 2) {
+            //Backward compatibility with CakePHP 4 finder structure, findSomething($query, array $options)
+            $secondParam = $parameters[1];
+            $paramType = $secondParam->getType();
+            if (
+                $parameters[1]->getName() === 'options'
+                && !$secondParam->isVariadic()
+                && ($paramType instanceof MixedType || $paramType instanceof ArrayType)
+            ) {
+                return [];
+            }
+        }
         foreach ($parameters as $key => $param) {
-            if ($key === 0) {
+            if ($key === 0 || $param->isVariadic()) {
                 continue;
             }
+
             $specificFinderOptions[$param->getName()] = $param;
         }
 

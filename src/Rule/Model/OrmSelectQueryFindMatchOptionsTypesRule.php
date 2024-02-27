@@ -360,7 +360,7 @@ class OrmSelectQueryFindMatchOptionsTypesRule implements Rule
             $secondParam = $parameters[1];
             $paramType = $secondParam->getType();
             if (
-                $parameters[1]->getName() === 'options'
+                $secondParam->getName() === 'options'
                 && !$secondParam->isVariadic()
                 && ($paramType instanceof MixedType || $paramType instanceof ArrayType)
             ) {

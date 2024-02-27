@@ -60,6 +60,13 @@ class NotesTable extends Table
             $this->Users->find('all', order: ['Users.id' => 'DESC'], limit: 12);
             $entity = $this->saveOrFail($entity);
         }
+        $this->find('optionsPacked');
+        $this->find(
+            'twoArgsButNotLegacy',
+            sort: ['Notes.note' => 'ASC'],
+            myType: 'featured'
+        );
+        $this->find('argsPacked');
 
         return [
             'type' => 'warning',
@@ -87,5 +94,67 @@ class NotesTable extends Table
 
         return $query->where($where)
             ->orderBy(['Notes.created' => 'DESC']);
+    }
+
+    /**
+     * @param \Cake\ORM\Query\SelectQuery $query
+     * @param string $myType
+     * @return \Cake\ORM\Query\SelectQuery
+     */
+    public function findTwoArgsButNotLegacy(SelectQuery $query, string $myType): SelectQuery
+    {
+        $where = [
+            'year <=' => 2010,
+            'type' => $myType,
+        ];
+
+        return $query->where($where)
+            ->orderBy(['Notes.created' => 'DESC']);
+    }
+
+    /**
+     * @param \Cake\ORM\Query\SelectQuery $query
+     * @param array<string, mixed> $options
+     * @return \Cake\ORM\Query\SelectQuery
+     */
+    public function findLegacy(SelectQuery $query, array $options): SelectQuery
+    {
+        return $query
+            ->where([
+                'type' => $options['type'] ?? 'normal',
+                'active' => $options['active'] ?? false,
+            ]);
+    }
+
+    /**
+     * @param \Cake\ORM\Query\SelectQuery $query
+     * @param mixed ...$options
+     * @return \Cake\ORM\Query\SelectQuery
+     */
+    public function findOptionsPacked(SelectQuery $query, mixed ...$options): SelectQuery
+    {
+        return $query->select([
+            $options['labelField'] ?? 'note',
+        ]);
+    }
+
+    /**
+     * @param \Cake\ORM\Query\SelectQuery $query
+     * @param mixed ...$args
+     * @return \Cake\ORM\Query\SelectQuery
+     */
+    public function findArgsPacked(SelectQuery $query, mixed ...$args): SelectQuery
+    {
+        return $query->select([
+            $args['groupLabel'] ?? 'note',
+        ]);
+    }
+
+    /**
+     * @return string
+     */
+    public function getTypeTestTwoArgsButNotLegacy(): string
+    {
+        return 'myType';
     }
 }

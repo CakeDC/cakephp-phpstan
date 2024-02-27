@@ -138,5 +138,77 @@ class FailingOrmFindRuleItemsLogic //@codingStandardsIgnoreLine
         $Table->find(
             'featured', //custom finder is known but required options are missing
         );
+        $Table->find(
+            'unkonwn',
+        );
+        $Table->find('legacy');//Legacy should ignore params check
+        $Table->find('legacy', [//Legacy should ignore params check
+            'sort' => ['Notes.note' => 'ASC'],
+        ]);
+        $Table->find('legacy', [//Legacy should ignore params check
+            'sort' => ['Notes.note' => 'ASC'],
+            'type' => 'featured',
+            'active' => false,
+        ]);
+        $Table->find('optionsPacked');
+        $Table->find('optionsPacked', [//Legacy should ignore params check
+            'sort' => ['Notes.note' => 'ASC'],
+        ]);
+        $Table->find('optionsPacked', [//Legacy should ignore params check
+            'sort' => ['Notes.note' => 'ASC'],
+            'labelField' => 'id',
+        ]);
+        $Table->find('optionsPacked', [//Legacy should ignore params check
+            'sort' => ['Notes.note' => 'ASC'],
+            'labelField' => 'id',
+        ]);
+        $Table->find(
+            'optionsPacked',
+            sort: ['Notes.note' => 'ASC'],
+            labelField: 'id'
+        );
+        $Table->find(
+            'optionsPacked',
+            sort: ['Notes.note' => 'ASC'],
+            labelField: 'id'
+        );
+        $Table->find('argsPacked');
+        $Table->find(
+            'argsPacked',
+            sort: ['Notes.note' => 'ASC'],
+            groupLabel: 'type'
+        );
+        $Table->find('argsPacked', [
+            'sort' => ['Notes.note' => 'ASC'],
+            'groupLabel' => 'id',
+        ]);
+        $Table->find('twoArgsButNotLegacy', [
+            'sort' => ['Notes.note' => 'ASC'],
+            'myType' => 'featured',
+        ]);
+        $Table->find('twoArgsButNotLegacy', [
+            'sort' => ['Notes.note' => 'ASC'],
+        ]);
+        $Table->find(
+            'twoArgsButNotLegacy',
+            sort: ['Notes.note' => 'ASC'],
+            myType: 'featured'
+        );
+        $Table->find('twoArgsButNotLegacy');
+        $Table->find(
+            'twoArgsButNotLegacy',
+            sort: ['Notes.note' => 'ASC'],
+            myType: 19
+        );
+        $field = $Table->getTypeTestTwoArgsButNotLegacy();
+        $value = 'featured';
+        $Table->find('twoArgsButNotLegacy', [$field => $value]);
+        $Table->find('twoArgsButNotLegacy', [$field => 'test']);
+        $Table->find('twoArgsButNotLegacy', [$Table->getTypeTestTwoArgsButNotLegacy() => $value]);
+        $Table->find('twoArgsButNotLegacy', [$Table->getTypeTestTwoArgsButNotLegacy() => 'sample']);
+        $Table->find('twoArgsButNotLegacy', ...[$field => $value]);
+        $Table->find('twoArgsButNotLegacy', ...[$field => 'test']);
+        $Table->find('twoArgsButNotLegacy', ...[$Table->getTypeTestTwoArgsButNotLegacy() => $value]);
+        $Table->find('twoArgsButNotLegacy', ...[$Table->getTypeTestTwoArgsButNotLegacy() => 'sample']);
     }
 }

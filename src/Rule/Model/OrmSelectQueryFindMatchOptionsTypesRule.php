@@ -11,6 +11,7 @@ use Cake\ORM\Association\HasOne;
 use Cake\ORM\Query\SelectQuery;
 use Cake\ORM\Table;
 use CakeDC\PHPStan\Rule\Traits\ParseClassNameFromArgTrait;
+use InvalidArgumentException;
 use PhpParser\Node;
 use PhpParser\Node\Expr\Array_;
 use PhpParser\Node\Expr\MethodCall;
@@ -22,6 +23,8 @@ use PHPStan\Rules\Rule;
 use PHPStan\Rules\RuleError;
 use PHPStan\Rules\RuleErrorBuilder;
 use PHPStan\Rules\RuleLevelHelper;
+use PHPStan\Type\ArrayType;
+use PHPStan\Type\MixedType;
 use PHPStan\Type\ObjectType;
 use PHPStan\Type\Type;
 use PHPStan\Type\VerbosityLevel;
@@ -102,7 +105,11 @@ class OrmSelectQueryFindMatchOptionsTypesRule implements Rule
         if (empty($referenceClasses)) {
             return [];
         }
-        $details = $this->getDetails($referenceClasses, $node->name->name, $args);
+        try {
+            $details = $this->getDetails($referenceClasses, $node->name->name, $args);
+        } catch (InvalidArgumentException) {
+            return [];
+        }
         if ($details === null) {
             return [];
         }
@@ -273,6 +280,8 @@ class OrmSelectQueryFindMatchOptionsTypesRule implements Rule
         foreach ($source->items as $item) {
             if (isset($item->key) && $item->key instanceof String_) {
                 $options[$item->key->value] = $item->value;
+            } else {
+                throw new InvalidArgumentException('Rule is ignored because one option key is not string');
             }
         }
 
@@ -337,18 +346,32 @@ class OrmSelectQueryFindMatchOptionsTypesRule implements Rule
         }
         $object = new ObjectType($tableClass);
         $finderMethod = 'find' . $finder;
-        if ($object->hasMethod($finderMethod)->no()) {
+        if (!$object->hasMethod($finderMethod)->yes()) {
             return [];
         }
         $method = $object->getMethod($finderMethod, $scope);
         $parameters = $method->getVariants()[0]->getParameters();
+
         if (!isset($parameters[1])) {
             return [];
         }
+        if (count($parameters) === 2) {
+            //Backward compatibility with CakePHP 4 finder structure, findSomething($query, array $options)
+            $secondParam = $parameters[1];
+            $paramType = $secondParam->getType();
+            if (
+                $secondParam->getName() === 'options'
+                && !$secondParam->isVariadic()
+                && ($paramType instanceof MixedType || $paramType instanceof ArrayType)
+            ) {
+                return [];
+            }
+        }
         foreach ($parameters as $key => $param) {
-            if ($key === 0) {
+            if ($key === 0 || $param->isVariadic()) {
                 continue;
             }
+
             $specificFinderOptions[$param->getName()] = $param;
         }
 

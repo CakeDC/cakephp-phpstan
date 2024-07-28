@@ -1,12 +1,12 @@
 {
     "name": "cakedc/cakephp-phpstan",
-    "description": "CakePHP 5 plugin extension for PHPStan.",
+    "description": "CakePHP plugin extension for PHPStan.",
     "type": "phpstan-extension",
     "license": "MIT",
     "authors": [
         {
             "name": "CakeDC",
-            "homepage": "http://www.cakedc.com",
+            "homepage": "https://www.cakedc.com",
             "role": "Author"
         }
     ],

@@ -62,3 +62,7 @@ services:
 		class: CakeDC\PHPStan\PhpDoc\TableAssociationTypeNodeResolverExtension
 		tags:
 			- phpstan.phpDoc.typeNodeResolverExtension
+	-
+		class: CakeDC\PHPStan\Type\GetMailerExpressionTypeResolverExtension
+		tags:
+			- phpstan.broker.expressionTypeResolverExtension

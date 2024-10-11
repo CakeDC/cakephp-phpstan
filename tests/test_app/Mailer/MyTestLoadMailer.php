@@ -28,4 +28,11 @@ class MyTestLoadMailer extends Mailer
             ->newSample();
         $this->viewBuilder()->setVar('article', $article);
     }
+
+    /**
+     * @return void
+     */
+    public function testing()
+    {
+    }
 }

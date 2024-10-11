@@ -13,25 +13,18 @@ declare(strict_types=1);
 
 namespace App\Command;
 
-use Cake\Command\Command;
 use Cake\Console\Arguments;
 use Cake\Console\ConsoleIo;
-use Cake\Mailer\MailerAwareTrait;
 
-class MyTestLoadCommand extends Command
+class MyTestExtendedCommand extends MyTestLoadCommand
 {
-    use MailerAwareTrait;
-
     /**
      * @inheritDoc
      */
     public function execute(Arguments $args, ConsoleIo $io)
     {
         $this->fetchTable('VeryCustomize00009Articles')->newSample();
-
-        $io->helper('progress')->increment(1);
-        $io->out($io->helper('BazBaz')->foo());
-        $io->helper('MyHeading')->headingOne('Sample Text 01');
+        $io->helper('MyHeading')->headingOne('Sample Text 02');
         $this->getMailer('MyTestLoad')->testing();
     }
 }

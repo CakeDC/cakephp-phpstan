@@ -63,6 +63,10 @@ services:
 		tags:
 			- phpstan.phpDoc.typeNodeResolverExtension
 	-
-		class: CakeDC\PHPStan\Type\GetMailerExpressionTypeResolverExtension
+		factory: CakeDC\PHPStan\Type\BaseTraitExpressionTypeResolverExtension(Cake\Mailer\MailerAwareTrait, getMailer, %s\Mailer\%sMailer)
+		tags:
+			- phpstan.broker.expressionTypeResolverExtension
+	-
+		factory: CakeDC\PHPStan\Type\BaseTraitExpressionTypeResolverExtension(Cake\ORM\Locator\LocatorAwareTrait, fetchTable, %s\Model\Table\%sTable, defaultTable)
 		tags:
 			- phpstan.broker.expressionTypeResolverExtension

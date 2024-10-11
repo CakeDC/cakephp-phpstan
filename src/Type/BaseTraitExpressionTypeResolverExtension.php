@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace CakeDC\PHPStan\Type;
 
-use Cake\Mailer\MailerAwareTrait;
 use CakeDC\PHPStan\Utility\CakeNameRegistry;
 use PhpParser\Node\Expr;
 use PhpParser\Node\Identifier;
@@ -24,24 +23,24 @@ use PHPStan\Type\ExpressionTypeResolverExtension;
 use PHPStan\Type\ObjectType;
 use PHPStan\Type\ThisType;
 use PHPStan\Type\Type;
+use ReflectionException;
 
-class GetMailerExpressionTypeResolverExtension implements ExpressionTypeResolverExtension
+class BaseTraitExpressionTypeResolverExtension implements ExpressionTypeResolverExtension
 {
     /**
-     * @var string
+     * TableLocatorDynamicReturnTypeExtension constructor.
+     *
+     * @param string $targetTrait The target trait.
+     * @param string $methodName The dynamic method to handle.
+     * @param string $namespaceFormat The resolve namespace format.
+     * @param string|null $propertyDefaultValue A property name for default classname, used when no args in method call.
      */
-    protected string $methodName;
-    protected string $namespaceFormat;
-    protected string $targetTrait;
-
-    /**
-     * Contructor
-     */
-    public function __construct()
-    {
-        $this->targetTrait = MailerAwareTrait::class;
-        $this->methodName = 'getMailer';
-        $this->namespaceFormat = '%s\\Mailer\\%sMailer';
+    public function __construct(
+        protected string $targetTrait,
+        protected string $methodName,
+        protected string $namespaceFormat,
+        protected ?string $propertyDefaultValue = null
+    ) {
     }
 
     /**
@@ -61,18 +60,20 @@ class GetMailerExpressionTypeResolverExtension implements ExpressionTypeResolver
 
         $callerType = $scope->getType($expr->var);
 
-        if (
-            !$callerType instanceof ThisType
-            || !$this->isFromTargetTrait($callerType->getClassReflection())
-        ) {
+        if (!$callerType instanceof ThisType) {
+            return null;
+        }
+        $reflection = $callerType->getClassReflection();
+        if (!$this->isFromTargetTrait($reflection)) {
             return null;
         }
 
         $value = $expr->getArgs()[0]->value ?? null;
-        if (!$value instanceof String_) {
+        $baseName = $this->getBaseName($value, $reflection);
+        if ($baseName === null) {
             return null;
         }
-        $className = CakeNameRegistry::getClassName($value->value, $this->namespaceFormat);
+        $className = CakeNameRegistry::getClassName($baseName, $this->namespaceFormat);
         if ($className !== null) {
             return new ObjectType($className);
         }
@@ -98,5 +99,31 @@ class GetMailerExpressionTypeResolverExtension implements ExpressionTypeResolver
         }
 
         return false;
+    }
+
+    /**
+     * @param \PhpParser\Node\Expr|null $value
+     * @param \PHPStan\Reflection\ClassReflection $reflection
+     * @return string|null
+     */
+    protected function getBaseName(?Expr $value, ClassReflection $reflection): ?string
+    {
+        if ($value instanceof String_) {
+            return $value->value;
+        }
+
+        try {
+            if ($value === null && $this->propertyDefaultValue) {
+                $value = $reflection->getNativeReflection()
+                    ->getProperty($this->propertyDefaultValue)
+                    ->getDefaultValue();
+
+                return is_string($value) ? $value : null;
+            }
+        } catch (ReflectionException) {
+            return null;
+        }
+
+        return null;
     }
 }

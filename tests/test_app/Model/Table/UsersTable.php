@@ -40,7 +40,10 @@ class UsersTable extends Table
         return $this->saveOrFail($user);
     }
 
-    public function blockOld()
+    /**
+     * @return void
+     */
+    public function blockOld(): void
     {
     }
 }

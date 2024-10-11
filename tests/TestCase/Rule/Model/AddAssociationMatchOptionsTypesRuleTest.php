@@ -67,12 +67,14 @@ class AddAssociationMatchOptionsTypesRuleTest extends RuleTestCase
                 66,
             ],
             [
-                'Call to CakeDC\PHPStan\Test\TestCase\Rule\Model\Fake\FailingRuleItemsTable::belongsTo with option "bindingKey" (array<string>|string) does not accept int.',
+                'Call to CakeDC\PHPStan\Test\TestCase\Rule\Model\Fake\FailingRuleItemsTable::belongsTo with option "bindingKey" (list<string>|string) does not accept 10.',
                 66,
+                'Type #1 from the union: 10 is not a list.',
             ],
             [
-                'Call to CakeDC\PHPStan\Test\TestCase\Rule\Model\Fake\FailingRuleItemsTable::belongsTo with option "foreignKey" (array<string>|string|false) does not accept 11.',
+                'Call to CakeDC\PHPStan\Test\TestCase\Rule\Model\Fake\FailingRuleItemsTable::belongsTo with option "foreignKey" (list<string>|string|false) does not accept 11.',
                 66,
+                'Type #1 from the union: 11 is not a list.',
             ],
             [
                 'Call to CakeDC\PHPStan\Test\TestCase\Rule\Model\Fake\FailingRuleItemsTable::belongsTo with option "joinType" (string) does not accept int.',
@@ -107,8 +109,9 @@ class AddAssociationMatchOptionsTypesRuleTest extends RuleTestCase
                 85,
             ],
             [
-                'Call to CakeDC\PHPStan\Test\TestCase\Rule\Model\Fake\FailingRuleItemsTable::belongsToMany with option "targetForeignKey" (array<string>|string|null) does not accept Closure.',
+                'Call to CakeDC\PHPStan\Test\TestCase\Rule\Model\Fake\FailingRuleItemsTable::belongsToMany with option "targetForeignKey" (list<string>|string|null) does not accept Closure(): 10.',
                 98,
+                'Type #1 from the union: Closure(): 10 is not a list.',
             ],
             [
                 $messageThrough,
@@ -147,12 +150,14 @@ class AddAssociationMatchOptionsTypesRuleTest extends RuleTestCase
                 120,
             ],
             [
-                'Call to CakeDC\PHPStan\Test\TestCase\Rule\Model\Fake\FailingRuleItemsTable::hasOne with option "bindingKey" (array<string>|string) does not accept int.',
+                'Call to CakeDC\PHPStan\Test\TestCase\Rule\Model\Fake\FailingRuleItemsTable::hasOne with option "bindingKey" (list<string>|string) does not accept 10.',
                 120,
+                'Type #1 from the union: 10 is not a list.',
             ],
             [
-                'Call to CakeDC\PHPStan\Test\TestCase\Rule\Model\Fake\FailingRuleItemsTable::hasOne with option "foreignKey" (array<string>|string|false) does not accept 11.',
+                'Call to CakeDC\PHPStan\Test\TestCase\Rule\Model\Fake\FailingRuleItemsTable::hasOne with option "foreignKey" (list<string>|string|false) does not accept 11.',
                 120,
+                'Type #1 from the union: 11 is not a list.',
             ],
             [
                 'Call to CakeDC\PHPStan\Test\TestCase\Rule\Model\Fake\FailingRuleItemsTable::hasOne with option "joinType" (string) does not accept int.',
@@ -215,12 +220,14 @@ class AddAssociationMatchOptionsTypesRuleTest extends RuleTestCase
                 148,
             ],
             [
-                'Call to Cake\ORM\AssociationCollection::load with option "bindingKey" (array<string>|string) does not accept int.',
+                'Call to Cake\ORM\AssociationCollection::load with option "bindingKey" (list<string>|string) does not accept 10.',
                 148,
+                'Type #1 from the union: 10 is not a list.',
             ],
             [
-                'Call to Cake\ORM\AssociationCollection::load with option "foreignKey" (array<string>|string|false) does not accept 11.',
+                'Call to Cake\ORM\AssociationCollection::load with option "foreignKey" (list<string>|string|false) does not accept 11.',
                 148,
+                'Type #1 from the union: 11 is not a list.',
             ],
             [
                 'Call to Cake\ORM\AssociationCollection::load with option "joinType" (string) does not accept int.',

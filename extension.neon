@@ -73,3 +73,7 @@ services:
 		factory: CakeDC\PHPStan\Type\ShellHelperLoadDynamicReturnTypeExtension(Cake\Console\ConsoleIo)
 		tags:
 			- phpstan.broker.dynamicMethodReturnTypeExtension
+	-
+		class: CakeDC\PHPStan\PhpDoc\TableAssociationTypeNodeResolverExtension
+		tags:
+			- phpstan.phpDoc.typeNodeResolverExtension

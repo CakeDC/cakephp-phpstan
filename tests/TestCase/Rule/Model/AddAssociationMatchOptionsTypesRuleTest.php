@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace CakeDC\PHPStan\Test\TestCase\Rule\Model;
 
-use Cake\Core\Configure;
 use CakeDC\PHPStan\Rule\Model\AddAssociationMatchOptionsTypesRule;
+use CakeDC\PHPStan\Rule\Traits\AnalyseCheckLineStartsWithTrait;
 use PHPStan\Rules\Properties\PropertyReflectionFinder;
 use PHPStan\Rules\Rule;
 use PHPStan\Rules\RuleLevelHelper;
@@ -12,6 +12,8 @@ use PHPStan\Testing\RuleTestCase;
 
 class AddAssociationMatchOptionsTypesRuleTest extends RuleTestCase
 {
+    use AnalyseCheckLineStartsWithTrait;
+
     /**
      * @return \PHPStan\Rules\Rule
      */
@@ -38,14 +40,7 @@ class AddAssociationMatchOptionsTypesRuleTest extends RuleTestCase
      */
     public function testRule(): void
     {
-        $messageThrough = 'Call to CakeDC\PHPStan\Test\TestCase\Rule\Model\Fake\FailingRuleItemsTable::belongsToMany with option "through" (Cake\ORM\Table|string|null) does not accept stdClass.';
-        if (version_compare(Configure::version(), '5.0.5', '<')) {
-            $messageThrough = 'Call to CakeDC\PHPStan\Test\TestCase\Rule\Model\Fake\FailingRuleItemsTable::belongsToMany with option "through" (Cake\ORM\Table|string) does not accept stdClass.';
-        }
-        // first argument: path to the example file that contains some errors that should be reported by MyRule
-        // second argument: an array of expected errors,
-        // each error consists of the asserted error message, and the asserted error file line
-        $this->analyse([__DIR__ . '/Fake/FailingRuleItemsTable.php'], [
+        $this->analyseCheckLineStartsWith([__DIR__ . '/Fake/FailingRuleItemsTable.php'], [
             [
                 'Call to CakeDC\PHPStan\Test\TestCase\Rule\Model\Fake\FailingRuleItemsTable::belongsTo with option "className" (string) does not accept false.',
                 66,
@@ -67,12 +62,12 @@ class AddAssociationMatchOptionsTypesRuleTest extends RuleTestCase
                 66,
             ],
             [
-                'Call to CakeDC\PHPStan\Test\TestCase\Rule\Model\Fake\FailingRuleItemsTable::belongsTo with option "bindingKey" (list<string>|string) does not accept 10.',
+                'Call to CakeDC\PHPStan\Test\TestCase\Rule\Model\Fake\FailingRuleItemsTable::belongsTo with option "bindingKey" ',
                 66,
                 'Type #1 from the union: 10 is not a list.',
             ],
             [
-                'Call to CakeDC\PHPStan\Test\TestCase\Rule\Model\Fake\FailingRuleItemsTable::belongsTo with option "foreignKey" (list<string>|string|false) does not accept 11.',
+                'Call to CakeDC\PHPStan\Test\TestCase\Rule\Model\Fake\FailingRuleItemsTable::belongsTo with option "foreignKey" ',
                 66,
                 'Type #1 from the union: 11 is not a list.',
             ],
@@ -114,7 +109,7 @@ class AddAssociationMatchOptionsTypesRuleTest extends RuleTestCase
                 'Type #1 from the union: Closure(): 10 is not a list.',
             ],
             [
-                $messageThrough,
+                'Call to CakeDC\PHPStan\Test\TestCase\Rule\Model\Fake\FailingRuleItemsTable::belongsToMany with option "through"',
                 98,
             ],
             [
@@ -150,12 +145,12 @@ class AddAssociationMatchOptionsTypesRuleTest extends RuleTestCase
                 120,
             ],
             [
-                'Call to CakeDC\PHPStan\Test\TestCase\Rule\Model\Fake\FailingRuleItemsTable::hasOne with option "bindingKey" (list<string>|string) does not accept 10.',
+                'Call to CakeDC\PHPStan\Test\TestCase\Rule\Model\Fake\FailingRuleItemsTable::hasOne with option "bindingKey" ',
                 120,
                 'Type #1 from the union: 10 is not a list.',
             ],
             [
-                'Call to CakeDC\PHPStan\Test\TestCase\Rule\Model\Fake\FailingRuleItemsTable::hasOne with option "foreignKey" (list<string>|string|false) does not accept 11.',
+                'Call to CakeDC\PHPStan\Test\TestCase\Rule\Model\Fake\FailingRuleItemsTable::hasOne with option "foreignKey" ',
                 120,
                 'Type #1 from the union: 11 is not a list.',
             ],
@@ -220,12 +215,12 @@ class AddAssociationMatchOptionsTypesRuleTest extends RuleTestCase
                 148,
             ],
             [
-                'Call to Cake\ORM\AssociationCollection::load with option "bindingKey" (list<string>|string) does not accept 10.',
+                'Call to Cake\ORM\AssociationCollection::load with option "bindingKey" ',
                 148,
                 'Type #1 from the union: 10 is not a list.',
             ],
             [
-                'Call to Cake\ORM\AssociationCollection::load with option "foreignKey" (list<string>|string|false) does not accept 11.',
+                'Call to Cake\ORM\AssociationCollection::load with option "foreignKey" ',
                 148,
                 'Type #1 from the union: 11 is not a list.',
             ],

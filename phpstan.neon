@@ -6,3 +6,4 @@ rules:
 parameters:
     level: max
     checkGenericClassInNonGenericObjectType: false
+    treatPhpDocTypesAsCertain: false

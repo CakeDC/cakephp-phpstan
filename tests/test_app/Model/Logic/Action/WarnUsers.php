@@ -11,28 +11,26 @@ declare(strict_types=1);
  * @license   MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
-namespace App\Mailer;
+namespace App\Model\Logic\Action;
 
-use Cake\Mailer\Mailer;
+use Cake\ORM\Locator\LocatorAwareTrait;
 
-class MyTestLoadMailer extends Mailer
+/**
+ * Class DeleteUsers
+ *
+ * @package App\Model\Logic\Action
+ */
+class WarnUsers
 {
-    /**
-     * Test for TableLocatorDynamicReturnTypeExtension with loadModel
-     *
-     * @return void
-     */
-    protected function sampleLoading()
-    {
-        $article = $this->fetchTable('VeryCustomize00009Articles')
-            ->newSample();
-        $this->viewBuilder()->setVar('article', $article);
-    }
+    use LocatorAwareTrait;
 
     /**
+     * @throws \Exception
      * @return void
      */
-    public function testing()
+    public function process()
     {
+        $this->fetchTable('Notes')
+            ->warning();
     }
 }

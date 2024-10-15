@@ -11,28 +11,30 @@ declare(strict_types=1);
  * @license   MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
-namespace App\Mailer;
+namespace App\Model\Logic\Action;
 
-use Cake\Mailer\Mailer;
-
-class MyTestLoadMailer extends Mailer
+/**
+ * Class BlockUsers
+ *
+ * @package App\Model\Logic\Action
+ */
+class BlockUsers extends WarnUsers
 {
     /**
-     * Test for TableLocatorDynamicReturnTypeExtension with loadModel
+     * This object's default table alias.
      *
-     * @return void
+     * @var string|null
      */
-    protected function sampleLoading()
-    {
-        $article = $this->fetchTable('VeryCustomize00009Articles')
-            ->newSample();
-        $this->viewBuilder()->setVar('article', $article);
-    }
+    protected ?string $defaultTable = 'Users';
 
     /**
+     * @throws \Exception
      * @return void
      */
-    public function testing()
+    public function process()
     {
+        parent::process();
+
+        $this->fetchTable()->blockOld();
     }
 }

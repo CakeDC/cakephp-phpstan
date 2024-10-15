@@ -2,12 +2,12 @@
 declare(strict_types=1);
 
 /**
- * Copyright 2020, Cake Development Corporation (https://www.cakedc.com)
+ * Copyright 2024, Cake Development Corporation (https://www.cakedc.com)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright Copyright 2020, Cake Development Corporation (https://www.cakedc.com)
+ * @copyright Copyright 2024, Cake Development Corporation (https://www.cakedc.com)
  * @license   MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
@@ -59,12 +59,11 @@ class BaseTraitExpressionTypeResolverExtension implements ExpressionTypeResolver
         }
 
         $callerType = $scope->getType($expr->var);
-
-        if (!$callerType instanceof ThisType) {
+        if (!$callerType instanceof ThisType && !$callerType instanceof ObjectType) {
             return null;
         }
         $reflection = $callerType->getClassReflection();
-        if (!$this->isFromTargetTrait($reflection)) {
+        if ($reflection === null || !$this->isFromTargetTrait($reflection)) {
             return null;
         }
 

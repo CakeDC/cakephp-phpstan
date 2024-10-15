@@ -2,7 +2,7 @@
 declare(strict_types=1);
 
 /**
- * Copyright 2020, Cake Development Corporation (https://www.cakedc.com)
+ * Copyright 2024, Cake Development Corporation (https://www.cakedc.com)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
@@ -14,27 +14,18 @@ declare(strict_types=1);
 namespace App\Model\Logic\Action;
 
 /**
- * Class BlockUsers
+ * Class RunBlock
  *
  * @package App\Model\Logic\Action
  */
-class BlockUsers extends WarnUsers
+class RunBlock
 {
-    /**
-     * This object's default table alias.
-     *
-     * @var string|null
-     */
-    protected ?string $defaultTable = 'Users';
-
     /**
      * @throws \Exception
      * @return void
      */
     public function process()
     {
-        parent::process();
-
-        $this->fetchTable()->blockOld();
+        (new BlockUsers())->fetchTable()->blockOld();
     }
 }

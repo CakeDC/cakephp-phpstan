@@ -104,7 +104,7 @@ class AddAssociationMatchOptionsTypesRuleTest extends RuleTestCase
                 85,
             ],
             [
-                'Call to CakeDC\PHPStan\Test\TestCase\Rule\Model\Fake\FailingRuleItemsTable::belongsToMany with option "targetForeignKey" (list<string>|string|null) does not accept Closure(): 10.',
+                'Call to CakeDC\PHPStan\Test\TestCase\Rule\Model\Fake\FailingRuleItemsTable::belongsToMany with option "targetForeignKey" ',
                 98,
                 'Type #1 from the union: Closure(): 10 is not a list.',
             ],

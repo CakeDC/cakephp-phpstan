@@ -5,6 +5,7 @@ parameters:
 	 	addBehaviorExistsClassRule: true
 	 	tableGetMatchOptionsTypesRule: true
 	 	ormSelectQueryFindMatchOptionsTypesRule: true
+	 	disallowEntityArrayAccessRule: false
 
 parametersSchema:
 	cakeDC: structure([
@@ -13,6 +14,7 @@ parametersSchema:
 		addBehaviorExistsClassRule: anyOf(bool(), arrayOf(bool()))
 		tableGetMatchOptionsTypesRule: anyOf(bool(), arrayOf(bool()))
 		ormSelectQueryFindMatchOptionsTypesRule: anyOf(bool(), arrayOf(bool()))
+		disallowEntityArrayAccessRule: anyOf(bool(), arrayOf(bool()))
 	])
 
 conditionalTags:
@@ -28,7 +30,8 @@ conditionalTags:
 		phpstan.rules.rule: %cakeDC.tableGetMatchOptionsTypesRule%
 	CakeDC\PHPStan\Rule\Model\OrmSelectQueryFindMatchOptionsTypesRule:
 		phpstan.rules.rule: %cakeDC.ormSelectQueryFindMatchOptionsTypesRule%
-
+	CakeDC\PHPStan\Rule\Model\DisallowEntityArrayAccessRule:
+		phpstan.rules.rule: %cakeDC.disallowEntityArrayAccessRule%
 services:
 	-
 		class: CakeDC\PHPStan\Visitor\AddAssociationSetClassNameVisitor
@@ -42,3 +45,5 @@ services:
 		class: CakeDC\PHPStan\Rule\Model\TableGetMatchOptionsTypesRule
 	-
 		class: CakeDC\PHPStan\Rule\Model\OrmSelectQueryFindMatchOptionsTypesRule
+	-
+		class: CakeDC\PHPStan\Rule\Model\DisallowEntityArrayAccessRule

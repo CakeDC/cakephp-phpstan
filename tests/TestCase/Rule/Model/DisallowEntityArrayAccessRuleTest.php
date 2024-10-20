@@ -40,19 +40,19 @@ class DisallowEntityArrayAccessRuleTest extends RuleTestCase
         $this->analyse([__DIR__ . '/Fake/FailingEntityUseLogic.php'], [
             [
                 'Array access to entity to App\Model\Entity\Note is not allowed, access as object instead',
+                22, // asserted error line
+            ],
+            [
+                'Array access to entity to App\Model\Entity\Note is not allowed, access as object instead',
                 23, // asserted error line
             ],
             [
-                'Array access to entity to App\Model\Entity\Note is not allowed, access as object instead',
-                24, // asserted error line
-            ],
-            [
                 'Array access to entity to Cake\Datasource\EntityInterface is not allowed, access as object instead',
-                29,
+                28,
             ],
             [
                 'Array access to entity to App\Model\Entity\Note is not allowed, access as object instead',
-                32, // asserted error line
+                31, // asserted error line
             ],
         ]);
     }

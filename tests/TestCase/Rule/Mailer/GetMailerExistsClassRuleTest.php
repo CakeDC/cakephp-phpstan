@@ -39,11 +39,11 @@ class GetMailerExistsClassRuleTest extends RuleTestCase
         $this->analyse([__DIR__ . '/Fake/FailingGetMailerUsageLogic.php'], [
             [
                 'Call to CakeDC\PHPStan\Test\TestCase\Rule\Mailer\Fake\FailingGetMailerUsageLogic::getMailer could not find the class for "OldArticles"',
-                19, // asserted error line
+                18, // asserted error line
             ],
             [
                 'Call to CakeDC\PHPStan\Test\TestCase\Rule\Mailer\Fake\FailingGetMailerUsageLogic::getMailer could not find the class for "SomeArticle"',
-                20, // asserted error line
+                19, // asserted error line
             ],
         ]);
     }

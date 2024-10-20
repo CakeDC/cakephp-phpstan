@@ -6,7 +6,7 @@ parameters:
 	 	tableGetMatchOptionsTypesRule: true
 	 	ormSelectQueryFindMatchOptionsTypesRule: true
 	 	disallowEntityArrayAccessRule: false
-	 	getMailerExistsClassRule: true,
+	 	getMailerExistsClassRule: true
 
 parametersSchema:
 	cakeDC: structure([
@@ -34,7 +34,7 @@ conditionalTags:
 		phpstan.rules.rule: %cakeDC.ormSelectQueryFindMatchOptionsTypesRule%
 	CakeDC\PHPStan\Rule\Model\DisallowEntityArrayAccessRule:
 		phpstan.rules.rule: %cakeDC.disallowEntityArrayAccessRule%
-	CakeDC\PHPStan\Rule\Model\GetMailerExistsClassRule:
+	CakeDC\PHPStan\Rule\Mailer\GetMailerExistsClassRule:
 		phpstan.rules.rule: %cakeDC.getMailerExistsClassRule%
 services:
 	-
@@ -52,4 +52,4 @@ services:
 	-
 		class: CakeDC\PHPStan\Rule\Model\DisallowEntityArrayAccessRule
 	-
-		class: CakeDC\PHPStan\Rule\Model\GetMailerExistsClassRule
+		class: CakeDC\PHPStan\Rule\Mailer\GetMailerExistsClassRule

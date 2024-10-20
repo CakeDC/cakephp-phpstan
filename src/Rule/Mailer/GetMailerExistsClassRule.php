@@ -20,6 +20,7 @@ use PhpParser\Node\Scalar\String_;
 use PHPStan\Analyser\Scope;
 use PHPStan\Rules\Rule;
 use PHPStan\Rules\RuleErrorBuilder;
+use PHPStan\Type\ThisType;
 
 class GetMailerExistsClassRule implements Rule
 {
@@ -60,10 +61,10 @@ class GetMailerExistsClassRule implements Rule
             return [];
         }
         $callerType = $scope->getType($node->var);
-        $reflection = $callerType->getClassReflection();
-        if ($reflection === null) {
+        if (!$callerType instanceof ThisType) {
             return [];
         }
+        $reflection = $callerType->getClassReflection();
 
         if (CakeNameRegistry::getMailerClassName($value->value)) {
             return [];
@@ -79,30 +80,5 @@ class GetMailerExistsClassRule implements Rule
             ->identifier($this->identifier)
             ->build(),
         ];
-    }
-
-    /**
-     * @inheritDoc
-     */
-    protected function getTargetClassName(string $name): ?string
-    {
-        return CakeNameRegistry::getMailerClassName($name);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    protected function getDetails(string $reference, array $args): ?array
-    {
-        var_dump(['reference' => $reference]);
-        if (str_ends_with($reference, 'Table')) {
-            return [
-                'alias' => $args[0] ?? null,
-                'sourceMethods' => 'getMailer',
-                'options' => [],
-            ];
-        }
-
-        return null;
     }
 }

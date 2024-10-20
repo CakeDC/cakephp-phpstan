@@ -7,3 +7,5 @@ parameters:
     level: max
     checkGenericClassInNonGenericObjectType: false
     treatPhpDocTypesAsCertain: false
+    cakeDC:
+        disallowEntityArrayAccessRule: true

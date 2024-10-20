@@ -90,7 +90,8 @@ Features included:
 1. Provide correct return type for `Cake\ORM\Table::saveManyOrFail` based on the first argument passed
 1. Provide correct return type for `Cake\ORM\Table::deleteMany` based on the first argument passed
 1. Provide correct return type for `Cake\ORM\Table::deleteManyOrFail` based on the first argument passed
-
+1. Provide correct return type for `Cake\ORM\Locator\LocatorAwareTrait::fetchTable` based on the first argument passed
+1. Provide correct return type for `Cake\Mailer\MailerAwareTrait::getMailer` based on the first argument passed
 
 <details>
       <summary>Examples:</summary>

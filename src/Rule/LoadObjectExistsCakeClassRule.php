@@ -73,7 +73,7 @@ abstract class LoadObjectExistsCakeClassRule implements Rule
                 $details['options']
             );
         }
-        if ($this->getTargetClassName($inputClassName)) {
+        if ($inputClassName === null || $this->getTargetClassName($inputClassName)) {
             return [];
         }
 
@@ -92,12 +92,11 @@ abstract class LoadObjectExistsCakeClassRule implements Rule
     /**
      * @param \PhpParser\Node\Scalar\String_ $nameArg
      * @param \PhpParser\Node\Arg|null $options
-     * @return string
+     * @return string|null
      */
-    protected function getInputClassName(String_ $nameArg, ?Arg $options): string
+    protected function getInputClassName(String_ $nameArg, ?Arg $options): ?string
     {
         $className = $nameArg->value;
-
         if (
             $options === null
             || !$options->value instanceof Node\Expr\Array_
@@ -112,10 +111,8 @@ abstract class LoadObjectExistsCakeClassRule implements Rule
             ) {
                 continue;
             }
-            $name = $this->parseClassNameFromExprTrait($item->value);
-            if ($name !== null) {
-                return $name;
-            }
+
+            return $this->parseClassNameFromExprTrait($item->value);
         }
 
         return $className;

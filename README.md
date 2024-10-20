@@ -133,14 +133,17 @@ Table::hasMany, Table::belongsToMany, Table::hasOne and AssociationCollection::l
 ### AddBehaviorExistsClassRule
 This rule check if the target behavior has a valid table class when calling to Table::addBehavior and BehaviorRegistry::load.
 
+### DisallowEntityArrayAccessRule
+This rule check disallow array access to entity in favor of object notation, is easier to detect a wrong property and to refactor code.
+
+### GetMailerExistsClassRule
+This rule check if the target mailer is a valid class when calling to Cake\Mailer\MailerAwareTrait::getMailer.
+
 ### OrmSelectQueryFindMatchOptionsTypesRule
 This rule check if the options (args) passed to Table::find and SelectQuery are valid find options types.
 
 ### TableGetMatchOptionsTypesRule
 This rule check if the options (args) passed to Table::get are valid find options types.
-
-### DisallowEntityArrayAccessRule
-This rule check disallow array access to entity in favor of object notation, is easier to detect a wrong property and to refactor code.
 
 To enable this rule update your phpstan.neon with:
 

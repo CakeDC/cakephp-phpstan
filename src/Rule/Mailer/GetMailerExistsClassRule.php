@@ -13,10 +13,8 @@ declare(strict_types=1);
 
 namespace CakeDC\PHPStan\Rule\Mailer;
 
-use CakeDC\PHPStan\Rule\LoadObjectExistsCakeClassRule;
 use CakeDC\PHPStan\Utility\CakeNameRegistry;
 use PhpParser\Node;
-use PhpParser\Node\Arg;
 use PhpParser\Node\Expr\MethodCall;
 use PhpParser\Node\Scalar\String_;
 use PHPStan\Analyser\Scope;
@@ -37,6 +35,7 @@ class GetMailerExistsClassRule implements Rule
     {
         return MethodCall::class;
     }
+
     /**
      * @param \PhpParser\Node $node
      * @param \PHPStan\Analyser\Scope $scope
@@ -45,7 +44,8 @@ class GetMailerExistsClassRule implements Rule
     public function processNode(Node $node, Scope $scope): array
     {
         assert($node instanceof MethodCall);
-        if (!$node->name instanceof Node\Identifier
+        if (
+            !$node->name instanceof Node\Identifier
             || $node->name->name !== 'getMailer'
         ) {
             return [];
@@ -102,6 +102,7 @@ class GetMailerExistsClassRule implements Rule
                 'options' => [],
             ];
         }
+
         return null;
     }
 }

@@ -44,7 +44,7 @@ class GetMailerExistsClassRuleTest extends RuleTestCase
             [
                 'Call to CakeDC\PHPStan\Test\TestCase\Rule\Mailer\Fake\FailingGetMailerUsageLogic::getMailer could not find the class for "SomeArticle"',
                 20, // asserted error line
-            ]
+            ],
         ]);
     }
 }

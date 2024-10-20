@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace CakeDC\PHPStan\Test\TestCase\Rule\Mailer\Fake;
 
 use Cake\Mailer\MailerAwareTrait;
-use Cake\ORM\Locator\LocatorAwareTrait;
 
 class FailingGetMailerUsageLogic
 {

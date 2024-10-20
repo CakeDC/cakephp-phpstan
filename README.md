@@ -138,6 +138,17 @@ This rule check if the options (args) passed to Table::find and SelectQuery are 
 ### TableGetMatchOptionsTypesRule
 This rule check if the options (args) passed to Table::get are valid find options types.
 
+### DisallowEntityArrayAccessRule
+This rule check disallow array access to entity in favor of object notation, is easier to detect a wrong property and to refactor code.
+
+To enable this rule update your phpstan.neon with:
+
+```
+parameters:
+	cakeDC:
+	 	disallowEntityArrayAccessRule: true
+```
+
 ### How to disable a rule
 Each rule has a parameter in cakeDC 'namespace' to enable or disable, it is the same name of the
 rule with first letter in lowercase.

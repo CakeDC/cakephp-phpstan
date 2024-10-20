@@ -26,6 +26,8 @@ class FailingEntityUseLogic
         //Unknown entity
         $unknown = $this->fetchTable('UnknownRecords')->get(20);
         $date = $unknown['create'];
+        $user = $this->fetchTable('Users')->get(10);
+        $user['role'] = 'Admin';
 
         return [
             'userId' => $entity['user_id'],

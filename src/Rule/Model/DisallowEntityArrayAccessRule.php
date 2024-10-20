@@ -5,6 +5,7 @@ namespace CakeDC\PHPStan\Rule\Model;
 
 use Cake\Datasource\EntityInterface;
 use PhpParser\Node;
+use PhpParser\Node\Expr\ArrayDimFetch;
 use PHPStan\Analyser\Scope;
 use PHPStan\Rules\Rule;
 use PHPStan\Rules\RuleErrorBuilder;
@@ -17,7 +18,7 @@ class DisallowEntityArrayAccessRule implements Rule
      */
     public function getNodeType(): string
     {
-        return Node\Expr\ArrayDimFetch::class;
+        return ArrayDimFetch::class;
     }
 
     /**
@@ -29,8 +30,8 @@ class DisallowEntityArrayAccessRule implements Rule
      */
     public function processNode(Node $node, Scope $scope): array
     {
+        assert($node instanceof ArrayDimFetch);
         $type = $scope->getType($node->var);
-
         if (!$type instanceof ObjectType || !is_a($type->getClassName(), EntityInterface::class, true)) {
             return [];
         }

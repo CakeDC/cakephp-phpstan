@@ -51,8 +51,12 @@ class DisallowEntityArrayAccessRuleTest extends RuleTestCase
                 28,
             ],
             [
+                'Array access to entity to App\Model\Entity\User is not allowed, access as object instead',
+                30, // asserted error line
+            ],
+            [
                 'Array access to entity to App\Model\Entity\Note is not allowed, access as object instead',
-                31, // asserted error line
+                33, // asserted error line
             ],
         ]);
     }

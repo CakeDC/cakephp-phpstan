@@ -37,15 +37,15 @@ class LoadComponentExistsClassRuleTest extends RuleTestCase
         // each error consists of the asserted error message, and the asserted error file line
         $this->analyse([__DIR__ . '/Fake/FailingLoadComponentController.php'], [
             [
-                'Call to CakeDC\PHPStan\Test\TestCase\Rule\Mailer\Fake\FailingLoadComponentController::loadComponent could not find the class for "CrazyWorld"',
+                'Call to CakeDC\PHPStan\Test\TestCase\Rule\Controller\Fake\FailingLoadComponentController::loadComponent could not find the class for "CrazyWorld"',
                 18,
             ],
             [
-                'Call to CakeDC\PHPStan\Test\TestCase\Rule\Mailer\Fake\FailingLoadComponentController::loadComponent could not find the class for "HelloWorld"',
+                'Call to CakeDC\PHPStan\Test\TestCase\Rule\Controller\Fake\FailingLoadComponentController::loadComponent could not find the class for "HelloWorld"',
                 19,
             ],
             [
-                'Call to CakeDC\PHPStan\Test\TestCase\Rule\Mailer\Fake\FailingLoadComponentController::loadComponent could not find the class for "CrayFaker"',
+                'Call to CakeDC\PHPStan\Test\TestCase\Rule\Controller\Fake\FailingLoadComponentController::loadComponent could not find the class for "CrayFaker"',
                 25,
             ],
         ]);

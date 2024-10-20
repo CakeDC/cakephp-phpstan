@@ -11,8 +11,7 @@ declare(strict_types=1);
  * @license   MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
-namespace CakeDC\PHPStan\Test\TestCase\Type;
-namespace CakeDC\PHPStan\Test\TestCase\Rule;
+namespace CakeDC\PHPStan\Test\TestCase\Rule\Model;
 
 use CakeDC\PHPStan\Rule\Model\AddAssociationExistsTableClassRule;
 use PHPStan\Rules\Rule;

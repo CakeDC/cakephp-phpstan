@@ -16,6 +16,7 @@ namespace CakeDC\PHPStan\Rule;
 use CakeDC\PHPStan\Rule\Traits\ParseClassNameFromArgTrait;
 use PhpParser\Node;
 use PhpParser\Node\Arg;
+use PhpParser\Node\Expr\ConstFetch;
 use PhpParser\Node\Expr\MethodCall;
 use PhpParser\Node\Scalar\String_;
 use PHPStan\Analyser\Scope;
@@ -110,6 +111,9 @@ abstract class LoadObjectExistsCakeClassRule implements Rule
                 || $item->key->value !== 'className'
             ) {
                 continue;
+            }
+            if ($item->value instanceof ConstFetch && $item->value->name->toString() === 'null') {
+                return $className;
             }
 
             return $this->parseClassNameFromExprTrait($item->value);

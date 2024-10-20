@@ -66,4 +66,15 @@ class CakeNameRegistry
             '%s\\Model\\Table\\%sTable',
         ]);
     }
+
+    /**
+     * @param string $name
+     * @return string|null
+     */
+    public static function getMailerClassName(string $name): ?string
+    {
+        return static::getClassName($name, [
+            '%s\\Mailer\\%sMailer',
+        ]);
+    }
 }

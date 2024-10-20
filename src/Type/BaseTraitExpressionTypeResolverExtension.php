@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace CakeDC\PHPStan\Type;
 
+use CakeDC\PHPStan\Traits\IsFromTargetTrait;
 use CakeDC\PHPStan\Utility\CakeNameRegistry;
 use PhpParser\Node\Expr;
 use PhpParser\Node\Identifier;
@@ -27,6 +28,8 @@ use ReflectionException;
 
 class BaseTraitExpressionTypeResolverExtension implements ExpressionTypeResolverExtension
 {
+    use IsFromTargetTrait;
+
     /**
      * TableLocatorDynamicReturnTypeExtension constructor.
      *
@@ -63,7 +66,7 @@ class BaseTraitExpressionTypeResolverExtension implements ExpressionTypeResolver
             return null;
         }
         $reflection = $callerType->getClassReflection();
-        if ($reflection === null || !$this->isFromTargetTrait($reflection)) {
+        if ($reflection === null || !$this->isFromTargetTrait($reflection, $this->targetTrait)) {
             return null;
         }
 
@@ -78,26 +81,6 @@ class BaseTraitExpressionTypeResolverExtension implements ExpressionTypeResolver
         }
 
         return null;
-    }
-
-    /**
-     * @param \PHPStan\Reflection\ClassReflection $reflection
-     * @return bool
-     */
-    protected function isFromTargetTrait(ClassReflection $reflection): bool
-    {
-        foreach ($reflection->getTraits() as $trait) {
-            if ($trait->getName() === $this->targetTrait) {
-                return true;
-            }
-        }
-        foreach ($reflection->getParents() as $parent) {
-            if ($this->isFromTargetTrait($parent)) {
-                return true;
-            }
-        }
-
-        return false;
     }
 
     /**

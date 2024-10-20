@@ -14,11 +14,11 @@ declare(strict_types=1);
 namespace CakeDC\PHPStan\Test\TestCase\Type;
 namespace CakeDC\PHPStan\Test\TestCase\Rule;
 
-use CakeDC\PHPStan\Rule\Model\BlockEntityArrayAccessRule;
+use CakeDC\PHPStan\Rule\Model\DisallowEntityArrayAccessRule;
 use PHPStan\Rules\Rule;
 use PHPStan\Testing\RuleTestCase;
 
-class BlockEntityArrayAccessRuleTest extends RuleTestCase
+class DisallowEntityArrayAccessRuleTest extends RuleTestCase
 {
     /**
      * @return \PHPStan\Rules\Rule
@@ -26,7 +26,7 @@ class BlockEntityArrayAccessRuleTest extends RuleTestCase
     protected function getRule(): Rule
     {
         // getRule() method needs to return an instance of the tested rule
-        return new BlockEntityArrayAccessRule();
+        return new DisallowEntityArrayAccessRule();
     }
 
     /**

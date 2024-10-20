@@ -10,7 +10,7 @@ use PHPStan\Rules\Rule;
 use PHPStan\Rules\RuleErrorBuilder;
 use PHPStan\Type\ObjectType;
 
-class BlockEntityArrayAccessRule implements Rule
+class DisallowEntityArrayAccessRule implements Rule
 {
     /**
      * @return string

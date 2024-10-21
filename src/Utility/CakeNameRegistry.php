@@ -48,6 +48,18 @@ class CakeNameRegistry
      * @param string $name
      * @return string|null
      */
+    public static function getComponentClassName(string $name): ?string
+    {
+        return static::getClassName($name, [
+            '%s\\Controller\\Component\\%sComponent',
+            '%s\\Controller\\Component\\%sComponent',
+        ]);
+    }
+
+    /**
+     * @param string $name
+     * @return string|null
+     */
     public static function getBehaviorClassName(string $name): ?string
     {
         return static::getClassName($name, [
@@ -64,6 +76,17 @@ class CakeNameRegistry
     {
         return static::getClassName($name, [
             '%s\\Model\\Table\\%sTable',
+        ]);
+    }
+
+    /**
+     * @param string $name
+     * @return string|null
+     */
+    public static function getMailerClassName(string $name): ?string
+    {
+        return static::getClassName($name, [
+            '%s\\Mailer\\%sMailer',
         ]);
     }
 }

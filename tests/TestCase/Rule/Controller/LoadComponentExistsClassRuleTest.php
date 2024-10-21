@@ -10,14 +10,13 @@ declare(strict_types=1);
  * @copyright Copyright 2024, Cake Development Corporation (https://www.cakedc.com)
  * @license   MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
+namespace CakeDC\PHPStan\Test\TestCase\Rule\Controller;
 
-namespace CakeDC\PHPStan\Test\TestCase\Rule\Model;
-
-use CakeDC\PHPStan\Rule\Model\AddBehaviorExistsClassRule;
+use CakeDC\PHPStan\Rule\Controller\LoadComponentExistsClassRule;
 use PHPStan\Rules\Rule;
 use PHPStan\Testing\RuleTestCase;
 
-class AddBehaviorExistsClassRuleTest extends RuleTestCase
+class LoadComponentExistsClassRuleTest extends RuleTestCase
 {
     /**
      * @return \PHPStan\Rules\Rule
@@ -25,7 +24,7 @@ class AddBehaviorExistsClassRuleTest extends RuleTestCase
     protected function getRule(): Rule
     {
         // getRule() method needs to return an instance of the tested rule
-        return new AddBehaviorExistsClassRule();
+        return new LoadComponentExistsClassRule();
     }
 
     /**
@@ -36,22 +35,18 @@ class AddBehaviorExistsClassRuleTest extends RuleTestCase
         // first argument: path to the example file that contains some errors that should be reported by MyRule
         // second argument: an array of expected errors,
         // each error consists of the asserted error message, and the asserted error file line
-        $this->analyse([__DIR__ . '/Fake/FailingRuleItemsTable.php'], [
+        $this->analyse([__DIR__ . '/Fake/FailingLoadComponentController.php'], [
             [
-                'Call to CakeDC\PHPStan\Test\TestCase\Rule\Model\Fake\FailingRuleItemsTable::addBehavior could not find the class for "Timtamp"',
-                38, // asserted error line
+                'Call to CakeDC\PHPStan\Test\TestCase\Rule\Controller\Fake\FailingLoadComponentController::loadComponent could not find the class for "CrazyWorld"',
+                18,
             ],
             [
-                'Call to CakeDC\PHPStan\Test\TestCase\Rule\Model\Fake\FailingRuleItemsTable::addBehavior could not find the class for "MyTreeBehavior"',
-                39, // asserted error line
+                'Call to CakeDC\PHPStan\Test\TestCase\Rule\Controller\Fake\FailingLoadComponentController::loadComponent could not find the class for "HelloWorld"',
+                19,
             ],
             [
-                'Call to CakeDC\PHPStan\Test\TestCase\Rule\Model\Fake\FailingRuleItemsTable::addBehavior could not find the class for "Cake\Behavior\TranslateBehavior"',
-                42, // asserted error line
-            ],
-            [
-                'Call to Cake\ORM\BehaviorRegistry::load could not find the class for "Cake\Behavior\TransmateBehavior"',
-                140,
+                'Call to CakeDC\PHPStan\Test\TestCase\Rule\Controller\Fake\FailingLoadComponentController::loadComponent could not find the class for "CrayFaker"',
+                25,
             ],
         ]);
     }

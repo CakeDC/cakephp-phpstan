@@ -90,7 +90,8 @@ Features included:
 1. Provide correct return type for `Cake\ORM\Table::saveManyOrFail` based on the first argument passed
 1. Provide correct return type for `Cake\ORM\Table::deleteMany` based on the first argument passed
 1. Provide correct return type for `Cake\ORM\Table::deleteManyOrFail` based on the first argument passed
-
+1. Provide correct return type for `Cake\ORM\Locator\LocatorAwareTrait::fetchTable` based on the first argument passed
+1. Provide correct return type for `Cake\Mailer\MailerAwareTrait::getMailer` based on the first argument passed
 
 <details>
       <summary>Examples:</summary>
@@ -130,13 +131,30 @@ This rule check if association options are valid option types based on what each
 Table::hasMany, Table::belongsToMany, Table::hasOne and AssociationCollection::load.
 
 ### AddBehaviorExistsClassRule
-This rule check if the target behavior has a valid table class when calling to Table::addBehavior and BehaviorRegistry::load.
+This rule check if the target behavior has a valid class when calling to Table::addBehavior and BehaviorRegistry::load.
+
+### DisallowEntityArrayAccessRule
+This rule disallow array access to entity in favor of object notation, is easier to detect a wrong property and to refactor code.
+
+### GetMailerExistsClassRule
+This rule check if the target mailer is a valid class when calling to Cake\Mailer\MailerAwareTrait::getMailer.
+
+### LoadComponentExistsClassRule
+This rule check if the target component has a valid class when calling to Controller::loadComponent and ComponentRegistry::load.
 
 ### OrmSelectQueryFindMatchOptionsTypesRule
 This rule check if the options (args) passed to Table::find and SelectQuery are valid find options types.
 
 ### TableGetMatchOptionsTypesRule
 This rule check if the options (args) passed to Table::get are valid find options types.
+
+To enable this rule update your phpstan.neon with:
+
+```
+parameters:
+	cakeDC:
+	 	disallowEntityArrayAccessRule: true
+```
 
 ### How to disable a rule
 Each rule has a parameter in cakeDC 'namespace' to enable or disable, it is the same name of the

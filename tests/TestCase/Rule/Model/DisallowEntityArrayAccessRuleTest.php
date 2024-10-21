@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace CakeDC\PHPStan\Test\TestCase\Rule\Model;
 
-use CakeDC\PHPStan\Rule\Model\AddAssociationExistsTableClassRule;
+use CakeDC\PHPStan\Rule\Model\DisallowEntityArrayAccessRule;
 use PHPStan\Rules\Rule;
 use PHPStan\Testing\RuleTestCase;
 
-class AddAssociationExistsTableClassRuleTest extends RuleTestCase
+class DisallowEntityArrayAccessRuleTest extends RuleTestCase
 {
     /**
      * @return \PHPStan\Rules\Rule
@@ -25,7 +25,7 @@ class AddAssociationExistsTableClassRuleTest extends RuleTestCase
     protected function getRule(): Rule
     {
         // getRule() method needs to return an instance of the tested rule
-        return new AddAssociationExistsTableClassRule();
+        return new DisallowEntityArrayAccessRule();
     }
 
     /**
@@ -36,22 +36,26 @@ class AddAssociationExistsTableClassRuleTest extends RuleTestCase
         // first argument: path to the example file that contains some errors that should be reported by MyRule
         // second argument: an array of expected errors,
         // each error consists of the asserted error message, and the asserted error file line
-        $this->analyse([__DIR__ . '/Fake/FailingRuleItemsTable.php'], [
+        $this->analyse([__DIR__ . '/Fake/FailingEntityUseLogic.php'], [
             [
-                'Call to CakeDC\PHPStan\Test\TestCase\Rule\Model\Fake\FailingRuleItemsTable::belongsTo could not find the class for "Fantasies"',
-                51, // asserted error line
+                'Array access to entity to App\Model\Entity\Note is not allowed, access as object instead',
+                22, // asserted error line
             ],
             [
-                'Call to Cake\ORM\AssociationCollection::load could not find the class for "CrazyUsers"',
-                139,
+                'Array access to entity to App\Model\Entity\Note is not allowed, access as object instead',
+                23, // asserted error line
             ],
             [
-                'Call to CakeDC\PHPStan\Test\TestCase\Rule\Model\Fake\FailingRuleItemsTable::hasOne could not find the class for "Articles"',
-                187,
+                'Array access to entity to Cake\Datasource\EntityInterface is not allowed, access as object instead',
+                28,
             ],
             [
-                'Call to CakeDC\PHPStan\Test\TestCase\Rule\Model\Fake\FailingRuleItemsTable::hasOne could not find the class for "SomeArticles"',
-                191,
+                'Array access to entity to App\Model\Entity\User is not allowed, access as object instead',
+                30, // asserted error line
+            ],
+            [
+                'Array access to entity to App\Model\Entity\Note is not allowed, access as object instead',
+                33, // asserted error line
             ],
         ]);
     }

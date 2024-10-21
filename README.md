@@ -134,7 +134,7 @@ Table::hasMany, Table::belongsToMany, Table::hasOne and AssociationCollection::l
 This rule check if the target behavior has a valid class when calling to Table::addBehavior and BehaviorRegistry::load.
 
 ### DisallowEntityArrayAccessRule
-This rule check disallow array access to entity in favor of object notation, is easier to detect a wrong property and to refactor code.
+This rule disallow array access to entity in favor of object notation, is easier to detect a wrong property and to refactor code.
 
 ### GetMailerExistsClassRule
 This rule check if the target mailer is a valid class when calling to Cake\Mailer\MailerAwareTrait::getMailer.

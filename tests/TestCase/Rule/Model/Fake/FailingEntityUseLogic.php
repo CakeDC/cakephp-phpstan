@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace CakeDC\PHPStan\Test\TestCase\Rule\Model\Fake;
 
 use Cake\ORM\Locator\LocatorAwareTrait;
+use SplFixedArray;
 
 class FailingEntityUseLogic
 {
@@ -28,7 +29,7 @@ class FailingEntityUseLogic
         $date = $unknown['create'];
         $user = $this->fetchTable('Users')->get(10);
         $user['role'] = 'Admin';
-        $array = new \SplFixedArray(2);
+        $array = new SplFixedArray(2);
         $array[0] = 'a';
         $array[1] = 'b';
 

@@ -12,7 +12,7 @@ use PHPStan\Analyser\Error;
 trait AnalyseCheckLineStartsWithTrait
 {
     /**
-     * @param string[] $files
+     * @param array<string> $files
      * @param array{array{'0': string, '1':int}} $expected
      * @return void
      */

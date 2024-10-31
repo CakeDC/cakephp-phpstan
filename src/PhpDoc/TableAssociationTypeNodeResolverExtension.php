@@ -15,7 +15,6 @@ use PHPStan\PhpDoc\TypeNodeResolverExtension;
 use PHPStan\PhpDocParser\Ast\Type\IntersectionTypeNode;
 use PHPStan\PhpDocParser\Ast\Type\TypeNode;
 use PHPStan\Type\Generic\GenericObjectType;
-use PHPStan\Type\ObjectType;
 use PHPStan\Type\Type;
 
 /**

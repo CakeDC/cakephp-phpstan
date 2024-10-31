@@ -5,6 +5,7 @@ namespace CakeDC\PHPStan\Visitor;
 
 use CakeDC\PHPStan\Rule\Traits\ParseClassNameFromArgTrait;
 use PhpParser\Node;
+use PhpParser\Node\Arg;
 use PhpParser\Node\Expr;
 use PhpParser\Node\Expr\MethodCall;
 use PhpParser\NodeVisitorAbstract;
@@ -43,9 +44,10 @@ class AddAssociationSetClassNameVisitor extends NodeVisitorAbstract
             return null;
         }
         if ($this->optionsSet === null && $node->name->name === 'setClassName') {
-            $this->optionsSet = $node->args[0]->value ?? null;
+            $arg = $node->args[0] ?? null;
+            $this->optionsSet = $arg instanceof Arg ? $arg->value : null;
         }
-        if (in_array($node->name->name, ['load', 'belongsTo', 'belongsToMany', 'hasOne', 'hasMany'])) {
+        if (in_array($node->name->name, ['load', 'belongsTo', 'belongsToMany', 'hasOne', 'hasMany'], true)) {
             $node->setAttribute(self::ATTRIBUTE_NAME, $this->optionsSet);
         }
 

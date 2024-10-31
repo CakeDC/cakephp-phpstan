@@ -46,8 +46,8 @@
         "cs-fix": "phpcbf -p src/ tests",
         "test": "phpunit --stderr",
         "stan-integration": [
-            "phpstan analyse --debug tests/test_app/",
-            "phpstan analyse --debug tests/test_plugin/"
+            "phpstan analyse --debug -c phpstan-test-app.neon",
+            "phpstan analyse --debug -c phpstan-test-plugin.neon"
         ],
         "stan": "phpstan analyse --debug src/",
         "check": [

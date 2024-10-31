@@ -50,7 +50,7 @@ class NotesController extends Controller
         $findOrCreate = $this->fetchTable()->findOrCreate(['user_id' => 1, 'note' => 'My Note']);
         Log::info('Accessing note after findOrCreate call' . $findOrCreate->note);
 
-        $entities = $this->fetchTable()->newEntities([]);
+        $entities = $this->fetchTable()->newEntities([['user_id' => 1], ['user_id' => 2]]);
         foreach ($entities as $newEntity) {
             $newEntity->note = 'My Empty new entities test';
             Log::info('Accessing note after newEntities call' . $newEntity->note);
@@ -60,6 +60,12 @@ class NotesController extends Controller
         foreach ($patchedEntities as $patchedEntity) {
             $patchedEntity->note = 'My patched entities test';
             Log::info('Accessing note after patchEntities call' . $patchedEntity->note);
+        }
+        $entitiesIterable = $this->fetchTable()->iterableItems();
+        $patchedEntitiesIterable = $this->fetchTable()->patchEntities($entitiesIterable, (array)$this->request->getData());
+        foreach ($patchedEntitiesIterable as $patchedEntityIt) {
+            $patchedEntityIt->note = 'My patched entities test';
+            Log::info('Accessing note after patchEntities call' . $patchedEntityIt->note);
         }
         $savedEntities = $this->fetchTable()->saveManyOrFail($patchedEntities);
         foreach ($savedEntities as $savedEntity) {

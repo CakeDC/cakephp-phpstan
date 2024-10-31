@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace App\Model\Table;
 
+use App\Model\Entity\Note;
 use Cake\ORM\Query\SelectQuery;
 use Cake\ORM\Table;
 
@@ -156,5 +157,13 @@ class NotesTable extends Table
     public function getTypeTestTwoArgsButNotLegacy(): string
     {
         return 'myType';
+    }
+
+    /**
+     * @return iterable<\App\Model\Entity\Note>
+     */
+    public function iterableItems(): iterable
+    {
+        return [new Note(), new Note()];
     }
 }

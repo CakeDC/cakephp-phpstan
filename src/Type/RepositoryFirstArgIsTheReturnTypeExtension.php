@@ -46,7 +46,7 @@ class RepositoryFirstArgIsTheReturnTypeExtension implements DynamicMethodReturnT
     /**
      * @var string
      */
-    private string $className;
+    protected string $className;
 
     /**
      * @var string
@@ -107,8 +107,12 @@ class RepositoryFirstArgIsTheReturnTypeExtension implements DynamicMethodReturnT
             return new UnionType($types);
         }
         if ($methodReflection->getName() == 'patchEntities') {
-            if ($type instanceof ArrayType || $type instanceof IterableType) {
-                return new ArrayType(new IntegerType(), $type->getItemType());
+            if (!$type->isIterable()->yes()) {
+                return $this->getTypeWhenNotFound($methodReflection);
+            }
+            $valueType = $type->getIterableValueType();
+            if ($valueType->isObject()->yes()) {
+                return new ArrayType(new IntegerType(), $valueType);
             }
 
             return $this->getTypeWhenNotFound($methodReflection);

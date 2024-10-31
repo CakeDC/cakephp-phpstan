@@ -18,7 +18,7 @@ use PhpParser\Node\Expr\MethodCall;
 use PhpParser\Node\Scalar\String_;
 use PHPStan\Analyser\Scope;
 use PHPStan\Reflection\ClassReflection;
-use PHPStan\Reflection\Php\PhpMethodReflection;
+use PHPStan\Reflection\ExtendedMethodReflection;
 use PHPStan\Rules\Rule;
 use PHPStan\Rules\RuleError;
 use PHPStan\Rules\RuleErrorBuilder;
@@ -214,19 +214,15 @@ class OrmSelectQueryFindMatchOptionsTypesRule implements Rule
     /**
      * @param \PHPStan\Analyser\Scope $scope
      * @param string $targetMethod
-     * @return \PHPStan\Reflection\Php\PhpMethodReflection
+     * @return \PHPStan\Reflection\ExtendedMethodReflection|null
      * @throws \PHPStan\Reflection\MissingMethodFromReflectionException
      */
-    protected function getTargetMethod(Scope $scope, string $targetMethod): PhpMethodReflection
+    protected function getTargetMethod(Scope $scope, string $targetMethod): ?ExtendedMethodReflection
     {
         $object = new ObjectType(SelectQuery::class);
         $classReflection = $object->getClassReflection();
-        assert($classReflection instanceof ClassReflection);
-        $methodReflection = $classReflection
-            ->getMethod($targetMethod, $scope);
-        assert($methodReflection instanceof PhpMethodReflection);
 
-        return $methodReflection;
+        return $classReflection?->getMethod($targetMethod, $scope);
     }
 
     /**
@@ -362,7 +358,7 @@ class OrmSelectQueryFindMatchOptionsTypesRule implements Rule
             if (
                 $secondParam->getName() === 'options'
                 && !$secondParam->isVariadic()
-                && ($paramType instanceof MixedType || $paramType instanceof ArrayType)
+                && ($paramType instanceof MixedType || $paramType->isArray()->yes())
             ) {
                 return [];
             }
@@ -389,6 +385,9 @@ class OrmSelectQueryFindMatchOptionsTypesRule implements Rule
     {
         if (isset($this->queryOptionsMap[$name])) {
             $methodReflection = $this->getTargetMethod($scope, $this->queryOptionsMap[$name]);
+            if ($methodReflection === null) {
+                return null;
+            }
             $parameter = $methodReflection->getVariants()[0]->getParameters()[0];
 
             return $parameter->getType();

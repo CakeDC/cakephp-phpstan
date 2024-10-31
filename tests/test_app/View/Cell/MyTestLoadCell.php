@@ -17,6 +17,8 @@ use Cake\View\Cell;
 
 class MyTestLoadCell extends Cell
 {
+    protected ?string $defaultTable = 'Users';
+
     /**
      * Test for TableLocatorDynamicReturnTypeExtension with loadModel
      *
@@ -26,6 +28,7 @@ class MyTestLoadCell extends Cell
     {
         $article = $this->fetchTable('VeryCustomize00009Articles')
             ->newSample();
+        $this->fetchTable()->blockOld();
         $this->set('article', $article);
     }
 }

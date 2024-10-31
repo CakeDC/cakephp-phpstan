@@ -14,10 +14,10 @@ declare(strict_types=1);
 namespace CakeDC\PHPStan\Type;
 
 use PhpParser\Node\Expr\MethodCall;
+use PHPStan\Reflection\ClassReflection;
 use PHPStan\Reflection\MethodReflection;
 use PHPStan\Type\ObjectType;
 use PHPStan\Type\Type;
-use ReflectionClass;
 
 class ControllerFetchTableDynamicReturnTypeExtension extends TableLocatorDynamicReturnTypeExtension
 {
@@ -27,7 +27,7 @@ class ControllerFetchTableDynamicReturnTypeExtension extends TableLocatorDynamic
     protected function getReturnTypeWithoutArgs(
         MethodReflection $methodReflection,
         MethodCall $methodCall,
-        ReflectionClass $targetClassReflection
+        ClassReflection $targetClassReflection
     ): ?Type {
         $type = parent::getReturnTypeWithoutArgs($methodReflection, $methodCall, $targetClassReflection);
         if ($type !== null) {
@@ -42,22 +42,23 @@ class ControllerFetchTableDynamicReturnTypeExtension extends TableLocatorDynamic
     }
 
     /**
-     * @param \ReflectionClass $targetClassReflection
+     * @param \PHPStan\Reflection\ClassReflection $targetClassReflection
      * @return string|null
      */
-    protected function getDefaultTableByControllerClass(ReflectionClass $targetClassReflection): ?string
+    protected function getDefaultTableByControllerClass(ClassReflection $targetClassReflection): ?string
     {
         $hasProperty = $targetClassReflection->hasProperty('defaultTable');
         if (!$hasProperty) {
             return null;
         }
-        $namespace = $targetClassReflection->getNamespaceName();
+        $nativeReflection = $targetClassReflection->getNativeReflection();
+        $namespace = $nativeReflection->getNamespaceName();
         $pos = strrpos($namespace, '\\Controller');
         if ($pos === false) {
             return null;
         }
         $baseNamespace = substr($namespace, 0, $pos);
-        $shortName = $targetClassReflection->getShortName();
+        $shortName = $nativeReflection->getShortName();
         $shortName = str_replace('Controller', '', $shortName);
         $tableClassName = sprintf(
             '%s\\Model\\Table\\%sTable',

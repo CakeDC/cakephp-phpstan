@@ -80,17 +80,17 @@ class RepositoryFirstArgIsTheReturnTypeExtension implements DynamicMethodReturnT
      * @param \PHPStan\Reflection\MethodReflection $methodReflection
      * @param \PhpParser\Node\Expr\MethodCall $methodCall
      * @param \PHPStan\Analyser\Scope $scope
-     * @return \PHPStan\Type\Type
+     * @return \PHPStan\Type\Type|null
      * @throws \PHPStan\ShouldNotHappenException
      */
     public function getTypeFromMethodCall(
         MethodReflection $methodReflection,
         MethodCall $methodCall,
         Scope $scope
-    ): Type {
+    ): ?Type {
         $args = $methodCall->getArgs();
         if (count($args) === 0) {
-            return $this->getTypeWhenNotFound($methodReflection);
+            return null;
         }
 
         $type = $scope->getType($args[0]->value);
@@ -108,14 +108,14 @@ class RepositoryFirstArgIsTheReturnTypeExtension implements DynamicMethodReturnT
         }
         if ($methodReflection->getName() == 'patchEntities') {
             if (!$type->isIterable()->yes()) {
-                return $this->getTypeWhenNotFound($methodReflection);
+                return null;
             }
             $valueType = $type->getIterableValueType();
             if ($valueType->isObject()->yes()) {
                 return new ArrayType(new IntegerType(), $valueType);
             }
 
-            return $this->getTypeWhenNotFound($methodReflection);
+            return null;
         }
 
         return $type;

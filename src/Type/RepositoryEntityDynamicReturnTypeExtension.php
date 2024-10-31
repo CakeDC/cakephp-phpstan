@@ -79,17 +79,17 @@ class RepositoryEntityDynamicReturnTypeExtension implements DynamicMethodReturnT
      * @param \PHPStan\Reflection\MethodReflection $methodReflection
      * @param \PhpParser\Node\Expr\MethodCall $methodCall
      * @param \PHPStan\Analyser\Scope $scope
-     * @return \PHPStan\Type\Type
+     * @return \PHPStan\Type\Type|null
      * @throws \PHPStan\ShouldNotHappenException
      */
     public function getTypeFromMethodCall(
         MethodReflection $methodReflection,
         MethodCall $methodCall,
         Scope $scope
-    ): Type {
+    ): ?Type {
         $className = $this->getReferenceClass($scope, $methodCall);
         if ($className === null || $className === Table::class) {
-            return $this->getTypeWhenNotFound($methodReflection);
+            return null;
         }
 
         $entityClass = $this->getEntityClassByTableClass($className);
@@ -102,7 +102,7 @@ class RepositoryEntityDynamicReturnTypeExtension implements DynamicMethodReturnT
             return new ObjectType($entityClass);
         }
 
-        return $this->getTypeWhenNotFound($methodReflection);
+        return null;
     }
 
     /**

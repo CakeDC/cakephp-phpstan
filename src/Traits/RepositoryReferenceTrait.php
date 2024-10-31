@@ -16,15 +16,15 @@ trait RepositoryReferenceTrait
      */
     protected function getReferenceClass(Scope $scope, MethodCall $methodCall): ?string
     {
-        $classes = $scope->getType($methodCall->var)->getReferencedClasses();
-        if (!isset($classes[0])) {
+        $reflections = $scope->getType($methodCall->var)->getObjectClassReflections();
+        if (!isset($reflections[0])) {
             return null;
         }
-        if (!is_subclass_of($classes[0], Association::class)) {
-            return $classes[0];
+        if (!$reflections[0]->isSubclassOf(Association::class)) {
+            return $reflections[0]->getName();
         }
         //We should have key 1 for associations, ex: BelongsTo<\App\Model\Table\UsersTable>
 
-        return $classes[1] ?? null;
+        return $reflections[1]->getName() ?? null;
     }
 }

@@ -22,7 +22,6 @@ use PHPStan\Type\ArrayType;
 use PHPStan\Type\Constant\ConstantBooleanType;
 use PHPStan\Type\DynamicMethodReturnTypeExtension;
 use PHPStan\Type\IntegerType;
-use PHPStan\Type\IterableType;
 use PHPStan\Type\Type;
 use PHPStan\Type\UnionType;
 

@@ -4,16 +4,13 @@ declare(strict_types=1);
 namespace CakeDC\PHPStan\Test\TestCase\Rule\Model;
 
 use CakeDC\PHPStan\Rule\Model\AddAssociationMatchOptionsTypesRule;
-use CakeDC\PHPStan\Rule\Traits\AnalyseCheckLineStartsWithTrait;
+use CakeDC\PHPStan\Testing\CustomRuleTestCase;
 use PHPStan\Rules\Properties\PropertyReflectionFinder;
 use PHPStan\Rules\Rule;
 use PHPStan\Rules\RuleLevelHelper;
-use PHPStan\Testing\RuleTestCase;
 
-class AddAssociationMatchOptionsTypesRuleTest extends RuleTestCase
+class AddAssociationMatchOptionsTypesRuleTest extends CustomRuleTestCase
 {
-    use AnalyseCheckLineStartsWithTrait;
-
     /**
      * @return \PHPStan\Rules\Rule
      */

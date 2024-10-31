@@ -25,6 +25,6 @@ trait RepositoryReferenceTrait
         }
         //We should have key 1 for associations, ex: BelongsTo<\App\Model\Table\UsersTable>
 
-        return $reflections[1]->getName() ?? null;
+        return $reflections[1]?->getName() ?? null;
     }
 }

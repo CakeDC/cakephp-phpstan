@@ -18,7 +18,7 @@ use Cake\ORM\Query\SelectQuery;
 use Cake\ORM\Table;
 
 /**
- * @method \App\Model\Entity\Note|\Cake\Datasource\EntityInterface get(mixed $primaryKey, array|string $finder = 'all',CacheInterface|string|null $cache = null,\Closure|string|null $cacheKey = null, mixed ...$args)
+ * @method \App\Model\Entity\Note|\Cake\Datasource\EntityInterface get(mixed $primaryKey, string[]|string $finder = 'all',\Psr\SimpleCache\CacheInterface|string|null $cache = null,\Closure|string|null $cacheKey = null, mixed ...$args)
  * @property \App\Model\Table\VeryCustomize00009ArticlesTable&\Cake\ORM\Association\HasMany $VeryCustomize00009Articles
  * @property \Cake\ORM\Association\BelongsTo<\App\Model\Table\UsersTable> $Users
  * @property \Cake\ORM\Association\BelongsTo&\App\Model\Table\UsersTable $MyUsers

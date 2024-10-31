@@ -10,8 +10,8 @@ use Cake\ORM\Entity;
  * @property string $note
  * @property int $user_id
  * @property \App\Model\Entity\User $user
- * @property \Cake\I18n\FrozenDate $created
- * @property \Cake\I18n\FrozenDate $modified
+ * @property \Cake\I18n\Date $created
+ * @property \Cake\I18n\Date $modified
  */
 class Note extends Entity
 {

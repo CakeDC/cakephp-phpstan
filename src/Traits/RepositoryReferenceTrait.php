@@ -24,7 +24,10 @@ trait RepositoryReferenceTrait
             return $reflections[0]->getName();
         }
         //We should have key 1 for associations, ex: BelongsTo<\App\Model\Table\UsersTable>
+        if (isset($reflections[1])) {
+            return $reflections[1]->getName();
+        }
 
-        return $reflections[1]?->getName() ?? null;
+        return null;
     }
 }

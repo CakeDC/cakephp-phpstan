@@ -13,7 +13,7 @@ trait AnalyseCheckLineStartsWithTrait
 {
     /**
      * @param string[] $files
-     * @param array<int, array<int, int|string> $expected
+     * @param array{array{'0': string, '1':int}} $expected
      * @return void
      */
     public function analyseCheckLineStartsWith(array $files, array $expected): void
@@ -32,7 +32,7 @@ trait AnalyseCheckLineStartsWithTrait
         }, $actualErrors);
 
         $expected = array_map(static function (array $item) use ($messageText): string {
-            return $messageText($item[1], $item[0]);
+            return $messageText((int)$item[1], (string)$item[0]);
         }, $expected);
         $this->assertThat($expected, new ArrayOfStringStartsWith($actualErrors));
     }

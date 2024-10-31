@@ -37,7 +37,7 @@ class ArrayOfStringStartsWith extends Constraint
     }
 
     /**
-     * @param mixed $other
+     * @param array<int, string> $other
      * @return bool
      */
     protected function matches(mixed $other): bool

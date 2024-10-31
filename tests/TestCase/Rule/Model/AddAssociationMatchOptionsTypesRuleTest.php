@@ -5,7 +5,6 @@ namespace CakeDC\PHPStan\Test\TestCase\Rule\Model;
 
 use CakeDC\PHPStan\Rule\Model\AddAssociationMatchOptionsTypesRule;
 use CakeDC\PHPStan\Testing\CustomRuleTestCase;
-use PHPStan\Rules\Properties\PropertyReflectionFinder;
 use PHPStan\Rules\Rule;
 use PHPStan\Rules\RuleLevelHelper;
 

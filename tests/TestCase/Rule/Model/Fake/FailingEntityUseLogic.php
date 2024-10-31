@@ -28,6 +28,9 @@ class FailingEntityUseLogic
         $date = $unknown['create'];
         $user = $this->fetchTable('Users')->get(10);
         $user['role'] = 'Admin';
+        $array = new \SplFixedArray(2);
+        $array[0] = 'a';
+        $array[1] = 'b';
 
         return [
             'userId' => $entity['user_id'],

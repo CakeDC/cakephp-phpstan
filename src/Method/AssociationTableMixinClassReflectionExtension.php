@@ -25,6 +25,9 @@ class AssociationTableMixinClassReflectionExtension implements
      */
     protected ReflectionProvider $reflectionProvider;
 
+    /**
+     * @param \PHPStan\Reflection\ReflectionProvider $reflectionProvider
+     */
     public function __construct(ReflectionProvider $reflectionProvider)
     {
         $this->reflectionProvider = $reflectionProvider;

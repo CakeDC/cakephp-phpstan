@@ -14,7 +14,7 @@ use PHPStan\Analyser\Scope;
 trait RepositoryReferenceTrait
 {
     /**
-     * @var string[]
+     * @var array<string>
      */
     protected array $associationsClasses = [
         Association::class,

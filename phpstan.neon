@@ -4,4 +4,12 @@ includes:
     - vendor/phpstan/phpstan-deprecation-rules/rules.neon
 parameters:
     level: max
+    paths:
+        - src
+        - tests/TestCase
+    excludePaths:
+        - */Fake/*
     treatPhpDocTypesAsCertain: false
+    ignoreErrors:
+        -
+            identifier: missingType.generics

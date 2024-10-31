@@ -49,7 +49,7 @@
             "phpstan analyse --debug -c phpstan-test-app.neon",
             "phpstan analyse --debug -c phpstan-test-plugin.neon"
         ],
-        "stan": "phpstan analyse --debug src/",
+        "stan": "phpstan analyse --debug",
         "check": [
             "@cs-check",
             "@stan",

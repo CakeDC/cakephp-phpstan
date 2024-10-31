@@ -18,17 +18,7 @@ class AddAssociationMatchOptionsTypesRuleTest extends CustomRuleTestCase
     {
         // getRule() method needs to return an instance of the tested rule
         return new AddAssociationMatchOptionsTypesRule(
-            new RuleLevelHelper(
-                $this->createReflectionProvider(),
-                true,
-                false,
-                true,
-                false,
-                false,
-                true,
-                false
-            ),
-            new PropertyReflectionFinder()
+            static::getContainer()->getByType(RuleLevelHelper::class)
         );
     }
 

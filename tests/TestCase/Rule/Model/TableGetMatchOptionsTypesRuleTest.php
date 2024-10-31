@@ -17,16 +17,7 @@ class TableGetMatchOptionsTypesRuleTest extends RuleTestCase
     {
         // getRule() method needs to return an instance of the tested rule
         return new TableGetMatchOptionsTypesRule(
-            new RuleLevelHelper(
-                $this->createReflectionProvider(),
-                true,
-                false,
-                true,
-                false,
-                false,
-                true,
-                false
-            )
+            static::getContainer()->getByType(RuleLevelHelper::class)
         );
     }
 

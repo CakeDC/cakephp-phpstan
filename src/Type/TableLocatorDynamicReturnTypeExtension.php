@@ -85,10 +85,10 @@ class TableLocatorDynamicReturnTypeExtension implements DynamicMethodReturnTypeE
 
     /**
      * @param \PHPStan\Reflection\ClassReflection $target
-     * @return mixed
+     * @return string|null
      * @throws \ReflectionException
      */
-    protected function getDefaultTable(ClassReflection $target): mixed
+    protected function getDefaultTable(ClassReflection $target): ?string
     {
         $default = $target->getNativeReflection()
             ->getProperty('defaultTable')
@@ -113,7 +113,7 @@ class TableLocatorDynamicReturnTypeExtension implements DynamicMethodReturnTypeE
     ): ?Type {
         try {
             $defaultTable = $this->getDefaultTable($targetClassReflection);
-            if (is_string($defaultTable) && $defaultTable) {
+            if (is_string($defaultTable) && $defaultTable !== '') {
                 return $this->getCakeType($defaultTable);
             }
         } catch (ReflectionException) {

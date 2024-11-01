@@ -44,14 +44,16 @@ trait BaseCakeRegistryReturnTrait
         if (!method_exists($argType, 'getValue')) {
             return new ObjectType($this->defaultClass);
         }
+        $value = $argType->getValue();
+        if (!is_string($value)) {
+            return null;
+        }
 
-        return $this->getCakeType($argType->getValue());
+        return $this->getCakeType($value);
     }
 
     /**
-     * Get the target class.
-     *
-     * @return string
+     * @inheritDoc
      */
     public function getClass(): string
     {

@@ -43,7 +43,7 @@ class RepositoryFirstArgIsTheReturnTypeExtension implements DynamicMethodReturnT
         'deleteManyOrFail',
     ];
     /**
-     * @var string
+     * @var class-string
      */
     protected string $className;
 
@@ -57,7 +57,7 @@ class RepositoryFirstArgIsTheReturnTypeExtension implements DynamicMethodReturnT
     protected string $namespaceFormat;
 
     /**
-     * @param string $className  The target className.
+     * @param class-string $className  The target className.
      */
     public function __construct(string $className)
     {

@@ -33,7 +33,7 @@ class RepositoryEntityDynamicReturnTypeExtension implements DynamicMethodReturnT
     use RepositoryReferenceTrait;
 
     /**
-     * @var string
+     * @var class-string
      */
     private string $className;
     /**
@@ -57,7 +57,7 @@ class RepositoryEntityDynamicReturnTypeExtension implements DynamicMethodReturnT
     protected string $namespaceFormat;
 
     /**
-     * @param string $className  The target className.
+     * @param class-string $className  The target className.
      */
     public function __construct(string $className)
     {

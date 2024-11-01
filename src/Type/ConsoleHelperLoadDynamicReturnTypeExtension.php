@@ -26,7 +26,7 @@ class ConsoleHelperLoadDynamicReturnTypeExtension implements DynamicMethodReturn
     }
 
     /**
-     * @var string
+     * @var class-string
      */
     private string $className;
     /**

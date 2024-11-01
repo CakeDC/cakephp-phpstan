@@ -23,7 +23,7 @@ class ComponentLoadDynamicReturnTypeExtension implements DynamicMethodReturnType
     use BaseCakeRegistryReturnTrait;
 
     /**
-     * @var string
+     * @var class-string
      */
     private string $className;
     /**

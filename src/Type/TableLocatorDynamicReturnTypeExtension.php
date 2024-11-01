@@ -31,7 +31,7 @@ class TableLocatorDynamicReturnTypeExtension implements DynamicMethodReturnTypeE
     }
 
     /**
-     * @var string
+     * @var class-string
      */
     protected string $className;
     /**
@@ -44,7 +44,7 @@ class TableLocatorDynamicReturnTypeExtension implements DynamicMethodReturnTypeE
     /**
      * TableLocatorDynamicReturnTypeExtension constructor.
      *
-     * @param string $className  The target className.
+     * @param class-string $className  The target className.
      * @param string $methodName The dynamic method to handle.
      */
     public function __construct(string $className, string $methodName)

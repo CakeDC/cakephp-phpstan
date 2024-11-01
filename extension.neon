@@ -15,22 +15,6 @@ services:
 		tags:
 			- phpstan.broker.dynamicMethodReturnTypeExtension
 	-
-		factory: CakeDC\PHPStan\Type\TableLocatorDynamicReturnTypeExtension(Cake\Command\Command, fetchTable)
-		tags:
-			- phpstan.broker.dynamicMethodReturnTypeExtension
-	-
-		factory: CakeDC\PHPStan\Type\TableLocatorDynamicReturnTypeExtension(Cake\Mailer\Mailer, fetchTable)
-		tags:
-			- phpstan.broker.dynamicMethodReturnTypeExtension
-	-
-		factory: CakeDC\PHPStan\Type\TableLocatorDynamicReturnTypeExtension(Cake\View\Cell, fetchTable)
-		tags:
-			- phpstan.broker.dynamicMethodReturnTypeExtension
-	-
-		factory: CakeDC\PHPStan\Type\TableLocatorDynamicReturnTypeExtension(Cake\Controller\Component, fetchTable)
-		tags:
-			- phpstan.broker.dynamicMethodReturnTypeExtension
-	-
 		factory: CakeDC\PHPStan\Type\TableLocatorDynamicReturnTypeExtension(Cake\ORM\Locator\LocatorInterface, get)
 		tags:
 			- phpstan.broker.dynamicMethodReturnTypeExtension

@@ -28,6 +28,7 @@ use PHPStan\Type\MixedType;
 use PHPStan\Type\ObjectType;
 use PHPStan\Type\Type;
 use PHPStan\Type\VerbosityLevel;
+use function sprintf;
 
 class OrmSelectQueryFindMatchOptionsTypesRule implements Rule
 {
@@ -133,7 +134,7 @@ class OrmSelectQueryFindMatchOptionsTypesRule implements Rule
 
             if ($error !== null) {
                 if (!$error instanceof IdentifierRuleError) {
-                    throw new ShouldNotHappenException(\sprintf(
+                    throw new ShouldNotHappenException(sprintf(
                         'Expected error message to be instance of "%s", but got instance of "%s" instead.',
                         IdentifierRuleError::class,
                         $error::class,

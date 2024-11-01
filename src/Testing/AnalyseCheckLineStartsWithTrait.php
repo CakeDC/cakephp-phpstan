@@ -32,8 +32,8 @@ trait AnalyseCheckLineStartsWithTrait
         }, $actualErrors);
 
         $expected = array_map(static function (array $item) use ($messageText): string {
-            return $messageText((int)$item[1], (string)$item[0]);
+            return $messageText($item[1], $item[0]);
         }, $expected);
-        $this->assertThat($expected, new ArrayOfStringStartsWith($actualErrors));
+        static::assertThat($expected, new ArrayOfStringStartsWith($actualErrors));
     }
 }

@@ -35,7 +35,7 @@ trait RepositoryReferenceTrait
         if (!isset($classes[0])) {
             return null;
         }
-        if (!in_array($classes[0], $this->associationsClasses)) {
+        if (!in_array($classes[0], $this->associationsClasses, true)) {
             return $classes[0];
         }
         //We should have key 1 for associations, ex: BelongsTo<\App\Model\Table\UsersTable>

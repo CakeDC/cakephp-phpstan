@@ -18,10 +18,12 @@ use PhpParser\Node\Expr\MethodCall;
 use PhpParser\Node\Scalar\String_;
 use PHPStan\Analyser\Scope;
 use PHPStan\Reflection\ExtendedMethodReflection;
+use PHPStan\Rules\IdentifierRuleError;
 use PHPStan\Rules\Rule;
 use PHPStan\Rules\RuleError;
 use PHPStan\Rules\RuleErrorBuilder;
 use PHPStan\Rules\RuleLevelHelper;
+use PHPStan\ShouldNotHappenException;
 use PHPStan\Type\MixedType;
 use PHPStan\Type\ObjectType;
 use PHPStan\Type\Type;
@@ -78,7 +80,7 @@ class OrmSelectQueryFindMatchOptionsTypesRule implements Rule
     }
 
     /**
-     * @return string
+     * @inheritDoc
      */
     public function getNodeType(): string
     {
@@ -88,7 +90,7 @@ class OrmSelectQueryFindMatchOptionsTypesRule implements Rule
     /**
      * @param \PhpParser\Node $node
      * @param \PHPStan\Analyser\Scope $scope
-     * @return array<\PHPStan\Rules\RuleError>
+     * @return list<\PHPStan\Rules\IdentifierRuleError>
      * @throws \PHPStan\ShouldNotHappenException
      * @throws \PHPStan\Reflection\MissingMethodFromReflectionException
      */
@@ -96,11 +98,11 @@ class OrmSelectQueryFindMatchOptionsTypesRule implements Rule
     {
         assert($node instanceof MethodCall);
         $args = $node->getArgs();
-        if (!$node->name instanceof Node\Identifier || !in_array($node->name->name, $this->targetMethods)) {
+        if (!$node->name instanceof Node\Identifier || !in_array($node->name->name, $this->targetMethods, true)) {
             return [];
         }
         $referenceClasses = $scope->getType($node->var)->getReferencedClasses();
-        if (empty($referenceClasses)) {
+        if ($referenceClasses === []) {
             return [];
         }
         try {
@@ -112,24 +114,31 @@ class OrmSelectQueryFindMatchOptionsTypesRule implements Rule
             return [];
         }
         $specificFinderOptions = $this->getSpecificFinderOptions($details, $scope);
-        if (empty($details['options'])) {
+        if ($details['options'] === []) {
             return $this->checkMissingRequiredOptions($specificFinderOptions, $details, []);
         }
         $paramNamesIgnore = $this->getParamNamesIgnore($scope, $node);
         $errors = [];
         foreach ($details['options'] as $name => $item) {
-            if (in_array($name, $paramNamesIgnore)) {
+            if (in_array($name, $paramNamesIgnore, true)) {
                 continue;
             }
             $parameterType = $this->getExpectedType($name, $scope, $specificFinderOptions);
-            $error = $parameterType ? $this->processPropertyTypeCheck(
+            $error = $parameterType !== null ? $this->processPropertyTypeCheck(
                 $parameterType,
                 $scope->getType($item),
                 $details,
                 $name
             ) : null;
 
-            if ($error) {
+            if ($error !== null) {
+                if (!$error instanceof IdentifierRuleError) {
+                    throw new ShouldNotHappenException(\sprintf(
+                        'Expected error message to be instance of "%s", but got instance of "%s" instead.',
+                        IdentifierRuleError::class,
+                        $error::class,
+                    ));
+                }
                 $errors[] = $error;
             }
         }
@@ -149,7 +158,7 @@ class OrmSelectQueryFindMatchOptionsTypesRule implements Rule
         if (
             str_ends_with($reference, 'Table')
             || $reference === SelectQuery::class
-            || in_array($reference, $this->associationTypes)
+            || in_array($reference, $this->associationTypes, true)
         ) {
             $lastOptionPosition = 1;
             $finder = 'all';
@@ -249,13 +258,13 @@ class OrmSelectQueryFindMatchOptionsTypesRule implements Rule
         if (
             count($args) === $totalArgsMethod
             && $args[$lastArgPos]->value instanceof Array_
-            && !$args[$lastArgPos]->name
+            && $args[$lastArgPos]->name === null
             && $args[$lastArgPos]->unpack !== true
         ) {
             return $this->getOptionsFromArray($args[$lastArgPos]->value, $options);
         }
         foreach ($args as $arg) {
-            if ($arg->name) {
+            if ($arg->name !== null) {
                 $options[$arg->name->name] = $arg->value;
             }
             $options = $this->extractOptionsUnpackedArray($arg, $options);
@@ -315,7 +324,7 @@ class OrmSelectQueryFindMatchOptionsTypesRule implements Rule
     {
         $reference = $referenceClasses[0];
         //Is association generic? ex: Cake\ORM\Association\BelongsTo<App\Model\Table\UsersTable>
-        if (isset($referenceClasses[1]) && in_array($reference, $this->associationTypes)) {
+        if (isset($referenceClasses[1]) && in_array($reference, $this->associationTypes, true)) {
             $reference = $referenceClasses[1];
         }
 
@@ -331,7 +340,7 @@ class OrmSelectQueryFindMatchOptionsTypesRule implements Rule
     {
         $specificFinderOptions = [];
         $finder = $details['finder'];
-        if (!$finder || $finder === 'all') {
+        if ($finder === null || $finder === 'all') {
             return [];
         }
         $tableClass = $details['reference'];
@@ -401,8 +410,8 @@ class OrmSelectQueryFindMatchOptionsTypesRule implements Rule
     /**
      * @param array<string, \PHPStan\Reflection\ParameterReflectionWithPhpDocs> $specificFinderOptions
      * @param array{'options': array<\PhpParser\Node\Expr>, 'reference':string, 'methodName':string, 'finder': string|null} $details
-     * @param array<\PHPStan\Rules\RuleError> $errors
-     * @return array<\PHPStan\Rules\RuleError>
+     * @param list<\PHPStan\Rules\IdentifierRuleError> $errors
+     * @return list<\PHPStan\Rules\IdentifierRuleError>
      * @throws \PHPStan\ShouldNotHappenException
      */
     protected function checkMissingRequiredOptions(array $specificFinderOptions, array $details, array $errors): array

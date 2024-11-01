@@ -16,7 +16,7 @@ class TableGetMatchOptionsTypesRule extends OrmSelectQueryFindMatchOptionsTypesR
     protected function getDetails(array $referenceClasses, string $methodName, array $args): ?array
     {
         $reference = $this->getReference($referenceClasses);
-        if (str_ends_with($reference, 'Table') || in_array($reference, $this->associationTypes)) {
+        if (str_ends_with($reference, 'Table') || in_array($reference, $this->associationTypes, true)) {
             $lastOptionPosition = 4;
             $options = $this->getOptions($args, $lastOptionPosition);
 

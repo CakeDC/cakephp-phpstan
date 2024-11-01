@@ -72,7 +72,7 @@ class RepositoryFirstArgIsTheReturnTypeExtension implements DynamicMethodReturnT
      */
     public function isMethodSupported(MethodReflection $methodReflection): bool
     {
-        return in_array($methodReflection->getName(), $this->methodNames);
+        return in_array($methodReflection->getName(), $this->methodNames, true);
     }
 
     /**
@@ -95,7 +95,7 @@ class RepositoryFirstArgIsTheReturnTypeExtension implements DynamicMethodReturnT
         $type = $scope->getType($args[0]->value);
 
         $name = $methodReflection->getName();
-        if (in_array($name, ['save', 'saveMany', 'deleteMany'])) {
+        if (in_array($name, ['save', 'saveMany', 'deleteMany'], true)) {
             if ($type instanceof UnionType) {
                 $types = $type->getTypes();
                 $types[] = new ConstantBooleanType(false);
@@ -105,7 +105,7 @@ class RepositoryFirstArgIsTheReturnTypeExtension implements DynamicMethodReturnT
 
             return new UnionType($types);
         }
-        if ($methodReflection->getName() == 'patchEntities') {
+        if ($methodReflection->getName() === 'patchEntities') {
             if (!$type->isIterable()->yes()) {
                 return null;
             }

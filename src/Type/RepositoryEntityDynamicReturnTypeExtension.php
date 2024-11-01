@@ -72,7 +72,7 @@ class RepositoryEntityDynamicReturnTypeExtension implements DynamicMethodReturnT
      */
     public function isMethodSupported(MethodReflection $methodReflection): bool
     {
-        return in_array($methodReflection->getName(), $this->methodNames);
+        return in_array($methodReflection->getName(), $this->methodNames, true);
     }
 
     /**
@@ -95,7 +95,7 @@ class RepositoryEntityDynamicReturnTypeExtension implements DynamicMethodReturnT
         $entityClass = $this->getEntityClassByTableClass($className);
 
         if ($entityClass !== null && class_exists($entityClass)) {
-            if ($methodReflection->getName() == 'newEntities') {
+            if ($methodReflection->getName() === 'newEntities') {
                 return new ArrayType(new IntegerType(), new ObjectType($entityClass));
             }
 

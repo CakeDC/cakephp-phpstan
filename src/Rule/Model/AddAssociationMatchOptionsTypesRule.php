@@ -16,6 +16,7 @@ use PhpParser\Node\Expr\MethodCall;
 use PhpParser\Node\Scalar\String_;
 use PHPStan\Analyser\Scope;
 use PHPStan\Reflection\ClassReflection;
+use PHPStan\Rules\IdentifierRuleError;
 use PHPStan\Rules\Rule;
 use PHPStan\Rules\RuleError;
 use PHPStan\Rules\RuleErrorBuilder;
@@ -51,7 +52,7 @@ class AddAssociationMatchOptionsTypesRule implements Rule
     ];
 
     /**
-     * @return string
+     * @inheritDoc
      */
     public function getNodeType(): string
     {
@@ -61,7 +62,7 @@ class AddAssociationMatchOptionsTypesRule implements Rule
     /**
      * @param \PhpParser\Node $node
      * @param \PHPStan\Analyser\Scope $scope
-     * @return array<\PHPStan\Rules\RuleError>
+     * @return list<\PHPStan\Rules\IdentifierRuleError>
      */
     public function processNode(Node $node, Scope $scope): array
     {
@@ -100,7 +101,7 @@ class AddAssociationMatchOptionsTypesRule implements Rule
                     $item,
                     $scope
                 );
-                if ($error) {
+                if ($error !== null) {
                     $errors[] = $error;
                 }
             } else {
@@ -158,7 +159,7 @@ class AddAssociationMatchOptionsTypesRule implements Rule
      * @param string $property
      * @param \PhpParser\Node\Expr\ArrayItem $item
      * @param \PHPStan\Analyser\Scope $scope
-     * @return \PHPStan\Rules\RuleError|null
+     * @return \PHPStan\Rules\IdentifierRuleError|null
      * @throws \PHPStan\Reflection\MissingPropertyFromReflectionException
      * @throws \PHPStan\ShouldNotHappenException
      */
@@ -167,7 +168,7 @@ class AddAssociationMatchOptionsTypesRule implements Rule
         string $property,
         ArrayItem $item,
         Scope $scope
-    ): ?RuleError {
+    ): ?IdentifierRuleError {
         $object = new ObjectType($details['type']);
         $classReflection = $object->getClassReflection();
         assert($classReflection instanceof ClassReflection);

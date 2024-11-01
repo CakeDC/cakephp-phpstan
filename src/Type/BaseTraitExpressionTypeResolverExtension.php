@@ -94,7 +94,7 @@ class BaseTraitExpressionTypeResolverExtension implements ExpressionTypeResolver
         }
 
         try {
-            if ($value === null && $this->propertyDefaultValue) {
+            if ($value === null && $this->propertyDefaultValue !== null) {
                 $default = $reflection->getNativeReflection()
                     ->getProperty('defaultTable')
                     ->getDefaultValueExpression();

@@ -13,7 +13,7 @@ use PHPStan\Rules\RuleErrorBuilder;
 class DisallowEntityArrayAccessRule implements Rule
 {
     /**
-     * @return string
+     * @inheritDoc
      */
     public function getNodeType(): string
     {
@@ -23,9 +23,8 @@ class DisallowEntityArrayAccessRule implements Rule
     /**
      * @param \PhpParser\Node $node
      * @param \PHPStan\Analyser\Scope $scope
-     * @return array<\PHPStan\Rules\RuleError>
+     * @return list<\PHPStan\Rules\IdentifierRuleError>
      * @throws \PHPStan\ShouldNotHappenException
-     * @throws \PHPStan\Reflection\MissingMethodFromReflectionException
      */
     public function processNode(Node $node, Scope $scope): array
     {

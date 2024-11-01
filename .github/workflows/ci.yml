@@ -76,8 +76,8 @@ jobs:
 
       - name: Run phpstan integration test app
         if: always()
-        run: vendor/bin/phpstan analyse --debug --error-format=github tests/test_app/
+        run: vendor/bin/phpstan analyse --debug -c phpstan-test-app.neon --error-format=github tests/test_app/
 
       - name: Run phpstan integration test plugin
         if: always()
-        run: vendor/bin/phpstan analyse --debug --error-format=github tests/test_plugin/
+        run: vendor/bin/phpstan analyse --debug -c phpstan-test-plugin.neon --error-format=github tests/test_plugin/

@@ -33,7 +33,7 @@ abstract class LoadObjectExistsCakeClassRule implements Rule
     protected string $identifier;
 
     /**
-     * @return string
+     * @inheritDoc
      */
     public function getNodeType(): string
     {
@@ -43,7 +43,7 @@ abstract class LoadObjectExistsCakeClassRule implements Rule
     /**
      * @param \PhpParser\Node $node
      * @param \PHPStan\Analyser\Scope $scope
-     * @return array<\PHPStan\Rules\RuleError>
+     * @return list<\PHPStan\Rules\IdentifierRuleError>
      */
     public function processNode(Node $node, Scope $scope): array
     {
@@ -60,7 +60,7 @@ abstract class LoadObjectExistsCakeClassRule implements Rule
 
         if (
             $details === null
-            || !in_array($node->name->name, $details['sourceMethods'])
+            || !in_array($node->name->name, $details['sourceMethods'], true)
             || !$details['alias'] instanceof Arg
             || !$details['alias']->value instanceof String_
         ) {
@@ -74,7 +74,7 @@ abstract class LoadObjectExistsCakeClassRule implements Rule
                 $details['options']
             );
         }
-        if ($inputClassName === null || $this->getTargetClassName($inputClassName)) {
+        if ($inputClassName === null || $this->getTargetClassName($inputClassName) !== null) {
             return [];
         }
 

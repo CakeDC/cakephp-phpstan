@@ -64,20 +64,20 @@ class TableAssociationTypeNodeResolverExtension implements TypeNodeResolverExten
             'table' => null,
         ];
         foreach ($types as $type) {
-            if (!$type->isObject()) {
+            if (!$type->isObject()->yes()) {
                 continue;
             }
             $className = $type->getObjectClassNames()[0] ?? null;
             if ($className === null) {
                 continue;
             }
-            if ($config['association'] === null && in_array($className, $this->associationTypes)) {
+            if ($config['association'] === null && in_array($className, $this->associationTypes, true)) {
                 $config['association'] = $type;
             } elseif ($config['table'] === null && str_ends_with($className, 'Table')) {
                 $config['table'] = $type;
             }
         }
-        if ($config['table'] && $config['association']) {
+        if ($config['table'] !== null && $config['association'] !== null) {
             return new GenericObjectType(
                 $config['association']->getObjectClassNames()[0],
                 [$config['table']]

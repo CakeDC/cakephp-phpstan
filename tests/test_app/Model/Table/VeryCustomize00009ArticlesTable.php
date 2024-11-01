@@ -25,8 +25,7 @@ use Cake\ORM\Table;
 class VeryCustomize00009ArticlesTable extends Table
 {
     /**
-     * @param string[] $config Configuration options passed to the constructor
-     * @return void
+     * @inheritDoc
      */
     public function initialize(array $config): void
     {

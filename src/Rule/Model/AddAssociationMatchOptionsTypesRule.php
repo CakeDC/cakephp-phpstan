@@ -11,7 +11,7 @@ use Cake\ORM\AssociationCollection;
 use CakeDC\PHPStan\Rule\Traits\ParseClassNameFromArgTrait;
 use PhpParser\Node;
 use PhpParser\Node\Arg;
-use PhpParser\Node\Expr\ArrayItem;
+use PhpParser\Node\ArrayItem;
 use PhpParser\Node\Expr\MethodCall;
 use PhpParser\Node\Scalar\String_;
 use PHPStan\Analyser\Scope;
@@ -59,9 +59,7 @@ class AddAssociationMatchOptionsTypesRule implements Rule
     }
 
     /**
-     * @param \PhpParser\Node $node
-     * @param \PHPStan\Analyser\Scope $scope
-     * @return list<\PHPStan\Rules\IdentifierRuleError>
+     * @inheritDoc
      */
     public function processNode(Node $node, Scope $scope): array
     {
@@ -156,7 +154,7 @@ class AddAssociationMatchOptionsTypesRule implements Rule
     /**
      * @param array{'alias': ?string, 'options': ?\PhpParser\Node\Arg, 'type': string, 'reference':string, 'methodName':string} $details
      * @param string $property
-     * @param \PhpParser\Node\Expr\ArrayItem $item
+     * @param \PhpParser\Node\ArrayItem $item
      * @param \PHPStan\Analyser\Scope $scope
      * @return \PHPStan\Rules\IdentifierRuleError|null
      * @throws \PHPStan\Reflection\MissingPropertyFromReflectionException
@@ -175,7 +173,7 @@ class AddAssociationMatchOptionsTypesRule implements Rule
             ->getProperty('_' . $property, $scope)
             ->getWritableType();
         $assignedValueType = $scope->getType($item->value);
-        $accepts = $this->ruleLevelHelper->acceptsWithReason($propertyType, $assignedValueType, true);//@phpstan-ignore-line
+        $accepts = $this->ruleLevelHelper->accepts($propertyType, $assignedValueType, true);
         if ($accepts->result) {
             return null;
         }

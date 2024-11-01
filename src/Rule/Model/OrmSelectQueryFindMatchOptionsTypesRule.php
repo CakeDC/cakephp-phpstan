@@ -193,7 +193,7 @@ class OrmSelectQueryFindMatchOptionsTypesRule implements Rule
         array $details,
         string $property
     ): ?RuleError {
-        $accepts = $this->ruleLevelHelper->acceptsWithReason($inputType, $assignedValueType, true);//@phpstan-ignore-line
+        $accepts = $this->ruleLevelHelper->accepts($inputType, $assignedValueType, true);
 
         if ($accepts->result) {
             return null;
@@ -335,7 +335,7 @@ class OrmSelectQueryFindMatchOptionsTypesRule implements Rule
     /**
      * @param array{'options': array<\PhpParser\Node\Expr>, 'reference':string, 'methodName':string, 'finder': string|null} $details
      * @param \PHPStan\Analyser\Scope $scope
-     * @return array<string, \PHPStan\Reflection\ParameterReflectionWithPhpDocs>
+     * @return array<string, \PHPStan\Reflection\ExtendedParameterReflection>
      */
     protected function getSpecificFinderOptions(array $details, Scope $scope): array
     {
@@ -385,7 +385,7 @@ class OrmSelectQueryFindMatchOptionsTypesRule implements Rule
     /**
      * @param string|int $name
      * @param \PHPStan\Analyser\Scope $scope
-     * @param array<string, \PHPStan\Reflection\ParameterReflectionWithPhpDocs> $specificFinderOptions
+     * @param array<string, \PHPStan\Reflection\ExtendedParameterReflection> $specificFinderOptions
      * @return \PHPStan\Type\Type|null
      * @throws \PHPStan\Reflection\MissingMethodFromReflectionException
      */
@@ -409,7 +409,7 @@ class OrmSelectQueryFindMatchOptionsTypesRule implements Rule
     }
 
     /**
-     * @param array<string, \PHPStan\Reflection\ParameterReflectionWithPhpDocs> $specificFinderOptions
+     * @param array<string, \PHPStan\Reflection\ExtendedParameterReflection> $specificFinderOptions
      * @param array{'options': array<\PhpParser\Node\Expr>, 'reference':string, 'methodName':string, 'finder': string|null} $details
      * @param list<\PHPStan\Rules\IdentifierRuleError> $errors
      * @return list<\PHPStan\Rules\IdentifierRuleError>

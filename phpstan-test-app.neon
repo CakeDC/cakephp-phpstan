@@ -1,6 +1,5 @@
 includes:
     - extension.neon
-    - phar://phpstan.phar/conf/bleedingEdge.neon
     - vendor/phpstan/phpstan-deprecation-rules/rules.neon
 parameters:
     level: max

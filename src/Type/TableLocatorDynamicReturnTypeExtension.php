@@ -16,11 +16,12 @@ namespace CakeDC\PHPStan\Type;
 use Cake\ORM\Table;
 use CakeDC\PHPStan\Traits\BaseCakeRegistryReturnTrait;
 use PhpParser\Node\Expr\MethodCall;
+use PhpParser\Node\Scalar\String_;
 use PHPStan\Analyser\Scope;
+use PHPStan\Reflection\ClassReflection;
 use PHPStan\Reflection\MethodReflection;
 use PHPStan\Type\DynamicMethodReturnTypeExtension;
 use PHPStan\Type\Type;
-use ReflectionClass;
 use ReflectionException;
 
 class TableLocatorDynamicReturnTypeExtension implements DynamicMethodReturnTypeExtension
@@ -30,7 +31,7 @@ class TableLocatorDynamicReturnTypeExtension implements DynamicMethodReturnTypeE
     }
 
     /**
-     * @var string
+     * @var class-string
      */
     protected string $className;
     /**
@@ -43,7 +44,7 @@ class TableLocatorDynamicReturnTypeExtension implements DynamicMethodReturnTypeE
     /**
      * TableLocatorDynamicReturnTypeExtension constructor.
      *
-     * @param string $className  The target className.
+     * @param class-string $className  The target className.
      * @param string $methodName The dynamic method to handle.
      */
     public function __construct(string $className, string $methodName)
@@ -58,14 +59,14 @@ class TableLocatorDynamicReturnTypeExtension implements DynamicMethodReturnTypeE
      * @param \PHPStan\Reflection\MethodReflection $methodReflection
      * @param \PhpParser\Node\Expr\MethodCall       $methodCall
      * @param \PHPStan\Analyser\Scope            $scope
-     * @return \PHPStan\Type\Type
+     * @return \PHPStan\Type\Type|null
      * @throws \PHPStan\ShouldNotHappenException
      */
     public function getTypeFromMethodCall(
         MethodReflection $methodReflection,
         MethodCall $methodCall,
         Scope $scope
-    ): Type {
+    ): ?Type {
         if (count($methodCall->getArgs()) === 0) {
             $targetClassReflection = $this->getTargetClassReflection($scope, $methodCall);
             $type = null;
@@ -76,36 +77,43 @@ class TableLocatorDynamicReturnTypeExtension implements DynamicMethodReturnTypeE
                 return $type;
             }
 
-            return $this->getTypeWhenNotFound($methodReflection);
+            return null;
         }
 
         return $this->getTypeFromMethodCallWithArgs($methodReflection, $methodCall, $scope);
     }
 
     /**
-     * @param \ReflectionClass $target
-     * @return mixed
+     * @param \PHPStan\Reflection\ClassReflection $target
+     * @return string|null
      * @throws \ReflectionException
      */
-    protected function getDefaultTable(ReflectionClass $target): mixed
+    protected function getDefaultTable(ClassReflection $target): ?string
     {
-        return $target->getProperty('defaultTable')->getDefaultValue();
+        $default = $target->getNativeReflection()
+            ->getProperty('defaultTable')
+            ->getDefaultValueExpression();
+        if ($default instanceof String_) {
+            return $default->value;
+        }
+
+        return null;
     }
 
     /**
      * @param \PHPStan\Reflection\MethodReflection $methodReflection
      * @param \PhpParser\Node\Expr\MethodCall $methodCall
-     * @param \ReflectionClass $targetClassReflection
+     * @param \PHPStan\Reflection\ClassReflection $targetClassReflection
      * @return \PHPStan\Type\Type|null
      */
     protected function getReturnTypeWithoutArgs(
         MethodReflection $methodReflection,
         MethodCall $methodCall,
-        ReflectionClass $targetClassReflection
+        ClassReflection $targetClassReflection
     ): ?Type {
         try {
             $defaultTable = $this->getDefaultTable($targetClassReflection);
-            if (is_string($defaultTable) && $defaultTable) {
+            if (is_string($defaultTable) && $defaultTable !== '') {
                 return $this->getCakeType($defaultTable);
             }
         } catch (ReflectionException) {
@@ -117,16 +125,10 @@ class TableLocatorDynamicReturnTypeExtension implements DynamicMethodReturnTypeE
     /**
      * @param \PHPStan\Analyser\Scope $scope
      * @param \PhpParser\Node\Expr\MethodCall $methodCall
-     * @return \ReflectionClass|null
+     * @return \PHPStan\Reflection\ClassReflection|null
      */
-    protected function getTargetClassReflection(Scope $scope, MethodCall $methodCall): ?ReflectionClass
+    protected function getTargetClassReflection(Scope $scope, MethodCall $methodCall): ?ClassReflection
     {
-        $reference = $scope->getType($methodCall->var)->getReferencedClasses()[0] ?? null;
-
-        if ($reference === null || !class_exists($reference)) {
-            return null;
-        }
-
-        return new ReflectionClass($reference);
+        return $scope->getType($methodCall->var)->getObjectClassReflections()[0] ?? null;
     }
 }

@@ -46,6 +46,7 @@ class ArrayOfStringStartsWith extends Constraint
         $this->notExpected = $this->actual;
         assert(is_array($other));
         foreach ($other as $key => $error) {
+            $error = is_string($error) ? $error : 'Wrong error: ' . json_encode($error);
             if (!isset($this->actual[$key])) {
                 $this->result[$key] = ['expected' => $error, 'type' => 'missing', 'actual' => null];
                 $result = false;
@@ -58,7 +59,7 @@ class ArrayOfStringStartsWith extends Constraint
             }
         }
 
-        return $result && empty($this->notExpected);
+        return $result && $this->notExpected === [];
     }
 
     /**

@@ -9,8 +9,8 @@ class CakeNameRegistry
 {
     /**
      * @param string $baseName
-     * @return array
-     * @psalm-return array{string|null, string}
+     * @return array{string|null,string}
+     * @psalm-return array{string|null,string}
      */
     protected static function pluginSplit(string $baseName): array
     {
@@ -29,7 +29,7 @@ class CakeNameRegistry
         }
 
         [$plugin, $name] = static::pluginSplit($baseName);
-        $prefixes = $plugin ? [$plugin] : ['App', 'Cake'];
+        $prefixes = $plugin !== null ? [$plugin] : ['App', 'Cake'];
         $namespaceFormat = (array)$namespaceFormat;
         foreach ($namespaceFormat as $format) {
             foreach ($prefixes as $prefix) {

@@ -1,0 +1,10 @@
+includes:
+    - extension.neon
+    - vendor/phpstan/phpstan-deprecation-rules/rules.neon
+parameters:
+    level: max
+    paths:
+        - tests/test_plugin
+    treatPhpDocTypesAsCertain: false
+    cakeDC:
+        disallowEntityArrayAccessRule: true

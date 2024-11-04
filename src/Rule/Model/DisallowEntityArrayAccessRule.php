@@ -9,12 +9,11 @@ use PhpParser\Node\Expr\ArrayDimFetch;
 use PHPStan\Analyser\Scope;
 use PHPStan\Rules\Rule;
 use PHPStan\Rules\RuleErrorBuilder;
-use PHPStan\Type\ObjectType;
 
 class DisallowEntityArrayAccessRule implements Rule
 {
     /**
-     * @return string
+     * @inheritDoc
      */
     public function getNodeType(): string
     {
@@ -24,22 +23,25 @@ class DisallowEntityArrayAccessRule implements Rule
     /**
      * @param \PhpParser\Node $node
      * @param \PHPStan\Analyser\Scope $scope
-     * @return array<\PHPStan\Rules\RuleError>
+     * @return list<\PHPStan\Rules\IdentifierRuleError>
      * @throws \PHPStan\ShouldNotHappenException
-     * @throws \PHPStan\Reflection\MissingMethodFromReflectionException
      */
     public function processNode(Node $node, Scope $scope): array
     {
         assert($node instanceof ArrayDimFetch);
         $type = $scope->getType($node->var);
-        if (!$type instanceof ObjectType || !is_a($type->getClassName(), EntityInterface::class, true)) {
+        if (!$type->isObject()->yes()) {
+            return [];
+        }
+        $reflection = $type->getObjectClassReflections()[0] ?? null;
+        if ($reflection === null || !$reflection->is(EntityInterface::class)) {
             return [];
         }
 
         return [
             RuleErrorBuilder::message(sprintf(
                 'Array access to entity to %s is not allowed, access as object instead',
-                $type->getClassName(),
+                $reflection->getName(),
             ))
             ->identifier('cake.entity.arrayAccess')
             ->build(),

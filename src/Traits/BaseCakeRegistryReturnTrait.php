@@ -17,7 +17,6 @@ use CakeDC\PHPStan\Utility\CakeNameRegistry;
 use PhpParser\Node\Expr\MethodCall;
 use PHPStan\Analyser\Scope;
 use PHPStan\Reflection\MethodReflection;
-use PHPStan\Reflection\ParametersAcceptorSelector;
 use PHPStan\Type\ObjectType;
 use PHPStan\Type\Type;
 use function count;
@@ -29,30 +28,32 @@ trait BaseCakeRegistryReturnTrait
      * @param \PHPStan\Reflection\MethodReflection $methodReflection
      * @param \PhpParser\Node\Expr\MethodCall $methodCall
      * @param \PHPStan\Analyser\Scope $scope
-     * @return \PHPStan\Type\Type
+     * @return \PHPStan\Type\Type|null
      * @throws \PHPStan\ShouldNotHappenException
      */
     public function getTypeFromMethodCall(
         MethodReflection $methodReflection,
         MethodCall $methodCall,
         Scope $scope
-    ): Type {
+    ): ?Type {
         if (count($methodCall->getArgs()) === 0) {
-            return $this->getTypeWhenNotFound($methodReflection);
+            return null;
         }
 
         $argType = $scope->getType($methodCall->getArgs()[0]->value);
         if (!method_exists($argType, 'getValue')) {
             return new ObjectType($this->defaultClass);
         }
+        $value = $argType->getValue();
+        if (!is_string($value)) {
+            return null;
+        }
 
-        return $this->getCakeType($argType->getValue());
+        return $this->getCakeType($value);
     }
 
     /**
-     * Get the target class.
-     *
-     * @return string
+     * @inheritDoc
      */
     public function getClass(): string
     {
@@ -80,16 +81,5 @@ trait BaseCakeRegistryReturnTrait
         }
 
         return new ObjectType($this->defaultClass);
-    }
-
-    /**
-     * @param \PHPStan\Reflection\MethodReflection $methodReflection
-     * @return \PHPStan\Type\Type
-     * @throws \PHPStan\ShouldNotHappenException
-     */
-    protected function getTypeWhenNotFound(MethodReflection $methodReflection): Type
-    {
-        return ParametersAcceptorSelector::selectSingle($methodReflection->getVariants())
-            ->getReturnType();
     }
 }

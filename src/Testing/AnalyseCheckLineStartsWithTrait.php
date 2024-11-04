@@ -1,19 +1,19 @@
 <?php
 declare(strict_types=1);
 
-namespace CakeDC\PHPStan\Rule\Traits;
+namespace CakeDC\PHPStan\Testing;
 
 use CakeDC\PHPStan\Constraint\ArrayOfStringStartsWith;
 use PHPStan\Analyser\Error;
 
 /**
- * @mixin \PHPStan\Testing\RuleTestCase;
+ * @mixin \PHPStan\Testing\RuleTestCase
  */
 trait AnalyseCheckLineStartsWithTrait
 {
     /**
-     * @param array $files
-     * @param array $expected
+     * @param array<string> $files
+     * @param array{array{'0': string, '1':int}} $expected
      * @return void
      */
     public function analyseCheckLineStartsWith(array $files, array $expected): void
@@ -34,6 +34,6 @@ trait AnalyseCheckLineStartsWithTrait
         $expected = array_map(static function (array $item) use ($messageText): string {
             return $messageText($item[1], $item[0]);
         }, $expected);
-        $this->assertThat($expected, new ArrayOfStringStartsWith($actualErrors));
+        static::assertThat($expected, new ArrayOfStringStartsWith($actualErrors));
     }
 }

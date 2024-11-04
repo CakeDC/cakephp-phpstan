@@ -14,9 +14,12 @@ declare(strict_types=1);
 namespace App\Controller\Component;
 
 use Cake\Controller\Component;
+use Cake\ORM\Locator\LocatorAwareTrait;
 
 class WarningComponent extends Component
 {
+    use LocatorAwareTrait;
+
     /**
      * @return void
      */
@@ -27,5 +30,6 @@ class WarningComponent extends Component
          */
         $controller = $this->getController();
         $controller->fetchTable()->warning();
+        $this->fetchTable('Users')->blockOld();
     }
 }

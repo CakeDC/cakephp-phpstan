@@ -11,13 +11,13 @@ use Cake\ORM\AssociationCollection;
 use CakeDC\PHPStan\Rule\Traits\ParseClassNameFromArgTrait;
 use PhpParser\Node;
 use PhpParser\Node\Arg;
-use PhpParser\Node\Expr\ArrayItem;
+use PhpParser\Node\ArrayItem;
 use PhpParser\Node\Expr\MethodCall;
 use PhpParser\Node\Scalar\String_;
 use PHPStan\Analyser\Scope;
 use PHPStan\Reflection\ClassReflection;
+use PHPStan\Rules\IdentifierRuleError;
 use PHPStan\Rules\Rule;
-use PHPStan\Rules\RuleError;
 use PHPStan\Rules\RuleErrorBuilder;
 use PHPStan\Rules\RuleLevelHelper;
 use PHPStan\Type\ObjectType;
@@ -51,7 +51,7 @@ class AddAssociationMatchOptionsTypesRule implements Rule
     ];
 
     /**
-     * @return string
+     * @inheritDoc
      */
     public function getNodeType(): string
     {
@@ -59,9 +59,7 @@ class AddAssociationMatchOptionsTypesRule implements Rule
     }
 
     /**
-     * @param \PhpParser\Node $node
-     * @param \PHPStan\Analyser\Scope $scope
-     * @return array<\PHPStan\Rules\RuleError>
+     * @inheritDoc
      */
     public function processNode(Node $node, Scope $scope): array
     {
@@ -100,7 +98,7 @@ class AddAssociationMatchOptionsTypesRule implements Rule
                     $item,
                     $scope
                 );
-                if ($error) {
+                if ($error !== null) {
                     $errors[] = $error;
                 }
             } else {
@@ -156,9 +154,9 @@ class AddAssociationMatchOptionsTypesRule implements Rule
     /**
      * @param array{'alias': ?string, 'options': ?\PhpParser\Node\Arg, 'type': string, 'reference':string, 'methodName':string} $details
      * @param string $property
-     * @param \PhpParser\Node\Expr\ArrayItem $item
+     * @param \PhpParser\Node\ArrayItem $item
      * @param \PHPStan\Analyser\Scope $scope
-     * @return \PHPStan\Rules\RuleError|null
+     * @return \PHPStan\Rules\IdentifierRuleError|null
      * @throws \PHPStan\Reflection\MissingPropertyFromReflectionException
      * @throws \PHPStan\ShouldNotHappenException
      */
@@ -167,7 +165,7 @@ class AddAssociationMatchOptionsTypesRule implements Rule
         string $property,
         ArrayItem $item,
         Scope $scope
-    ): ?RuleError {
+    ): ?IdentifierRuleError {
         $object = new ObjectType($details['type']);
         $classReflection = $object->getClassReflection();
         assert($classReflection instanceof ClassReflection);
@@ -175,7 +173,7 @@ class AddAssociationMatchOptionsTypesRule implements Rule
             ->getProperty('_' . $property, $scope)
             ->getWritableType();
         $assignedValueType = $scope->getType($item->value);
-        $accepts = $this->ruleLevelHelper->acceptsWithReason($propertyType, $assignedValueType, true);//@phpstan-ignore-line
+        $accepts = $this->ruleLevelHelper->accepts($propertyType, $assignedValueType, true);
         if ($accepts->result) {
             return null;
         }

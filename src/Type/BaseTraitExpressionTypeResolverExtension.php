@@ -22,7 +22,6 @@ use PHPStan\Analyser\Scope;
 use PHPStan\Reflection\ClassReflection;
 use PHPStan\Type\ExpressionTypeResolverExtension;
 use PHPStan\Type\ObjectType;
-use PHPStan\Type\ThisType;
 use PHPStan\Type\Type;
 use ReflectionException;
 
@@ -62,10 +61,10 @@ class BaseTraitExpressionTypeResolverExtension implements ExpressionTypeResolver
         }
 
         $callerType = $scope->getType($expr->var);
-        if (!$callerType instanceof ThisType && !$callerType instanceof ObjectType) {
+        if (!$callerType->isObject()->yes()) {
             return null;
         }
-        $reflection = $callerType->getClassReflection();
+        $reflection = $callerType->getObjectClassReflections()[0] ?? null;
         if ($reflection === null || !$this->isFromTargetTrait($reflection, $this->targetTrait)) {
             return null;
         }
@@ -95,17 +94,18 @@ class BaseTraitExpressionTypeResolverExtension implements ExpressionTypeResolver
         }
 
         try {
-            if ($value === null && $this->propertyDefaultValue) {
-                $value = $reflection->getNativeReflection()
-                    ->getProperty($this->propertyDefaultValue)
-                    ->getDefaultValue();
-
-                return is_string($value) ? $value : null;
+            if ($value === null && $this->propertyDefaultValue !== null) {
+                $default = $reflection->getNativeReflection()
+                    ->getProperty('defaultTable')
+                    ->getDefaultValueExpression();
+                if ($default instanceof String_) {
+                    return $default->value;
+                }
             }
+
+            return null;
         } catch (ReflectionException) {
             return null;
         }
-
-        return null;
     }
 }

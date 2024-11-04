@@ -33,7 +33,7 @@ class RepositoryEntityDynamicReturnTypeExtension implements DynamicMethodReturnT
     use RepositoryReferenceTrait;
 
     /**
-     * @var string
+     * @var class-string
      */
     private string $className;
     /**
@@ -57,7 +57,7 @@ class RepositoryEntityDynamicReturnTypeExtension implements DynamicMethodReturnT
     protected string $namespaceFormat;
 
     /**
-     * @param string $className  The target className.
+     * @param class-string $className  The target className.
      */
     public function __construct(string $className)
     {
@@ -72,37 +72,37 @@ class RepositoryEntityDynamicReturnTypeExtension implements DynamicMethodReturnT
      */
     public function isMethodSupported(MethodReflection $methodReflection): bool
     {
-        return in_array($methodReflection->getName(), $this->methodNames);
+        return in_array($methodReflection->getName(), $this->methodNames, true);
     }
 
     /**
      * @param \PHPStan\Reflection\MethodReflection $methodReflection
      * @param \PhpParser\Node\Expr\MethodCall $methodCall
      * @param \PHPStan\Analyser\Scope $scope
-     * @return \PHPStan\Type\Type
+     * @return \PHPStan\Type\Type|null
      * @throws \PHPStan\ShouldNotHappenException
      */
     public function getTypeFromMethodCall(
         MethodReflection $methodReflection,
         MethodCall $methodCall,
         Scope $scope
-    ): Type {
+    ): ?Type {
         $className = $this->getReferenceClass($scope, $methodCall);
         if ($className === null || $className === Table::class) {
-            return $this->getTypeWhenNotFound($methodReflection);
+            return null;
         }
 
         $entityClass = $this->getEntityClassByTableClass($className);
 
         if ($entityClass !== null && class_exists($entityClass)) {
-            if ($methodReflection->getName() == 'newEntities') {
+            if ($methodReflection->getName() === 'newEntities') {
                 return new ArrayType(new IntegerType(), new ObjectType($entityClass));
             }
 
             return new ObjectType($entityClass);
         }
 
-        return $this->getTypeWhenNotFound($methodReflection);
+        return null;
     }
 
     /**

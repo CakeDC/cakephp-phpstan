@@ -30,7 +30,7 @@ class GetMailerExistsClassRule implements Rule
     protected string $identifier = 'cake.getMailer.existClass';
 
     /**
-     * @return string
+     * @inheritDoc
      */
     public function getNodeType(): string
     {
@@ -40,7 +40,7 @@ class GetMailerExistsClassRule implements Rule
     /**
      * @param \PhpParser\Node $node
      * @param \PHPStan\Analyser\Scope $scope
-     * @return array<\PHPStan\Rules\RuleError>
+     * @return list<\PHPStan\Rules\IdentifierRuleError>
      */
     public function processNode(Node $node, Scope $scope): array
     {
@@ -66,7 +66,7 @@ class GetMailerExistsClassRule implements Rule
         }
         $reflection = $callerType->getClassReflection();
 
-        if (CakeNameRegistry::getMailerClassName($value->value)) {
+        if (CakeNameRegistry::getMailerClassName($value->value) !== null) {
             return [];
         }
 

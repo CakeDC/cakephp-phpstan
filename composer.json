@@ -12,14 +12,15 @@
     ],
     "require": {
         "php": ">=8.1.0",
-        "phpstan/phpstan": "^1.12",
+        "phpstan/phpstan": "^2.0",
         "cakephp/cakephp": "^5.0"
     },
     "require-dev": {
-        "phpstan/phpstan-phpunit": "^1.0",
+        "phpstan/phpstan-phpunit": "^2.0",
         "phpunit/phpunit": "^10.1",
         "cakephp/cakephp-codesniffer": "^5.0",
-        "symplify/phpstan-rules": "^12.4"
+        "phpstan/phpstan-deprecation-rules": "^2.0",
+        "phpstan/phpstan-strict-rules": "^2.0"
     },
     "extra": {
         "phpstan": {
@@ -45,10 +46,10 @@
         "cs-fix": "phpcbf -p src/ tests",
         "test": "phpunit --stderr",
         "stan-integration": [
-            "phpstan analyse --debug tests/test_app/",
-            "phpstan analyse --debug tests/test_plugin/"
+            "phpstan analyse --debug -c phpstan-test-app.neon",
+            "phpstan analyse --debug -c phpstan-test-plugin.neon"
         ],
-        "stan": "phpstan analyse --debug src/",
+        "stan": "phpstan analyse --debug",
         "check": [
             "@cs-check",
             "@stan",
@@ -60,5 +61,7 @@
         "allow-plugins": {
             "dealerdirect/phpcodesniffer-composer-installer": true
         }
-    }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
 }

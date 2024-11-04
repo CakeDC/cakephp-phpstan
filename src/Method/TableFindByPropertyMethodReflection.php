@@ -32,7 +32,7 @@ class TableFindByPropertyMethodReflection implements MethodReflection
     private ClassReflection $declaringClass;
 
     /**
-     * @var array<\PHPStan\Reflection\FunctionVariant>
+     * @var list<\PHPStan\Reflection\FunctionVariant>
      */
     private array $variants;
 
@@ -205,7 +205,7 @@ class TableFindByPropertyMethodReflection implements MethodReflection
 
     /**
      * @param string $method
-     * @return array<string>
+     * @return list<string>
      */
     protected function getParams(string $method): array
     {

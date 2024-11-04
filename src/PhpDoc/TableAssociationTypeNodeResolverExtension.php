@@ -15,7 +15,6 @@ use PHPStan\PhpDoc\TypeNodeResolverExtension;
 use PHPStan\PhpDocParser\Ast\Type\IntersectionTypeNode;
 use PHPStan\PhpDocParser\Ast\Type\TypeNode;
 use PHPStan\Type\Generic\GenericObjectType;
-use PHPStan\Type\ObjectType;
 use PHPStan\Type\Type;
 
 /**
@@ -65,19 +64,22 @@ class TableAssociationTypeNodeResolverExtension implements TypeNodeResolverExten
             'table' => null,
         ];
         foreach ($types as $type) {
-            if (!$type instanceof ObjectType) {
+            if (!$type->isObject()->yes()) {
                 continue;
             }
-            $className = $type->getClassName();
-            if ($config['association'] === null && in_array($className, $this->associationTypes)) {
+            $className = $type->getObjectClassNames()[0] ?? null;
+            if ($className === null) {
+                continue;
+            }
+            if ($config['association'] === null && in_array($className, $this->associationTypes, true)) {
                 $config['association'] = $type;
             } elseif ($config['table'] === null && str_ends_with($className, 'Table')) {
                 $config['table'] = $type;
             }
         }
-        if ($config['table'] && $config['association']) {
+        if ($config['table'] !== null && $config['association'] !== null) {
             return new GenericObjectType(
-                $config['association']->getClassName(),
+                $config['association']->getObjectClassNames()[0],
                 [$config['table']]
             );
         }

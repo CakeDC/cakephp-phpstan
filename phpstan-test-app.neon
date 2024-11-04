@@ -1,15 +1,13 @@
 includes:
     - extension.neon
     - vendor/phpstan/phpstan-deprecation-rules/rules.neon
-    - vendor/phpstan/phpstan-strict-rules/rules.neon
 parameters:
     level: max
     paths:
-        - src
-        - tests/TestCase
-    excludePaths:
-        - */Fake/*
+        - tests/test_app
     treatPhpDocTypesAsCertain: false
+    cakeDC:
+        disallowEntityArrayAccessRule: true
     ignoreErrors:
         -
             identifier: missingType.generics

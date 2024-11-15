@@ -1,8 +1,8 @@
 # CakePHP extension for PHPStan
 
 ![Build Status](https://github.com/CakeDC/cakephp-phpstan/actions/workflows/ci.yml/badge.svg)
-[![Downloads](https://poser.pugx.org/CakeDC/cakephp-phpstan/d/total.png)](https://packagist.org/packages/CakeDC/cakephp-phpstan)
-[![Latest Version](https://poser.pugx.org/CakeDC/cakephp-phpstan/v/stable.png)](https://packagist.org/packages/CakeDC/cakephp-phpstan)
+[![Downloads](https://poser.pugx.org/CakeDC/cakephp-phpstan/d/total.svg)](https://packagist.org/packages/CakeDC/cakephp-phpstan)
+[![Latest Version](https://poser.pugx.org/CakeDC/cakephp-phpstan/v/stable.svg)](https://packagist.org/packages/CakeDC/cakephp-phpstan)
 [![License](https://poser.pugx.org/CakeDC/cakephp-phpstan/license.svg)](LICENSE.txt)
 
 * [PHPStan](https://phpstan.org/)

@@ -96,7 +96,7 @@ class AddAssociationMatchOptionsTypesRule implements Rule
                     $details,
                     $properties[$item->key->value],
                     $item,
-                    $scope
+                    $scope,
                 );
                 if ($error !== null) {
                     $errors[] = $error;
@@ -106,7 +106,7 @@ class AddAssociationMatchOptionsTypesRule implements Rule
                     'Call to %s::%s with unknown option "%s".',
                     $reference,
                     $node->name->name,
-                    $item->key->value
+                    $item->key->value,
                 ))
                     ->identifier('cake.addAssociationWithValidOption.unknownOption')
                     ->build();
@@ -164,13 +164,13 @@ class AddAssociationMatchOptionsTypesRule implements Rule
         array $details,
         string $property,
         ArrayItem $item,
-        Scope $scope
+        Scope $scope,
     ): ?IdentifierRuleError {
         $object = new ObjectType($details['type']);
         $classReflection = $object->getClassReflection();
         assert($classReflection instanceof ClassReflection);
         $propertyType = $classReflection
-            ->getProperty('_' . $property, $scope)
+            ->getInstanceProperty('_' . $property, $scope)
             ->getWritableType();
         $assignedValueType = $scope->getType($item->value);
         $accepts = $this->ruleLevelHelper->accepts($propertyType, $assignedValueType, true);
@@ -182,7 +182,7 @@ class AddAssociationMatchOptionsTypesRule implements Rule
             'Call to %s::%s with option "%s"',
             $details['reference'],
             $details['methodName'],
-            $item->key->value
+            $item->key->value,
         );
         $verbosityLevel = VerbosityLevel::getRecommendedLevelByType($propertyType, $assignedValueType);
 
@@ -191,8 +191,8 @@ class AddAssociationMatchOptionsTypesRule implements Rule
                 '%s (%s) does not accept %s.',
                 $propertyDescription,
                 $propertyType->describe($verbosityLevel),
-                $assignedValueType->describe($verbosityLevel)
-            )
+                $assignedValueType->describe($verbosityLevel),
+            ),
         )
             ->acceptsReasonsTip($accepts->reasons)
             ->identifier('cake.addAssociationWithValidOption.invalidType')

@@ -49,7 +49,7 @@ class FailingTableGetRuleItemsLogic //@codingStandardsIgnoreLine
             groupBy: false,
             having: new stdClass(),
             contain: true,
-            page: 'Other'
+            page: 'Other',
         );
         $Table->get(
             1, //Good options
@@ -60,7 +60,7 @@ class FailingTableGetRuleItemsLogic //@codingStandardsIgnoreLine
             offset: 3,
             group: ['Notes.type'],
             contain: ['Users'],
-            page: 3
+            page: 3,
         );
         $Table->get(1, 'all', ...[
            'order' => false,

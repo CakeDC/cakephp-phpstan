@@ -12,12 +12,12 @@
     ],
     "require": {
         "php": ">=8.1.0",
-        "phpstan/phpstan": "^2.0",
+        "phpstan/phpstan": "^2.1.26",
         "cakephp/cakephp": "^5.0"
     },
     "require-dev": {
         "phpstan/phpstan-phpunit": "^2.0",
-        "phpunit/phpunit": "^10.1",
+        "phpunit/phpunit": "^10.5 || ^11.5 || ^12.1",
         "cakephp/cakephp-codesniffer": "^5.0",
         "phpstan/phpstan-deprecation-rules": "^2.0",
         "phpstan/phpstan-strict-rules": "^2.0"
@@ -42,8 +42,8 @@
         }
     },
     "scripts": {
-        "cs-check": "phpcs -p src/ tests",
-        "cs-fix": "phpcbf -p src/ tests",
+        "cs-check": "phpcs -p",
+        "cs-fix": "phpcbf -p",
         "test": "phpunit --stderr",
         "stan-integration": [
             "phpstan analyse --debug -c phpstan-test-app.neon",

@@ -49,7 +49,7 @@ class FailingOrmFindRuleItemsLogic //@codingStandardsIgnoreLine
             groupBy: false,
             having: new stdClass(),
             contain: true,
-            page: 'Other'
+            page: 'Other',
         );
         $Table->find(
             'all', //Good options
@@ -60,7 +60,7 @@ class FailingOrmFindRuleItemsLogic //@codingStandardsIgnoreLine
             offset: 3,
             group: ['Notes.type'],
             contain: ['Users'],
-            page: 3
+            page: 3,
         );
         $Table->find(
             'all', //some good options but not all
@@ -71,7 +71,7 @@ class FailingOrmFindRuleItemsLogic //@codingStandardsIgnoreLine
             offset: 3,
             group: true, //bad
             contain: ['Users'],
-            page: 3
+            page: 3,
         );
         $query = $Table->find();
         $query->find(//bad information
@@ -123,13 +123,13 @@ class FailingOrmFindRuleItemsLogic //@codingStandardsIgnoreLine
             'featured', //custom finder is known
             fields: ['Notes.id', 'Notes.note', 'Notes.created'],
             year: 2024,
-            fun: true
+            fun: true,
         );
         $Table->find(
             'featured', //custom finder is known but options are invalid
             fields: ['Notes.id', 'Notes.note', 'Notes.created'],
             year: 10.0,
-            fun: 1
+            fun: 1,
         );
         $Table->find(
             'featured', //custom finder is known but required options are missing only have basic find options
@@ -165,18 +165,18 @@ class FailingOrmFindRuleItemsLogic //@codingStandardsIgnoreLine
         $Table->find(
             'optionsPacked',
             sort: ['Notes.note' => 'ASC'],
-            labelField: 'id'
+            labelField: 'id',
         );
         $Table->find(
             'optionsPacked',
             sort: ['Notes.note' => 'ASC'],
-            labelField: 'id'
+            labelField: 'id',
         );
         $Table->find('argsPacked');
         $Table->find(
             'argsPacked',
             sort: ['Notes.note' => 'ASC'],
-            groupLabel: 'type'
+            groupLabel: 'type',
         );
         $Table->find('argsPacked', [
             'sort' => ['Notes.note' => 'ASC'],
@@ -192,13 +192,13 @@ class FailingOrmFindRuleItemsLogic //@codingStandardsIgnoreLine
         $Table->find(
             'twoArgsButNotLegacy',
             sort: ['Notes.note' => 'ASC'],
-            myType: 'featured'
+            myType: 'featured',
         );
         $Table->find('twoArgsButNotLegacy');
         $Table->find(
             'twoArgsButNotLegacy',
             sort: ['Notes.note' => 'ASC'],
-            myType: 19
+            myType: 19,
         );
         $field = $Table->getTypeTestTwoArgsButNotLegacy();
         $value = 'featured';

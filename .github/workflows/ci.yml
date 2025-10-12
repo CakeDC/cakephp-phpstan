@@ -19,7 +19,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php-version: ['8.1', '8.2', '8.3']
+        php-version: ['8.1', '8.4']
         dependencies: ['highest']
         include:
           - php-version: '8.1'
@@ -68,7 +68,7 @@ jobs:
         uses: ramsey/composer-install@v2
 
       - name: Run phpcs
-        run: vendor/bin/phpcs --report=checkstyle src/ tests/ | cs2pr
+        run: vendor/bin/phpcs --report=checkstyle | cs2pr
 
       - name: Run phpstan
         if: always()

@@ -41,7 +41,7 @@ class BaseTraitExpressionTypeResolverExtension implements ExpressionTypeResolver
         protected string $targetTrait,
         protected string $methodName,
         protected string $namespaceFormat,
-        protected ?string $propertyDefaultValue = null
+        protected ?string $propertyDefaultValue = null,
     ) {
     }
 

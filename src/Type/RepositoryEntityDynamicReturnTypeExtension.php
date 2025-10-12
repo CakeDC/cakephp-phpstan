@@ -85,7 +85,7 @@ class RepositoryEntityDynamicReturnTypeExtension implements DynamicMethodReturnT
     public function getTypeFromMethodCall(
         MethodReflection $methodReflection,
         MethodCall $methodCall,
-        Scope $scope
+        Scope $scope,
     ): ?Type {
         $className = $this->getReferenceClass($scope, $methodCall);
         if ($className === null || $className === Table::class) {

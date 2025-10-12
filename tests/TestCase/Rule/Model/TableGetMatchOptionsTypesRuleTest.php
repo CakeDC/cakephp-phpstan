@@ -17,7 +17,7 @@ class TableGetMatchOptionsTypesRuleTest extends RuleTestCase
     {
         // getRule() method needs to return an instance of the tested rule
         return new TableGetMatchOptionsTypesRule(
-            static::getContainer()->getByType(RuleLevelHelper::class)
+            static::getContainer()->getByType(RuleLevelHelper::class),
         );
     }
 

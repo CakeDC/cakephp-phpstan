@@ -65,7 +65,7 @@ class TableLocatorDynamicReturnTypeExtension implements DynamicMethodReturnTypeE
     public function getTypeFromMethodCall(
         MethodReflection $methodReflection,
         MethodCall $methodCall,
-        Scope $scope
+        Scope $scope,
     ): ?Type {
         if (count($methodCall->getArgs()) === 0) {
             $targetClassReflection = $this->getTargetClassReflection($scope, $methodCall);
@@ -109,7 +109,7 @@ class TableLocatorDynamicReturnTypeExtension implements DynamicMethodReturnTypeE
     protected function getReturnTypeWithoutArgs(
         MethodReflection $methodReflection,
         MethodCall $methodCall,
-        ClassReflection $targetClassReflection
+        ClassReflection $targetClassReflection,
     ): ?Type {
         try {
             $defaultTable = $this->getDefaultTable($targetClassReflection);

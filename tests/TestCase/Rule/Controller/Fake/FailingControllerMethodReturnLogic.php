@@ -74,4 +74,28 @@ class FailingControllerMethodReturnLogic extends Controller
             $this->redirect(['action' => 'add']);
         }
     }
+
+    /**
+     * Action with render() assigned to variable (valid usage)
+     *
+     * @return \Cake\Http\Response|null
+     */
+    public function actionWithRenderAssigned()
+    {
+        $response = $this->render('edit');
+
+        return $response;
+    }
+
+    /**
+     * Action with redirect() assigned to variable (valid usage)
+     *
+     * @return \Cake\Http\Response|null
+     */
+    public function actionWithRedirectAssigned()
+    {
+        $response = $this->redirect(['action' => 'index']);
+
+        return $response;
+    }
 }

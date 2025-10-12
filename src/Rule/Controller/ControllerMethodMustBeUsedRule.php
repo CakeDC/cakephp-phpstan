@@ -22,17 +22,17 @@ use PHPStan\Rules\Rule;
 use PHPStan\Rules\RuleErrorBuilder;
 
 /**
- * Rule to enforce that certain controller methods must be returned
- * to prevent unreachable code.
+ * Rule to enforce that certain controller methods must be used
+ * (returned or assigned) to prevent unreachable code.
  */
-class ControllerMethodMustReturnRule implements Rule
+class ControllerMethodMustBeUsedRule implements Rule
 {
     /**
-     * Methods that must be returned
+     * Methods that must be used (returned or assigned)
      *
      * @var array<string>
      */
-    protected array $methodsRequiringReturn = [
+    protected array $methodsRequiringUsage = [
         'render',
         'redirect',
     ];
@@ -67,7 +67,7 @@ class ControllerMethodMustReturnRule implements Rule
         }
 
         $methodName = $methodCall->name->toString();
-        if (!in_array($methodName, $this->methodsRequiringReturn, true)) {
+        if (!in_array($methodName, $this->methodsRequiringUsage, true)) {
             return [];
         }
 
@@ -92,14 +92,15 @@ class ControllerMethodMustReturnRule implements Rule
         }
 
         // If we reach here, it means the method call is wrapped in an Expression node
-        // which means it's used as a statement (not returned)
+        // which means it's used as a statement (not returned or assigned)
         return [
             RuleErrorBuilder::message(sprintf(
-                'Method %s() must be returned to prevent unreachable code. Use "return $this->%s()" instead.',
+                'Method `%s()` must be used to prevent unreachable code. ' .
+                'Use `return $this->%s()` or assign it to a variable.',
                 $methodName,
                 $methodName,
             ))
-            ->identifier('cake.controller.' . $methodName . 'MustReturn')
+            ->identifier('cake.controller.' . $methodName . 'MustBeUsed')
             ->build(),
         ];
     }

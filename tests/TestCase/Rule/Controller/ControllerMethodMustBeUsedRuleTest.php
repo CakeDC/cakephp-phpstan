@@ -13,18 +13,18 @@ declare(strict_types=1);
 
 namespace CakeDC\PHPStan\Test\TestCase\Rule\Controller;
 
-use CakeDC\PHPStan\Rule\Controller\ControllerMethodMustReturnRule;
+use CakeDC\PHPStan\Rule\Controller\ControllerMethodMustBeUsedRule;
 use PHPStan\Rules\Rule;
 use PHPStan\Testing\RuleTestCase;
 
-class ControllerMethodMustReturnRuleTest extends RuleTestCase
+class ControllerMethodMustBeUsedRuleTest extends RuleTestCase
 {
     /**
      * @return \PHPStan\Rules\Rule
      */
     protected function getRule(): Rule
     {
-        return new ControllerMethodMustReturnRule();
+        return new ControllerMethodMustBeUsedRule();
     }
 
     /**
@@ -34,19 +34,19 @@ class ControllerMethodMustReturnRuleTest extends RuleTestCase
     {
         $this->analyse([__DIR__ . '/Fake/FailingControllerMethodReturnLogic.php'], [
             [
-                'Method render() must be returned to prevent unreachable code. Use "return $this->render()" instead.',
+                'Method `render()` must be used to prevent unreachable code. Use `return $this->render()` or assign it to a variable.',
                 17,
             ],
             [
-                'Method redirect() must be returned to prevent unreachable code. Use "return $this->redirect()" instead.',
+                'Method `redirect()` must be used to prevent unreachable code. Use `return $this->redirect()` or assign it to a variable.',
                 29,
             ],
             [
-                'Method render() must be returned to prevent unreachable code. Use "return $this->render()" instead.',
+                'Method `render()` must be used to prevent unreachable code. Use `return $this->render()` or assign it to a variable.',
                 62,
             ],
             [
-                'Method redirect() must be returned to prevent unreachable code. Use "return $this->redirect()" instead.',
+                'Method `redirect()` must be used to prevent unreachable code. Use `return $this->redirect()` or assign it to a variable.',
                 74,
             ],
         ]);

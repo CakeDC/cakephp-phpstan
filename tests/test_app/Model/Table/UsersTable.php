@@ -47,6 +47,6 @@ class UsersTable extends Table
     {
         // Test magic findBy methods on association (issue #51)
         $articleQuery = $this->Articles->findByTitle('Test');
-        $article = $articleQuery->first();
+        $articleQuery->first();
     }
 }

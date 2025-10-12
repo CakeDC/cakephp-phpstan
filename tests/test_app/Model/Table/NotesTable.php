@@ -54,11 +54,11 @@ class NotesTable extends Table
         $article->id = '002';
         // Test magic findBy methods on association chains (fixes issue #51)
         $articleQuery = $this->MyUsers->Articles->findByTitle('Test Title');
-        $foundArticle = $articleQuery->first();
+        $articleQuery->first();
         // Test findBy with And operator
-        $articleAndQuery = $this->MyUsers->Articles->findByTitleAndActive('Test', true);
+        $this->MyUsers->Articles->findByTitleAndActive('Test', true);
         // Test findBy with Or operator
-        $articleOrQuery = $this->MyUsers->Articles->findByTitleOrActive('Test', true);
+        $this->MyUsers->Articles->findByTitleOrActive('Test', true);
         $entity = $this->get(10, cache: 'my_cache');
         if ($entity->note === 'Test') {
             $entity = $this->newEmptyEntity();

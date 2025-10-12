@@ -48,7 +48,7 @@ class DummyParameter implements ParameterReflection
         bool $optional,
         ?PassedByReference $passedByReference,
         bool $variadic,
-        ?Type $defaultValue
+        ?Type $defaultValue,
     ) {
         $this->name = $name;
         $this->type = $type;

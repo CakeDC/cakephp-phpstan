@@ -80,7 +80,7 @@ class TableAssociationTypeNodeResolverExtension implements TypeNodeResolverExten
         if ($config['table'] !== null && $config['association'] !== null) {
             return new GenericObjectType(
                 $config['association']->getObjectClassNames()[0],
-                [$config['table']]
+                [$config['table']],
             );
         }
 

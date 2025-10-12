@@ -52,6 +52,13 @@ class NotesTable extends Table
         $this->MyUsers->logLastLogin($user);
         $article = $this->MyUsers->Articles->newSample();
         $article->id = '002';
+        // Test magic findBy methods on association chains (fixes issue #51)
+        $articleQuery = $this->MyUsers->Articles->findByTitle('Test Title');
+        $articleQuery->first();
+        // Test findBy with And operator
+        $this->MyUsers->Articles->findByTitleAndActive('Test', true)->first();
+        // Test findBy with Or operator
+        $this->MyUsers->Articles->findByTitleOrActive('Test', true)->first();
         $entity = $this->get(10, cache: 'my_cache');
         if ($entity->note === 'Test') {
             $entity = $this->newEmptyEntity();
@@ -65,7 +72,7 @@ class NotesTable extends Table
         $this->find(
             'twoArgsButNotLegacy',
             sort: ['Notes.note' => 'ASC'],
-            myType: 'featured'
+            myType: 'featured',
         );
         $this->find('argsPacked');
 
@@ -89,7 +96,7 @@ class NotesTable extends Table
         if ($fun === true) {
             $where[] = $query->newExpr()->in(
                 'type',
-                ['funny_stuff', 'funny_songs', 'funny_messages']
+                ['funny_stuff', 'funny_songs', 'funny_messages'],
             );
         }
 

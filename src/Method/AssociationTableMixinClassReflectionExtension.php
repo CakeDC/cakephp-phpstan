@@ -49,12 +49,17 @@ class AssociationTableMixinClassReflectionExtension implements
     public function hasMethod(ClassReflection $classReflection, string $methodName): bool
     {
         // magic findBy* method
-        if ($classReflection->isSubclassOf(Table::class) && preg_match('/^find(?:\w+)?By/', $methodName) > 0) {
+        if ($classReflection->is(Table::class) && preg_match('/^find(?:\w+)?By/', $methodName) > 0) {
             return true;
         }
 
-        if (!$classReflection->isSubclassOf(Association::class)) {
+        if (!$classReflection->is(Association::class)) {
             return false;
+        }
+
+        // magic findBy* method on Association
+        if (preg_match('/^find(?:\w+)?By/', $methodName) > 0) {
+            return true;
         }
 
         return $this->getTableReflection()->hasMethod($methodName);
@@ -68,8 +73,17 @@ class AssociationTableMixinClassReflectionExtension implements
     public function getMethod(ClassReflection $classReflection, string $methodName): MethodReflection
     {
         // magic findBy* method
-        if ($classReflection->isSubclassOf(Table::class) && preg_match('/^find(?:\w+)?By/', $methodName) > 0) {
+        if ($classReflection->is(Table::class) && preg_match('/^find(?:\w+)?By/', $methodName) > 0) {
             return new TableFindByPropertyMethodReflection($methodName, $classReflection);
+        }
+
+        // magic findBy* method on Association
+        $associationReflection = $this->reflectionProvider->getClass(Association::class);
+        if (
+            $classReflection->isSubclassOfClass($associationReflection)
+            && preg_match('/^find(?:\w+)?By/', $methodName) > 0
+        ) {
+            return new TableFindByPropertyMethodReflection($methodName, $this->getTableReflection());
         }
 
         return $this->getTableReflection()->getNativeMethod($methodName);
@@ -82,11 +96,11 @@ class AssociationTableMixinClassReflectionExtension implements
      */
     public function hasProperty(ClassReflection $classReflection, string $propertyName): bool
     {
-        if (!$classReflection->isSubclassOf(Association::class)) {
+        if (!$classReflection->is(Association::class)) {
             return false;
         }
 
-        return $this->getTableReflection()->hasProperty($propertyName);
+        return $this->getTableReflection()->hasInstanceProperty($propertyName);
     }
 
     /**

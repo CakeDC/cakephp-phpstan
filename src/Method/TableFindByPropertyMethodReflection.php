@@ -45,13 +45,13 @@ class TableFindByPropertyMethodReflection implements MethodReflection
         $this->name = $name;
 
         $this->declaringClass = $declaringClass;
-        $params = array_map(fn ($field) => new DummyParameter(
+        $params = array_map(fn($field) => new DummyParameter(
             $field,
             new MixedType(),
             false,
             null,
             false,
-            null
+            null,
         ), $this->getParams($name));
 
         $returnType = new ObjectType(SelectQuery::class);
@@ -62,7 +62,7 @@ class TableFindByPropertyMethodReflection implements MethodReflection
                 null,
                 $params,
                 false,
-                $returnType
+                $returnType,
             ),
         ];
     }

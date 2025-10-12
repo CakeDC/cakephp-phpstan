@@ -45,5 +45,8 @@ class UsersTable extends Table
      */
     public function blockOld(): void
     {
+        // Test magic findBy methods on association (issue #51)
+        $articleQuery = $this->Articles->findByTitle('Test');
+        $articleQuery->first();
     }
 }

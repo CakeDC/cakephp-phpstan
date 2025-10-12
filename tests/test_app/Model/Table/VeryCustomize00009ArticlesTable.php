@@ -66,7 +66,7 @@ class VeryCustomize00009ArticlesTable extends Table
             [
             'title' => 'This is my title',
             'content' => 'Sample content for test',
-            ]
+            ],
         );
     }
 }

@@ -65,7 +65,7 @@ class NotesTable extends Table
         $this->find(
             'twoArgsButNotLegacy',
             sort: ['Notes.note' => 'ASC'],
-            myType: 'featured'
+            myType: 'featured',
         );
         $this->find('argsPacked');
 
@@ -89,7 +89,7 @@ class NotesTable extends Table
         if ($fun === true) {
             $where[] = $query->newExpr()->in(
                 'type',
-                ['funny_stuff', 'funny_songs', 'funny_messages']
+                ['funny_stuff', 'funny_songs', 'funny_messages'],
             );
         }
 

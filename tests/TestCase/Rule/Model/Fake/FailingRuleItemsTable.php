@@ -68,7 +68,7 @@ class FailingRuleItemsTable extends Table//@codingStandardsIgnoreLine
             'cascadeCallbacks' => 1,//Can't be integer, it should be bool
             'conditions' => 'Users.active = 1',//Can't be string, it should be Closure or array
             'dependent' => 0,//Must be
-            'finder' => fn () => 'f',
+            'finder' => fn() => 'f',
             'bindingKey' => 10,
             'foreignKey' => 11,
             'joinType' => 12,
@@ -97,11 +97,11 @@ class FailingRuleItemsTable extends Table//@codingStandardsIgnoreLine
         ]);
         $this->belongsToMany('SadUsers', [
             'className' => UsersTable::class,
-            'targetForeignKey' => fn () => 10,
+            'targetForeignKey' => fn() => 10,
             'through' => new stdClass(),
-            'saveStrategy' => fn () => 'na',
+            'saveStrategy' => fn() => 'na',
             'sort' => false,
-            'joinTable' => fn () => 'my_users_failing',
+            'joinTable' => fn() => 'my_users_failing',
         ]);
         $this->hasOne('MainArticles', [
             'className' => VeryCustomize00009ArticlesTable::class,
@@ -122,7 +122,7 @@ class FailingRuleItemsTable extends Table//@codingStandardsIgnoreLine
             'cascadeCallbacks' => 1,//Can't be integer, it should be bool
             'conditions' => 'parent_id = id',//Can't be string, it should be Closure or array
             'dependent' => 0,//Must be
-            'finder' => fn () => 'f',
+            'finder' => fn() => 'f',
             'bindingKey' => 10,
             'foreignKey' => 11,
             'joinType' => 12,
@@ -150,7 +150,7 @@ class FailingRuleItemsTable extends Table//@codingStandardsIgnoreLine
             'cascadeCallbacks' => 1,//Can't be integer, it should be bool
             'conditions' => 'parent_id = id',//Can't be string, it should be Closure or array
             'dependent' => 0,//Must be
-            'finder' => fn () => 'f',
+            'finder' => fn() => 'f',
             'bindingKey' => 10,
             'foreignKey' => 11,
             'joinType' => 12,

@@ -71,7 +71,7 @@ abstract class LoadObjectExistsCakeClassRule implements Rule
         if ($inputClassName === null) {
             $inputClassName = $this->getInputClassName(
                 $details['alias']->value,
-                $details['options']
+                $details['options'],
             );
         }
         if ($inputClassName === null || $this->getTargetClassName($inputClassName) !== null) {

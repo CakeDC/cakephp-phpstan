@@ -148,13 +148,40 @@ This rule check if the options (args) passed to Table::find and SelectQuery are 
 ### TableGetMatchOptionsTypesRule
 This rule check if the options (args) passed to Table::get are valid find options types.
 
-To enable this rule update your phpstan.neon with:
+### ControllerMethodMustReturnRule
+This rule enforces that controller methods like `render()` and `redirect()` must be returned to prevent unreachable code. These methods should always be used with a `return` statement to make the control flow explicit.
 
+<details>
+      <summary>Examples:</summary>
+
+```php
+// Bad - code after render() is unreachable
+public function myAction()
+{
+    $this->render('edit');
+    $this->set('data', 'value'); // This will never execute
+}
+
+// Good - explicit return prevents confusion
+public function myAction()
+{
+    return $this->render('edit');
+}
+
+// Bad - code after redirect() is unreachable
+public function myAction()
+{
+    $this->redirect(['action' => 'index']);
+    $this->Flash->success('Done'); // This will never execute
+}
+
+// Good - explicit return prevents confusion
+public function myAction()
+{
+    return $this->redirect(['action' => 'index']);
+}
 ```
-parameters:
-	cakeDC:
-	 	disallowEntityArrayAccessRule: true
-```
+</details>
 
 ### How to disable a rule
 Each rule has a parameter in cakeDC 'namespace' to enable or disable, it is the same name of the

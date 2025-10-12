@@ -129,7 +129,7 @@ class OrmSelectQueryFindMatchOptionsTypesRule implements Rule
                 $parameterType,
                 $scope->getType($item),
                 $details,
-                $name
+                $name,
             ) : null;
 
             if ($error !== null) {
@@ -191,7 +191,7 @@ class OrmSelectQueryFindMatchOptionsTypesRule implements Rule
         Type $inputType,
         Type $assignedValueType,
         array $details,
-        string $property
+        string $property,
     ): ?RuleError {
         $accepts = $this->ruleLevelHelper->accepts($inputType, $assignedValueType, true);
 
@@ -202,7 +202,7 @@ class OrmSelectQueryFindMatchOptionsTypesRule implements Rule
             'Call to %s::%s with option "%s"',
             $details['reference'],
             $details['methodName'],
-            $property
+            $property,
         );
         $verbosityLevel = VerbosityLevel::getRecommendedLevelByType($inputType, $assignedValueType);
 
@@ -211,8 +211,8 @@ class OrmSelectQueryFindMatchOptionsTypesRule implements Rule
                 '%s (%s) does not accept %s.',
                 $propertyDescription,
                 $inputType->describe($verbosityLevel),
-                $assignedValueType->describe($verbosityLevel)
-            )
+                $assignedValueType->describe($verbosityLevel),
+            ),
         )
             ->acceptsReasonsTip($accepts->reasons)
             ->identifier('cake.tableGetMatchOptionsTypes.invalidType')
@@ -423,7 +423,7 @@ class OrmSelectQueryFindMatchOptionsTypesRule implements Rule
                     'Call to %s::%s is missing required finder option "%s".',
                     $details['reference'],
                     $details['methodName'],
-                    $requireOptionName
+                    $requireOptionName,
                 );
                 $errors[] = RuleErrorBuilder::message($errorMessage)
                     ->identifier('cake.tableGetMatchOptionsTypes.invalidType')

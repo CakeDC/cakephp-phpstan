@@ -42,8 +42,8 @@
         }
     },
     "scripts": {
-        "cs-check": "phpcs -p src/ tests",
-        "cs-fix": "phpcbf -p src/ tests",
+        "cs-check": "phpcs -p",
+        "cs-fix": "phpcbf -p",
         "test": "phpunit --stderr",
         "stan-integration": [
             "phpstan analyse --debug -c phpstan-test-app.neon",

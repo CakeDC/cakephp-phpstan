@@ -27,7 +27,7 @@ class ControllerFetchTableDynamicReturnTypeExtension extends TableLocatorDynamic
     protected function getReturnTypeWithoutArgs(
         MethodReflection $methodReflection,
         MethodCall $methodCall,
-        ClassReflection $targetClassReflection
+        ClassReflection $targetClassReflection,
     ): ?Type {
         $type = parent::getReturnTypeWithoutArgs($methodReflection, $methodCall, $targetClassReflection);
         if ($type !== null) {
@@ -47,7 +47,7 @@ class ControllerFetchTableDynamicReturnTypeExtension extends TableLocatorDynamic
      */
     protected function getDefaultTableByControllerClass(ClassReflection $targetClassReflection): ?string
     {
-        $hasProperty = $targetClassReflection->hasProperty('defaultTable');
+        $hasProperty = $targetClassReflection->hasInstanceProperty('defaultTable');
         if (!$hasProperty) {
             return null;
         }
@@ -63,7 +63,7 @@ class ControllerFetchTableDynamicReturnTypeExtension extends TableLocatorDynamic
         $tableClassName = sprintf(
             '%s\\Model\\Table\\%sTable',
             $baseNamespace,
-            $shortName
+            $shortName,
         );
 
         if (class_exists($tableClassName)) {

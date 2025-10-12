@@ -8,6 +8,7 @@ parameters:
 	 	disallowEntityArrayAccessRule: false
 	 	getMailerExistsClassRule: true
 	 	loadComponentExistsClassRule: true
+	 	controllerMethodMustReturnRule: true
 parametersSchema:
 	cakeDC: structure([
 		addAssociationExistsTableClassRule: anyOf(bool(), arrayOf(bool()))
@@ -18,6 +19,7 @@ parametersSchema:
 		disallowEntityArrayAccessRule: anyOf(bool(), arrayOf(bool()))
 		getMailerExistsClassRule: anyOf(bool(), arrayOf(bool()))
 		loadComponentExistsClassRule: anyOf(bool(), arrayOf(bool()))
+		controllerMethodMustReturnRule: anyOf(bool(), arrayOf(bool()))
 	])
 
 conditionalTags:
@@ -25,6 +27,8 @@ conditionalTags:
 		phpstan.parser.richParserNodeVisitor: %cakeDC.addAssociationExistsTableClassRule%
 	CakeDC\PHPStan\Rule\Controller\LoadComponentExistsClassRule:
 		phpstan.rules.rule: %cakeDC.loadComponentExistsClassRule%
+	CakeDC\PHPStan\Rule\Controller\ControllerMethodMustReturnRule:
+		phpstan.rules.rule: %cakeDC.controllerMethodMustReturnRule%
 	CakeDC\PHPStan\Rule\Model\AddAssociationExistsTableClassRule:
 		phpstan.rules.rule: %cakeDC.addAssociationExistsTableClassRule%
 	CakeDC\PHPStan\Rule\Model\AddAssociationMatchOptionsTypesRule:
@@ -45,6 +49,8 @@ services:
 		class: CakeDC\PHPStan\Visitor\AddAssociationSetClassNameVisitor
 	-
 		class: CakeDC\PHPStan\Rule\Controller\LoadComponentExistsClassRule
+	-
+		class: CakeDC\PHPStan\Rule\Controller\ControllerMethodMustReturnRule
 	-
 		class: CakeDC\PHPStan\Rule\Model\AddAssociationExistsTableClassRule
 	-

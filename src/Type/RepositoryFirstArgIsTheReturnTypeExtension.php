@@ -85,7 +85,7 @@ class RepositoryFirstArgIsTheReturnTypeExtension implements DynamicMethodReturnT
     public function getTypeFromMethodCall(
         MethodReflection $methodReflection,
         MethodCall $methodCall,
-        Scope $scope
+        Scope $scope,
     ): ?Type {
         $args = $methodCall->getArgs();
         if (count($args) === 0) {

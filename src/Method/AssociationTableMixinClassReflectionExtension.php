@@ -57,6 +57,11 @@ class AssociationTableMixinClassReflectionExtension implements
             return false;
         }
 
+        // magic findBy* method on Association
+        if (preg_match('/^find(?:\w+)?By/', $methodName) > 0) {
+            return true;
+        }
+
         return $this->getTableReflection()->hasMethod($methodName);
     }
 
@@ -70,6 +75,11 @@ class AssociationTableMixinClassReflectionExtension implements
         // magic findBy* method
         if ($classReflection->isSubclassOf(Table::class) && preg_match('/^find(?:\w+)?By/', $methodName) > 0) {
             return new TableFindByPropertyMethodReflection($methodName, $classReflection);
+        }
+
+        // magic findBy* method on Association
+        if ($classReflection->isSubclassOf(Association::class) && preg_match('/^find(?:\w+)?By/', $methodName) > 0) {
+            return new TableFindByPropertyMethodReflection($methodName, $this->getTableReflection());
         }
 
         return $this->getTableReflection()->getNativeMethod($methodName);

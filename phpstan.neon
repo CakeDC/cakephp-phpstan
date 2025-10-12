@@ -13,3 +13,10 @@ parameters:
     ignoreErrors:
         -
             identifier: missingType.generics
+        -
+            identifier: staticMethod.dynamicCall
+            path: tests/
+        -
+            identifier: phpstanApi.runtimeReflection
+            message: '#Creating new ReflectionClass is a runtime reflection concept#'
+            path: src/Type/TypeFactoryBuildDynamicReturnTypeExtension.php

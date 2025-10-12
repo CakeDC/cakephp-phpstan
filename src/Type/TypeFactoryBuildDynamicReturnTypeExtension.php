@@ -21,6 +21,7 @@ use PHPStan\Type\DynamicStaticMethodReturnTypeExtension;
 use PHPStan\Type\ObjectType;
 use PHPStan\Type\Type;
 use ReflectionClass;
+use ReflectionException;
 
 /**
  * Provides return type for TypeFactory::build() based on the type name argument.
@@ -110,7 +111,7 @@ class TypeFactoryBuildDynamicReturnTypeExtension implements DynamicStaticMethodR
             $this->typeMap = $defaultValue;
 
             return $this->typeMap;
-        } catch (\ReflectionException $e) {
+        } catch (ReflectionException $e) {
             return [];
         }
     }

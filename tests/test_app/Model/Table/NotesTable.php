@@ -56,9 +56,9 @@ class NotesTable extends Table
         $articleQuery = $this->MyUsers->Articles->findByTitle('Test Title');
         $articleQuery->first();
         // Test findBy with And operator
-        $this->MyUsers->Articles->findByTitleAndActive('Test', true);
+        $this->MyUsers->Articles->findByTitleAndActive('Test', true)->first();
         // Test findBy with Or operator
-        $this->MyUsers->Articles->findByTitleOrActive('Test', true);
+        $this->MyUsers->Articles->findByTitleOrActive('Test', true)->first();
         $entity = $this->get(10, cache: 'my_cache');
         if ($entity->note === 'Test') {
             $entity = $this->newEmptyEntity();

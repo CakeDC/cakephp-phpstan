@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Controller;
+namespace CakeDC\PHPStan\Test\TestCase\Rule\Controller\Fake;
 
 use Cake\Controller\Controller;
 

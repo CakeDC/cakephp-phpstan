@@ -32,7 +32,7 @@ class ControllerMethodMustReturnRuleTest extends RuleTestCase
      */
     public function testRule(): void
     {
-        $this->analyse([__DIR__ . '/../../../test_app/Controller/FailingControllerMethodReturnLogic.php'], [
+        $this->analyse([__DIR__ . '/Fake/FailingControllerMethodReturnLogic.php'], [
             [
                 'Method render() must be returned to prevent unreachable code. Use "return $this->render()" instead.',
                 17,

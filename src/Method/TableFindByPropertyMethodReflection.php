@@ -210,7 +210,15 @@ class TableFindByPropertyMethodReflection implements MethodReflection
     protected function getParams(string $method): array
     {
         $method = Inflector::underscore($method);
-        $fields = substr($method, 8);
+        // Extract the part after "find" and before "_by"
+        // Handles: findBy, findAllBy, findOrCreateBy, etc.
+        if (preg_match('/^find(?:_\w+)?_by_(.+)$/', $method, $matches) === 1) {
+            $fields = $matches[1];
+        } else {
+            // Fallback for simple cases
+            $fields = substr($method, 8);
+        }
+
         if (str_contains($fields, '_and_')) {
             return explode('_and_', $fields);
         }

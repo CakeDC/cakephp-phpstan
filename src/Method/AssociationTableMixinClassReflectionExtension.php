@@ -48,17 +48,23 @@ class AssociationTableMixinClassReflectionExtension implements
      */
     public function hasMethod(ClassReflection $classReflection, string $methodName): bool
     {
-        // magic findBy* method
-        if ($classReflection->is(Table::class) && preg_match('/^find(?:\w+)?By/', $methodName) > 0) {
-            return true;
+        // Handle Table classes
+        if ($classReflection->is(Table::class)) {
+            if ($classReflection->hasNativeMethod($methodName)) {
+                return false; // Let the native method be used
+            }
+            // magic findBy* and findAllBy* methods - available on ALL table classes
+            if (preg_match('/^find(All)?By/', $methodName) === 1) {
+                return true;
+            }
         }
 
         if (!$classReflection->is(Association::class)) {
             return false;
         }
 
-        // magic findBy* method on Association
-        if (preg_match('/^find(?:\w+)?By/', $methodName) > 0) {
+        // For associations, provide magic find(All)?By methods
+        if (preg_match('/^find(All)?By/', $methodName) === 1) {
             return true;
         }
 
@@ -72,17 +78,19 @@ class AssociationTableMixinClassReflectionExtension implements
      */
     public function getMethod(ClassReflection $classReflection, string $methodName): MethodReflection
     {
-        // magic findBy* method
-        if ($classReflection->is(Table::class) && preg_match('/^find(?:\w+)?By/', $methodName) > 0) {
-            return new TableFindByPropertyMethodReflection($methodName, $classReflection);
+        // Handle Table classes
+        if ($classReflection->is(Table::class)) {
+            if ($classReflection->hasNativeMethod($methodName)) {
+                return $classReflection->getNativeMethod($methodName);
+            }
+            // magic findBy* and findAllBy* methods
+            if (preg_match('/^find(All)?By/', $methodName) === 1) {
+                return new TableFindByPropertyMethodReflection($methodName, $classReflection);
+            }
         }
 
-        // magic findBy* method on Association
-        $associationReflection = $this->reflectionProvider->getClass(Association::class);
-        if (
-            $classReflection->isSubclassOfClass($associationReflection)
-            && preg_match('/^find(?:\w+)?By/', $methodName) > 0
-        ) {
+        // For associations, handle magic find(All)?By methods
+        if (preg_match('/^find(All)?By/', $methodName) === 1) {
             return new TableFindByPropertyMethodReflection($methodName, $this->getTableReflection());
         }
 

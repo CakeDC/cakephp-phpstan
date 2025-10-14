@@ -15,6 +15,8 @@ use PHPStan\Reflection\MethodsClassReflectionExtension;
 use PHPStan\Reflection\PropertiesClassReflectionExtension;
 use PHPStan\Reflection\PropertyReflection;
 use PHPStan\Reflection\ReflectionProvider;
+use PHPStan\Type\Generic\GenericObjectType;
+use PHPStan\Type\ObjectType;
 
 class AssociationTableMixinClassReflectionExtension implements
     PropertiesClassReflectionExtension,
@@ -63,12 +65,12 @@ class AssociationTableMixinClassReflectionExtension implements
             return false;
         }
 
-        // For associations, provide magic find(All)?By methods
-        if (preg_match('/^find(All)?By/', $methodName) === 1) {
-            return true;
+        $classReflection = $this->getAssociationTargetClassReflection($classReflection);
+        if ($classReflection->hasNativeMethod($methodName)) {
+            return false;
         }
 
-        return $this->getTableReflection()->hasMethod($methodName);
+        return preg_match('/^find(All)?By/', $methodName) === 1;
     }
 
     /**
@@ -119,5 +121,27 @@ class AssociationTableMixinClassReflectionExtension implements
     public function getProperty(ClassReflection $classReflection, string $propertyName): PropertyReflection
     {
         return $this->getTableReflection()->getNativeProperty($propertyName);
+    }
+
+    /**
+     * @param \PHPStan\Reflection\ClassReflection $classReflection
+     * @return \PHPStan\Reflection\ClassReflection|null
+     */
+    protected function getAssociationTargetClassReflection(ClassReflection $classReflection): ?ClassReflection
+    {
+        $type = $classReflection->getObjectType();
+        if (!$type instanceof GenericObjectType) {
+            return $this->getTableReflection();
+        }
+        $subType = $type->getTypes()[0] ?? null;
+        if (!$subType instanceof ObjectType) {
+            return $this->getTableReflection();
+        }
+        $tableClass = $subType->getClassReflection();
+        if ($tableClass->is(Table::class)) {
+            return $tableClass;
+        }
+
+        return $this->getTableReflection();
     }
 }

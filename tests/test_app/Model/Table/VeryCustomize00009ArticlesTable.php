@@ -52,6 +52,11 @@ class VeryCustomize00009ArticlesTable extends Table
         $article = $this->findByTitleAndActive('sample', true)->first();
         $article->set('title', 'sample two');
 
+        // Test actual (non-magic) findOrCreateBySku method with specific signature (issue #55)
+        // When called directly on the table (not through association), PHPStan should use the native method
+        $entityOrCreate = $this->findOrCreateBySku('TEST-SKU', 'Test Value');
+        $entityOrCreate->set('title', 'Updated Title');
+
         return true;
     }
 
@@ -68,5 +73,24 @@ class VeryCustomize00009ArticlesTable extends Table
             'content' => 'Sample content for test',
             ],
         );
+    }
+
+    /**
+     * Custom non-magic findOrCreateBySku method with specific signature
+     *
+     * @param string $sku
+     * @param string $foo
+     * @return \Cake\Datasource\EntityInterface
+     */
+    public function findOrCreateBySku(string $sku, string $foo)
+    {
+        /** @var \Cake\ORM\Entity|null $entity */
+        $entity = $this->findBySku($sku)->first();
+        if ($entity === null) {
+            $entity = $this->newEntity(['sku' => $sku, 'foo' => $foo]);
+            $entity = $this->saveOrFail($entity);
+        }
+
+        return $entity;
     }
 }

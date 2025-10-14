@@ -58,17 +58,15 @@ class AssociationTableMixinClassReflectionExtension implements
                 return true;
             }
         }
-
         if (!$classReflection->is(Association::class)) {
             return false;
         }
-
-        $classReflection = $this->getAssociationTargetClassReflection($classReflection);
-        if ($classReflection->hasNativeMethod($methodName)) {
+        if (preg_match('/^find(All)?By/', $methodName) !== 1) {
             return false;
         }
+        $classReflection = $this->getAssociationTargetClassReflection($classReflection);
 
-        return preg_match('/^find(All)?By/', $methodName) === 1;
+        return !$classReflection->hasNativeMethod($methodName);
     }
 
     /**

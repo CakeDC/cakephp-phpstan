@@ -15,8 +15,6 @@ use PHPStan\Reflection\MethodsClassReflectionExtension;
 use PHPStan\Reflection\PropertiesClassReflectionExtension;
 use PHPStan\Reflection\PropertyReflection;
 use PHPStan\Reflection\ReflectionProvider;
-use PHPStan\Type\Generic\GenericObjectType;
-use PHPStan\Type\ObjectType;
 
 class AssociationTableMixinClassReflectionExtension implements
     PropertiesClassReflectionExtension,
@@ -125,20 +123,16 @@ class AssociationTableMixinClassReflectionExtension implements
 
     /**
      * @param \PHPStan\Reflection\ClassReflection $classReflection
-     * @return \PHPStan\Reflection\ClassReflection|null
+     * @return \PHPStan\Reflection\ClassReflection
      */
-    protected function getAssociationTargetClassReflection(ClassReflection $classReflection): ?ClassReflection
+    protected function getAssociationTargetClassReflection(ClassReflection $classReflection): ClassReflection
     {
-        $type = $classReflection->getObjectType();
-        if (!$type instanceof GenericObjectType) {
+        $subType = $classReflection->getActiveTemplateTypeMap()->getTypes()['T'] ?? null;
+        if ($subType === null || !$subType->isObject()->yes()) {
             return $this->getTableReflection();
         }
-        $subType = $type->getTypes()[0] ?? null;
-        if (!$subType instanceof ObjectType) {
-            return $this->getTableReflection();
-        }
-        $tableClass = $subType->getClassReflection();
-        if ($tableClass->is(Table::class)) {
+        $tableClass = $subType->getObjectClassReflections()[0] ?? null;
+        if ($tableClass !== null) {
             return $tableClass;
         }
 

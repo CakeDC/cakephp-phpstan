@@ -61,13 +61,10 @@ class UsersTable extends Table
 
     /**
      * @param int $foo
-     * @return list<\App\Model\Entity\User>
+     * @return int
      */
-    public function findAllByFoo(int $foo): array
+    public function findAllByFoo(int $foo): int
     {
-        return [
-            new User(['id' => 'first_' . $foo, 'name' => 'John Doe']),
-            new User(['id' => 'second_' . $foo, 'name' => 'Mary J.']),
-        ];
+        return $foo * 200;
     }
 }

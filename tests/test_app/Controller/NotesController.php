@@ -175,5 +175,7 @@ class NotesController extends Controller
         foreach ($users as $user) {
             $user->name = strtolower($user->name);
         }
+        //BelongsTo should match the correct Users table methods.
+        $this->Notes->Users->blockOld();
     }
 }

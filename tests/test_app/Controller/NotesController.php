@@ -161,15 +161,15 @@ class NotesController extends Controller
     public function listUsers()
     {
         //UsersTable::findByNamed exists it is not a magic method
-        $userNamed = $this->Notes->Users->findByNamed("John Doe")->id;//Users is a BelongsTo association
+        $userNamed = $this->Notes->Users->findByNamed('John Doe')->id;//Users is a BelongsTo association
         $this->set(compact('userNamed'));
-        $userNamedMary = $this->fetchTable('Users')->findByNamed("Mary")->id;
+        $userNamedMary = $this->fetchTable('Users')->findByNamed('Mary')->id;
         $this->set(compact('userNamedMary'));
 
         //UsersTable::findByRole is a magic finder method
-        $userList = $this->Notes->Users->findByRole("admin")->all()->toArray();
+        $userList = $this->Notes->Users->findByRole('admin')->all()->toArray();
         $this->set(compact('userList'));
-        $userListGuest = $this->fetchTable('Users')->findByRole("guest")->all()->toArray();
+        $userListGuest = $this->fetchTable('Users')->findByRole('guest')->all()->toArray();
         $this->set(compact('userListGuest'));
         $users = $this->Notes->Users->findAllByFoo(100);
         foreach ($users as $user) {

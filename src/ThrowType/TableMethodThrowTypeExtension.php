@@ -21,6 +21,19 @@ class TableMethodThrowTypeExtension implements DynamicMethodThrowTypeExtension
     protected ReflectionProvider $reflectionProvider;
 
     /**
+     * @var array<int, string>
+     */
+    protected array $methods = [
+        'get',
+        'deleteManyOrFail',
+        'findOrCreate',
+        'save',
+        'saveOrFail',
+        'saveMany',
+        'saveManyOrFail',
+    ];
+
+    /**
      * @param \PHPStan\Reflection\ReflectionProvider $reflectionProvider
      */
     public function __construct(ReflectionProvider $reflectionProvider)
@@ -34,7 +47,11 @@ class TableMethodThrowTypeExtension implements DynamicMethodThrowTypeExtension
      */
     public function isMethodSupported(MethodReflection $methodReflection): bool
     {
-        return $methodReflection->getName() === 'get';
+        if (!in_array($methodReflection->getName(), $this->methods, true)) {
+            return false;
+        }
+
+        return $methodReflection->getDeclaringClass()->is(Table::class);
     }
 
     /**
@@ -51,8 +68,7 @@ class TableMethodThrowTypeExtension implements DynamicMethodThrowTypeExtension
         $methodName = $methodReflection->getName();
         $type = $scope->getType($methodCall->var);
         $classReflection = $type->getObjectClassReflections()[0];
-        $isAssociation = $classReflection->is(Association::class);
-        if ($isAssociation) {
+        if ($classReflection->is(Association::class)) {
             return $this->getThrowType($methodName, $scope);
         }
 

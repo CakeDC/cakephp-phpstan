@@ -17,6 +17,8 @@ use Cake\Controller\Controller;
 use Cake\Datasource\Exception\InvalidPrimaryKeyException;
 use Cake\Datasource\Exception\RecordNotFoundException;
 use Cake\Log\Log;
+use Cake\ORM\Exception\PersistenceFailedException;
+use Cake\ORM\Exception\RolledbackTransactionException;
 use Cake\ORM\TableRegistry;
 
 /**
@@ -197,9 +199,38 @@ class NotesController extends Controller
         } catch (RecordNotFoundException) {
         }
 
+        $user = $this->Notes->NewMyUsers->get(1);
         try {
-            $note = $this->Notes->get(1);
-            $note->note = 'This is a test';
+            $this->Notes->NewMyUsers->save($user);
+        } catch (RolledbackTransactionException) {
+        }
+        try {
+            $this->Notes->NewMyUsers->findOrCreate(['name' => 'This is a test']);
+        } catch (PersistenceFailedException) {
+        }
+        try {
+            $this->Notes->NewMyUsers->saveOrFail($user);
+        } catch (PersistenceFailedException) {
+        }
+
+        try {
+            $this->Notes->NewMyUsers->saveMany([$user]);
+        } catch (PersistenceFailedException) {
+        }
+
+        try {
+            $this->Notes->NewMyUsers->saveManyOrFail([$user]);
+        } catch (PersistenceFailedException) {
+        }
+
+        try {
+            $this->Notes->NewMyUsers->deleteManyOrFail([$user]);
+        } catch (PersistenceFailedException) {
+        }
+
+        try {
+            $user = $this->Notes->get(1);
+            $user->note = 'This is a test';
         } catch (InvalidPrimaryKeyException) {
         }
 

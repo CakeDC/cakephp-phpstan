@@ -58,3 +58,7 @@ services:
 		class: CakeDC\PHPStan\Type\TypeFactoryBuildDynamicReturnTypeExtension
 		tags:
 			- phpstan.broker.dynamicStaticMethodReturnTypeExtension
+	-
+		class: CakeDC\PHPStan\ThrowType\TableMethodThrowTypeExtension
+		tags:
+			- phpstan.dynamicMethodThrowTypeExtension

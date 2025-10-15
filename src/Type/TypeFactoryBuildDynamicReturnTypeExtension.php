@@ -17,11 +17,11 @@ use Cake\Database\TypeFactory;
 use PhpParser\Node\Expr\StaticCall;
 use PHPStan\Analyser\Scope;
 use PHPStan\Reflection\MethodReflection;
+use PHPStan\Reflection\MissingPropertyFromReflectionException;
+use PHPStan\Reflection\ReflectionProvider;
 use PHPStan\Type\DynamicStaticMethodReturnTypeExtension;
 use PHPStan\Type\ObjectType;
 use PHPStan\Type\Type;
-use ReflectionClass;
-use ReflectionException;
 
 /**
  * Provides return type for TypeFactory::build() based on the type name argument.
@@ -35,6 +35,19 @@ class TypeFactoryBuildDynamicReturnTypeExtension implements DynamicStaticMethodR
      * @var array<string, class-string>|null
      */
     private ?array $typeMap = null;
+
+    /**
+     * @var \PHPStan\Reflection\ReflectionProvider
+     */
+    protected ReflectionProvider $reflectionProvider;
+
+    /**
+     * @param \PHPStan\Reflection\ReflectionProvider $reflectionProvider
+     */
+    public function __construct(ReflectionProvider $reflectionProvider)
+    {
+        $this->reflectionProvider = $reflectionProvider;
+    }
 
     /**
      * @return class-string
@@ -102,16 +115,17 @@ class TypeFactoryBuildDynamicReturnTypeExtension implements DynamicStaticMethodR
         }
 
         try {
-            $reflection = new ReflectionClass(TypeFactory::class);
-            $property = $reflection->getProperty('_types');
-            $property->setAccessible(true);
+            $reflection = $this->reflectionProvider->getClass(TypeFactory::class);
+            $property = $reflection->getStaticProperty('_types');
 
-            /** @var array<string, class-string> $defaultValue */
-            $defaultValue = $property->getDefaultValue();
+            /**
+             * @var array<string, class-string> $defaultValue
+             */
+            $defaultValue = $property->getNativeReflection()->getValue();
             $this->typeMap = $defaultValue;
 
             return $this->typeMap;
-        } catch (ReflectionException $e) {
+        } catch (MissingPropertyFromReflectionException $e) {
             return [];
         }
     }

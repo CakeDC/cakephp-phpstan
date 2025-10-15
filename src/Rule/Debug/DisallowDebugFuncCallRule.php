@@ -65,7 +65,7 @@ class DisallowDebugFuncCallRule implements Rule
                 $usedName,
                 'The use in shipped code is discouraged because they can leak sensitive information or clutter output.',
             ))
-            ->identifier('cake.debug.debugFunctionUse')
+            ->identifier('cake.debug.debugFuncCallUse')
             ->build(),
         ];
     }

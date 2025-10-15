@@ -39,9 +39,7 @@ class DisallowDebugFunctionsRule implements Rule
     }
 
     /**
-     * @param \PhpParser\Node $node
-     * @param \PHPStan\Analyser\Scope $scope
-     * @return array|array<\PHPStan\Rules\IdentifierRuleError>
+     * @inheritDoc
      */
     public function processNode(Node $node, Scope $scope): array
     {
@@ -56,7 +54,7 @@ class DisallowDebugFunctionsRule implements Rule
         }
         if ($this->disallowedFunctions[$name] === self::RETURNABLE) {
             $arg = $node->getArgs()[1]->value ?? null;
-            if ($arg instanceof ConstFetch && $arg->name->name == 'true') {
+            if ($arg instanceof ConstFetch && $arg->name->name === 'true') {
                 return [];
             }
         }

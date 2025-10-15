@@ -30,6 +30,46 @@ class DisallowDebugFunctionsRuleTest extends RuleTestCase
                 'Use of debug function "debug" is not allowed',
                 16, // asserted error line
             ],
+            [
+                'Use of debug function "debug_print_backtrace" is not allowed',
+                17, // asserted error line
+            ],
+            [
+                'Use of debug function "debug_zval_dump" is not allowed',
+                18, // asserted error line
+            ],
+            [
+                'Use of debug function "print_r" is not allowed',
+                21, // asserted error line
+            ],
+            [
+                'Use of debug function "print_r" is not allowed',
+                22, // asserted error line
+            ],
+            [
+                'Use of debug function "var_dump" is not allowed',
+                23, // asserted error line
+            ],
+            [
+                'Use of debug function "var_export" is not allowed',
+                25, // asserted error line
+            ],
+            [
+                'Use of debug function "var_export" is not allowed',
+                26, // asserted error line
+            ],
+            [
+                'Use of debug function "stackTrace" is not allowed',
+                27, // asserted error line
+            ],
+            [
+                'Use of debug function "pr" is not allowed',
+                28, // asserted error line
+            ],
+            [
+                'Use of debug function "dd" is not allowed',
+                30, // asserted error line
+            ],
         ]);
     }
 

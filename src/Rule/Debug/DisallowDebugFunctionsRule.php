@@ -2,6 +2,7 @@
 declare(strict_types=1);
 
 namespace CakeDC\PHPStan\Rule\Debug;
+
 use PhpParser\Node;
 use PhpParser\Node\Expr\ConstFetch;
 use PhpParser\Node\Expr\FuncCall;
@@ -40,7 +41,7 @@ class DisallowDebugFunctionsRule implements Rule
     /**
      * @param \PhpParser\Node $node
      * @param \PHPStan\Analyser\Scope $scope
-     * @return array|\PHPStan\Rules\IdentifierRuleError[]
+     * @return array|array<\PHPStan\Rules\IdentifierRuleError>
      */
     public function processNode(Node $node, Scope $scope): array
     {

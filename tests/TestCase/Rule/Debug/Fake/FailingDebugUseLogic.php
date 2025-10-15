@@ -3,10 +3,8 @@ declare(strict_types=1);
 
 namespace CakeDC\PHPStan\Test\TestCase\Rule\Debug\Fake;
 
-
 class FailingDebugUseLogic
 {
-
     /**
      * @return void
      */
@@ -15,7 +13,7 @@ class FailingDebugUseLogic
         $list = [1, 2, 3, 4];
         debug($list);//Error
         debug_print_backtrace();//Error
-        debug_zval_dump("Hello World");//Error
+        debug_zval_dump('Hello World');//Error
         ksort($list);//Not a debug should not fail
         print_r(['Hello World!'], true);//No error, text is returned
         print_r(['Hello World!']);//Error

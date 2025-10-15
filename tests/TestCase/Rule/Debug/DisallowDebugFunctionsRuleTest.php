@@ -2,6 +2,7 @@
 declare(strict_types=1);
 
 namespace CakeDC\PHPStan\Test\TestCase\Rule\Debug;
+
 use CakeDC\PHPStan\Rule\Debug\DisallowDebugFunctionsRule;
 use PHPStan\Rules\Rule;
 use PHPStan\Testing\RuleTestCase;

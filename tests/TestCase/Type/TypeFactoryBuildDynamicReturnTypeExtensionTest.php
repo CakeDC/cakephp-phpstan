@@ -25,7 +25,7 @@ class TypeFactoryBuildDynamicReturnTypeExtensionTest extends TestCase
     public function testTypeFactoryBuildReturnsCorrectTypes(): void
     {
         $output = $this->runPhpStan(__DIR__ . '/Fake/TypeFactoryCorrectUsage.php');
-        $this->assertStringContainsString('[OK] No errors', $output);
+        static::assertStringContainsString('[OK] No errors', $output);
     }
 
     /**
@@ -37,11 +37,11 @@ class TypeFactoryBuildDynamicReturnTypeExtensionTest extends TestCase
     {
         $output = $this->runPhpStan(__DIR__ . '/Fake/TypeFactoryIncorrectUsage.php');
 
-        $this->assertStringContainsString('IntegerType::setUserTimezone()', $output);
-        $this->assertStringContainsString('StringType::setUserTimezone()', $output);
-        $this->assertStringContainsString('BoolType::setUserTimezone()', $output);
-        $this->assertStringContainsString('JsonType::nonExistentMethod()', $output);
-        $this->assertStringContainsString('Found 4 errors', $output);
+        static::assertStringContainsString('IntegerType::setUserTimezone()', $output);
+        static::assertStringContainsString('StringType::setUserTimezone()', $output);
+        static::assertStringContainsString('BoolType::setUserTimezone()', $output);
+        static::assertStringContainsString('JsonType::nonExistentMethod()', $output);
+        static::assertStringContainsString('Found 4 errors', $output);
     }
 
     /**

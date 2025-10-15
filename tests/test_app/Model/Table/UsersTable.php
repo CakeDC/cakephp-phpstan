@@ -49,4 +49,22 @@ class UsersTable extends Table
         $articleQuery = $this->Articles->findByTitle('Test');
         $articleQuery->first();
     }
+
+    /**
+     * @param string $name
+     * @return \App\Model\Entity\User
+     */
+    public function findByNamed(string $name): User
+    {
+        return new User(['name' => strtolower($name)]);
+    }
+
+    /**
+     * @param int $foo
+     * @return int
+     */
+    public function findAllByFoo(int $foo): int
+    {
+        return $foo * 200;
+    }
 }

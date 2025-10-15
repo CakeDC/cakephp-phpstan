@@ -58,17 +58,15 @@ class AssociationTableMixinClassReflectionExtension implements
                 return true;
             }
         }
-
         if (!$classReflection->is(Association::class)) {
             return false;
         }
-
-        // For associations, provide magic find(All)?By methods
-        if (preg_match('/^find(All)?By/', $methodName) === 1) {
-            return true;
+        if (preg_match('/^find(All)?By/', $methodName) !== 1) {
+            return false;
         }
+        $classReflection = $this->getAssociationTargetClassReflection($classReflection);
 
-        return $this->getTableReflection()->hasMethod($methodName);
+        return !$classReflection->hasNativeMethod($methodName);
     }
 
     /**
@@ -119,5 +117,23 @@ class AssociationTableMixinClassReflectionExtension implements
     public function getProperty(ClassReflection $classReflection, string $propertyName): PropertyReflection
     {
         return $this->getTableReflection()->getNativeProperty($propertyName);
+    }
+
+    /**
+     * @param \PHPStan\Reflection\ClassReflection $classReflection
+     * @return \PHPStan\Reflection\ClassReflection
+     */
+    protected function getAssociationTargetClassReflection(ClassReflection $classReflection): ClassReflection
+    {
+        $subType = $classReflection->getActiveTemplateTypeMap()->getTypes()['T'] ?? null;
+        if ($subType === null || !$subType->isObject()->yes()) {
+            return $this->getTableReflection();
+        }
+        $tableClass = $subType->getObjectClassReflections()[0] ?? null;
+        if ($tableClass !== null) {
+            return $tableClass;
+        }
+
+        return $this->getTableReflection();
     }
 }

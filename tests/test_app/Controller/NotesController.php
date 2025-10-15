@@ -14,6 +14,8 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use Cake\Controller\Controller;
+use Cake\Datasource\Exception\InvalidPrimaryKeyException;
+use Cake\Datasource\Exception\RecordNotFoundException;
 use Cake\Log\Log;
 use Cake\ORM\TableRegistry;
 
@@ -182,5 +184,42 @@ class NotesController extends Controller
         $this->set(compact('users', 'myUsers'));
         //BelongsTo should match the correct Users table methods.
         $this->Notes->Users->blockOld();
+    }
+
+    /**
+     * @return void
+     */
+    public function viewWithTryCatch()
+    {
+        try {
+            $note = $this->Notes->get(1);
+            $note->note = 'This is a test';
+        } catch (RecordNotFoundException) {
+        }
+
+        try {
+            $note = $this->Notes->get(1);
+            $note->note = 'This is a test';
+        } catch (InvalidPrimaryKeyException) {
+        }
+
+        try {
+            $user = $this->Notes->Users->get(1);
+            $user->name = 'user1';
+        } catch (RecordNotFoundException) {
+            //TableMethodThrowTypeExtension avoids dead catch
+        }
+        try {
+            $user = $this->Notes->MyUsers->get(2);
+            $user->name = 'user2';
+        } catch (RecordNotFoundException) {
+            //TableMethodThrowTypeExtension avoids dead catch
+        }
+        try {
+            $user = $this->Notes->NewMyUsers->get(3);
+            $user->name = 'user3';
+        } catch (RecordNotFoundException) {
+            //TableMethodThrowTypeExtension avoids dead catch
+        }
     }
 }

@@ -22,6 +22,7 @@ use Cake\ORM\Table;
  * @property \App\Model\Table\VeryCustomize00009ArticlesTable&\Cake\ORM\Association\HasMany $VeryCustomize00009Articles
  * @property \Cake\ORM\Association\BelongsTo<\App\Model\Table\UsersTable> $Users
  * @property \Cake\ORM\Association\BelongsTo&\App\Model\Table\UsersTable $MyUsers//Don't use generic here, we need this way for testing
+ * @property \Cake\ORM\Association\BelongsTo<\App\Model\Table\MyUsersTable> $NewMyUsers
  */
 class NotesTable extends Table
 {

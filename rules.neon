@@ -45,7 +45,7 @@ conditionalTags:
 		phpstan.rules.rule: %cakeDC.tableGetMatchOptionsTypesRule%
 	CakeDC\PHPStan\Rule\Model\OrmSelectQueryFindMatchOptionsTypesRule:
 		phpstan.rules.rule: %cakeDC.ormSelectQueryFindMatchOptionsTypesRule%
-	CakeDC\PHPStan\Rule\Model\DisallowDebugFunctionsRule:
+	CakeDC\PHPStan\Rule\Debug\DisallowDebugFunctionsRule:
 		phpstan.rules.rule: %cakeDC.disallowDebugFunctionsRule%
 
 services:

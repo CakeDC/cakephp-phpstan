@@ -29,47 +29,47 @@ class DisallowDebugFunctionsRuleTest extends RuleTestCase
         $this->analyse([__DIR__ . '/Fake/FailingDebugUseLogic.php'], [
             [
                 'Use of debug function "debug" is not allowed',
-                16, // asserted error line
+                14, // asserted error line
             ],
             [
                 'Use of debug function "debug_print_backtrace" is not allowed',
-                17, // asserted error line
+                15, // asserted error line
             ],
             [
                 'Use of debug function "debug_zval_dump" is not allowed',
-                18, // asserted error line
+                16, // asserted error line
             ],
             [
                 'Use of debug function "print_r" is not allowed',
-                21, // asserted error line
+                19, // asserted error line
             ],
             [
                 'Use of debug function "print_r" is not allowed',
-                22, // asserted error line
+                20, // asserted error line
             ],
             [
                 'Use of debug function "var_dump" is not allowed',
+                21, // asserted error line
+            ],
+            [
+                'Use of debug function "var_export" is not allowed',
                 23, // asserted error line
             ],
             [
                 'Use of debug function "var_export" is not allowed',
-                25, // asserted error line
-            ],
-            [
-                'Use of debug function "var_export" is not allowed',
-                26, // asserted error line
+                24, // asserted error line
             ],
             [
                 'Use of debug function "stackTrace" is not allowed',
-                27, // asserted error line
+                25, // asserted error line
             ],
             [
                 'Use of debug function "pr" is not allowed',
-                28, // asserted error line
+                26, // asserted error line
             ],
             [
                 'Use of debug function "dd" is not allowed',
-                30, // asserted error line
+                28, // asserted error line
             ],
         ]);
     }

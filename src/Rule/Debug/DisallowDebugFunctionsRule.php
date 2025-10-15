@@ -61,10 +61,11 @@ class DisallowDebugFunctionsRule implements Rule
 
         return [
             RuleErrorBuilder::message(sprintf(
-                'Use of debug function "%s" is not allowed',
+                'Use of debug function "%s" is not allowed. %s',
                 $usedName,
+                'The use in shipped code is discouraged because they can leak sensitive information or clutter output.',
             ))
-            ->identifier('cake.entity.arrayAccess')
+            ->identifier('cake.debug.debugFunctionUse')
             ->build(),
         ];
     }

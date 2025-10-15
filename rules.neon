@@ -9,7 +9,7 @@ parameters:
 	 	getMailerExistsClassRule: true
 	 	loadComponentExistsClassRule: true
 	 	controllerMethodMustBeUsedRule: true
-	 	disallowDebugFunctionsRule: true
+	 	disallowDebugFuncCallRule: true
 	 	disallowDebugStaticCallRule: true
 parametersSchema:
 	cakeDC: structure([
@@ -22,7 +22,7 @@ parametersSchema:
 		getMailerExistsClassRule: anyOf(bool(), arrayOf(bool()))
 		loadComponentExistsClassRule: anyOf(bool(), arrayOf(bool()))
 		controllerMethodMustBeUsedRule: anyOf(bool(), arrayOf(bool()))
-		disallowDebugFunctionsRule: anyOf(bool(), arrayOf(bool()))
+		disallowDebugFuncCallRule: anyOf(bool(), arrayOf(bool()))
 		disallowDebugStaticCallRule: anyOf(bool(), arrayOf(bool()))
 	])
 
@@ -47,8 +47,8 @@ conditionalTags:
 		phpstan.rules.rule: %cakeDC.tableGetMatchOptionsTypesRule%
 	CakeDC\PHPStan\Rule\Model\OrmSelectQueryFindMatchOptionsTypesRule:
 		phpstan.rules.rule: %cakeDC.ormSelectQueryFindMatchOptionsTypesRule%
-	CakeDC\PHPStan\Rule\Debug\DisallowDebugFunctionsRule:
-		phpstan.rules.rule: %cakeDC.disallowDebugFunctionsRule%
+	CakeDC\PHPStan\Rule\Debug\DisallowDebugFuncCallRule:
+		phpstan.rules.rule: %cakeDC.disallowDebugFuncCallRule%
 	CakeDC\PHPStan\Rule\Debug\DisallowDebugStaticCallRule:
 		phpstan.rules.rule: %cakeDC.disallowDebugStaticCallRule%
 
@@ -74,6 +74,6 @@ services:
 	-
 		class: CakeDC\PHPStan\Rule\Model\OrmSelectQueryFindMatchOptionsTypesRule
 	-
-		class: CakeDC\PHPStan\Rule\Debug\DisallowDebugFunctionsRule
+		class: CakeDC\PHPStan\Rule\Debug\DisallowDebugFuncCallRule
 	-
 		class: CakeDC\PHPStan\Rule\Debug\DisallowDebugStaticCallRule

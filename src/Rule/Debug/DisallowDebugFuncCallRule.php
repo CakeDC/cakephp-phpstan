@@ -10,7 +10,7 @@ use PHPStan\Analyser\Scope;
 use PHPStan\Rules\Rule;
 use PHPStan\Rules\RuleErrorBuilder;
 
-class DisallowDebugFunctionsRule implements Rule
+class DisallowDebugFuncCallRule implements Rule
 {
     protected const BASIC = 'basic';
     protected const RETURNABLE = 'returnable';

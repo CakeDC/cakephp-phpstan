@@ -3,11 +3,11 @@ declare(strict_types=1);
 
 namespace CakeDC\PHPStan\Test\TestCase\Rule\Debug;
 
-use CakeDC\PHPStan\Rule\Debug\DisallowDebugFunctionsRule;
+use CakeDC\PHPStan\Rule\Debug\DisallowDebugFuncCallRule;
 use PHPStan\Rules\Rule;
 use PHPStan\Testing\RuleTestCase;
 
-class DisallowDebugFunctionsRuleTest extends RuleTestCase
+class DisallowDebugFuncCallRuleTest extends RuleTestCase
 {
     /**
      * @return \PHPStan\Rules\Rule
@@ -15,7 +15,7 @@ class DisallowDebugFunctionsRuleTest extends RuleTestCase
     protected function getRule(): Rule
     {
         // getRule() method needs to return an instance of the tested rule
-        return new DisallowDebugFunctionsRule();
+        return new DisallowDebugFuncCallRule();
     }
 
     /**

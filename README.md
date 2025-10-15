@@ -133,6 +133,21 @@ Table::hasMany, Table::belongsToMany, Table::hasOne and AssociationCollection::l
 ### AddBehaviorExistsClassRule
 This rule check if the target behavior has a valid class when calling to Table::addBehavior and BehaviorRegistry::load.
 
+### DisallowDebugFuncCallRule
+This rule disallow use of debug functions (`dd, debug, debug_print_backtrace, debug_zval_dump, pr, print_r, stacktrace, var_dump and var_export`).
+
+The use of these functions in shipped code is discouraged because they can leak sensitive information or clutter output.
+
+### DisallowDebugStaticCallRule
+This rule disallow use of debug methods. The use of these methods in shipped code is discouraged because they can leak sensitive information or clutter output.
+
+Methods covered:
+
+    - Cake\Error\Debugger::dump
+    - Cake\Error\Debugger::printVar
+    - DebugKit\DebugSql::sql
+    - DebugKit\DebugSql::sqld
+
 ### DisallowEntityArrayAccessRule
 This rule disallow array access to entity in favor of object notation, is easier to detect a wrong property and to refactor code.
 

@@ -54,3 +54,7 @@ services:
 		factory: CakeDC\PHPStan\Type\BaseTraitExpressionTypeResolverExtension(Cake\ORM\Locator\LocatorAwareTrait, fetchTable, %s\Model\Table\%sTable, defaultTable)
 		tags:
 			- phpstan.broker.expressionTypeResolverExtension
+	-
+		class: CakeDC\PHPStan\Type\TypeFactoryBuildDynamicReturnTypeExtension
+		tags:
+			- phpstan.broker.dynamicStaticMethodReturnTypeExtension

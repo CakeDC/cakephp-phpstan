@@ -6,12 +6,22 @@ namespace CakeDC\PHPStan\Rule\Model;
 use Cake\Datasource\EntityInterface;
 use PhpParser\Node;
 use PhpParser\Node\Expr\ArrayDimFetch;
+use PhpParser\Node\Scalar\String_;
 use PHPStan\Analyser\Scope;
 use PHPStan\Rules\Rule;
 use PHPStan\Rules\RuleErrorBuilder;
 
 class DisallowEntityArrayAccessRule implements Rule
 {
+    /**
+     * @var list<string>
+     */
+    protected array $allowedKeys = [
+        '_matchingData',
+        '_joinData',
+        '_ids',
+    ];
+
     /**
      * @inheritDoc
      */
@@ -35,6 +45,10 @@ class DisallowEntityArrayAccessRule implements Rule
         }
         $reflection = $type->getObjectClassReflections()[0] ?? null;
         if ($reflection === null || !$reflection->is(EntityInterface::class)) {
+            return [];
+        }
+
+        if ($node->dim instanceof String_ && in_array($node->dim->value, $this->allowedKeys, true)) {
             return [];
         }
 

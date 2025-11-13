@@ -54,7 +54,7 @@ class DisallowEntityArrayAccessRule implements Rule
 
         return [
             RuleErrorBuilder::message(sprintf(
-                'Array access to entity to %s is not allowed, access as object instead',
+                'Array access to entity %s is not allowed, access as object instead',
                 $reflection->getName(),
             ))
             ->identifier('cake.entity.arrayAccess')

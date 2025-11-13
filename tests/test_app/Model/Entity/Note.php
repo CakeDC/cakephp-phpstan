@@ -15,4 +15,5 @@ use Cake\ORM\Entity;
  */
 class Note extends Entity
 {
+    public const FIELD_NOTE = 'note';
 }

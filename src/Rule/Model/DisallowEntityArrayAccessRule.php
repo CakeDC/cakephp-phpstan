@@ -6,12 +6,22 @@ namespace CakeDC\PHPStan\Rule\Model;
 use Cake\Datasource\EntityInterface;
 use PhpParser\Node;
 use PhpParser\Node\Expr\ArrayDimFetch;
+use PhpParser\Node\Scalar\String_;
 use PHPStan\Analyser\Scope;
 use PHPStan\Rules\Rule;
 use PHPStan\Rules\RuleErrorBuilder;
 
 class DisallowEntityArrayAccessRule implements Rule
 {
+    /**
+     * @var list<string>
+     */
+    protected array $allowedKeys = [
+        '_matchingData',
+        '_joinData',
+        '_ids',
+    ];
+
     /**
      * @inheritDoc
      */
@@ -38,9 +48,13 @@ class DisallowEntityArrayAccessRule implements Rule
             return [];
         }
 
+        if ($node->dim instanceof String_ && in_array($node->dim->value, $this->allowedKeys, true)) {
+            return [];
+        }
+
         return [
             RuleErrorBuilder::message(sprintf(
-                'Array access to entity to %s is not allowed, access as object instead',
+                'Array access to entity %s is not allowed, access as object instead',
                 $reflection->getName(),
             ))
             ->identifier('cake.entity.arrayAccess')

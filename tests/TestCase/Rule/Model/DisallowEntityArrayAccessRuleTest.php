@@ -38,24 +38,28 @@ class DisallowEntityArrayAccessRuleTest extends RuleTestCase
         // each error consists of the asserted error message, and the asserted error file line
         $this->analyse([__DIR__ . '/Fake/FailingEntityUseLogic.php'], [
             [
-                'Array access to entity to App\Model\Entity\Note is not allowed, access as object instead',
-                23, // asserted error line
-            ],
-            [
-                'Array access to entity to App\Model\Entity\Note is not allowed, access as object instead',
+                'Array access to entity App\Model\Entity\Note is not allowed, access as object instead',
                 24, // asserted error line
             ],
             [
-                'Array access to entity to Cake\Datasource\EntityInterface is not allowed, access as object instead',
-                29,
+                'Array access to entity App\Model\Entity\Note is not allowed, access as object instead',
+                25, // asserted error line
             ],
             [
-                'Array access to entity to App\Model\Entity\User is not allowed, access as object instead',
-                31, // asserted error line
+                'Array access to entity App\Model\Entity\Note is not allowed, access as object instead',
+                27, // asserted error line
             ],
             [
-                'Array access to entity to App\Model\Entity\Note is not allowed, access as object instead',
-                37, // asserted error line
+                'Array access to entity Cake\Datasource\EntityInterface is not allowed, access as object instead',
+                36,
+            ],
+            [
+                'Array access to entity App\Model\Entity\User is not allowed, access as object instead',
+                38, // asserted error line
+            ],
+            [
+                'Array access to entity App\Model\Entity\Note is not allowed, access as object instead',
+                44, // asserted error line
             ],
         ]);
     }

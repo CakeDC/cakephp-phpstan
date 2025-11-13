@@ -5,7 +5,7 @@ parameters:
 	 	addBehaviorExistsClassRule: true
 	 	tableGetMatchOptionsTypesRule: true
 	 	ormSelectQueryFindMatchOptionsTypesRule: true
-	 	disallowEntityArrayAccessRule: false
+	 	disallowEntityArrayAccessRule: true
 	 	getMailerExistsClassRule: true
 	 	loadComponentExistsClassRule: true
 	 	controllerMethodMustBeUsedRule: true

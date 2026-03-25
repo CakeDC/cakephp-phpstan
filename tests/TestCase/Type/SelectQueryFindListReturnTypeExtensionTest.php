@@ -40,6 +40,17 @@ class SelectQueryFindListReturnTypeExtensionTest extends TestCase
     }
 
     /**
+     * Test that find('list') with groupField returns nested array type.
+     *
+     * @return void
+     */
+    public function testFindListWithGroupFieldReturnsNestedArray(): void
+    {
+        $output = $this->runPhpStan(__DIR__ . '/Fake/FindListGroupedUsage.php');
+        static::assertStringContainsString('[OK] No errors', $output);
+    }
+
+    /**
      * Run PHPStan on a file and return the output.
      *
      * @param string $file File to analyze

@@ -32,9 +32,12 @@ use PHPStan\Type\UnionType;
  * When find('list') is detected in the method chain before toArray(),
  * this returns array<int|string, string> instead of the generic entity array.
  *
+ * When groupField is used, returns array<int|string, array<int|string, string>>
+ *
  * This handles chained queries like:
  * - $table->find('list')->toArray()
  * - $table->find('list')->where([...])->orderBy([...])->toArray()
+ * - $table->find('list', groupField: 'category_id')->toArray()
  */
 class SelectQueryFindListReturnTypeExtension implements DynamicMethodReturnTypeExtension
 {
@@ -53,31 +56,41 @@ class SelectQueryFindListReturnTypeExtension implements DynamicMethodReturnTypeE
         MethodCall $methodCall,
         Scope $scope,
     ): ?Type {
-        if ($this->hasFindListInChain($methodCall->var)) {
-            // Return array<int|string, string> for find('list')
+        $findListCall = $this->findFindListCall($methodCall->var);
+        if ($findListCall === null) {
+            return null;
+        }
+
+        $keyType = new UnionType([new IntegerType(), new StringType()]);
+        $valueType = new StringType();
+
+        // Check if groupField is present
+        if ($this->hasGroupField($findListCall)) {
+            // Return array<int|string, array<int|string, string>> for grouped list
             return new ArrayType(
-                new UnionType([new IntegerType(), new StringType()]),
-                new StringType(),
+                $keyType,
+                new ArrayType($keyType, $valueType),
             );
         }
 
-        return null;
+        // Return array<int|string, string> for simple list
+        return new ArrayType($keyType, $valueType);
     }
 
     /**
-     * Recursively check if find('list') is in the method call chain
+     * Recursively find the find('list') call in the method call chain
      */
-    private function hasFindListInChain(mixed $expr): bool
+    private function findFindListCall(mixed $expr): ?MethodCall
     {
         if (!$expr instanceof MethodCall) {
-            return false;
+            return null;
         }
 
         if ($this->isFindListCall($expr)) {
-            return true;
+            return $expr;
         }
 
-        return $this->hasFindListInChain($expr->var);
+        return $this->findFindListCall($expr->var);
     }
 
     /**
@@ -104,5 +117,22 @@ class SelectQueryFindListReturnTypeExtension implements DynamicMethodReturnTypeE
         }
 
         return $firstArg->value === 'list';
+    }
+
+    /**
+     * Check if the find('list') call has a groupField argument
+     */
+    private function hasGroupField(MethodCall $methodCall): bool
+    {
+        $args = $methodCall->getArgs();
+
+        foreach ($args as $arg) {
+            // Check for named argument: groupField: 'something'
+            if ($arg->name instanceof Identifier && $arg->name->name === 'groupField') {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

@@ -41,16 +41,25 @@ use PHPStan\Type\UnionType;
  */
 class SelectQueryFindListReturnTypeExtension implements DynamicMethodReturnTypeExtension
 {
+    /**
+     * @inheritDoc
+     */
     public function getClass(): string
     {
         return SelectQuery::class;
     }
 
+    /**
+     * @inheritDoc
+     */
     public function isMethodSupported(MethodReflection $methodReflection): bool
     {
         return $methodReflection->getName() === 'toArray';
     }
 
+    /**
+     * @inheritDoc
+     */
     public function getTypeFromMethodCall(
         MethodReflection $methodReflection,
         MethodCall $methodCall,

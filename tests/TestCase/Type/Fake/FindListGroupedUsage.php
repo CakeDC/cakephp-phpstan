@@ -51,9 +51,9 @@ class FindListGroupedUsage
         $grouped = $table->find('list', groupField: 'category_id')->toArray();
 
         // Outer loop: groups
-        foreach ($grouped as $groupKey => $items) {
+        foreach ($grouped as $items) {
             // Inner loop: items in group
-            foreach ($items as $itemKey => $value) {
+            foreach ($items as $value) {
                 // This would error if $value were not string
                 echo strlen($value);
             }

@@ -19,6 +19,7 @@ use PHPUnit\Framework\TestCase;
 class SelectQueryFindListReturnTypeExtensionTest extends TestCase
 {
     use PhpStanTestTrait;
+
     /**
      * Test that find('list')->toArray() returns correct type.
      *

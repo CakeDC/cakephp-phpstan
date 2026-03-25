@@ -19,6 +19,7 @@ use PHPUnit\Framework\TestCase;
 class TypeFactoryBuildDynamicReturnTypeExtensionTest extends TestCase
 {
     use PhpStanTestTrait;
+
     /**
      * Test that TypeFactory::build() returns correct types and allows valid method calls.
      *

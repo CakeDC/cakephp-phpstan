@@ -25,7 +25,7 @@ class FindListCorrectUsage
         $list = $table->find('list')->toArray();
 
         // Iterating should work with string values
-        foreach ($list as $id => $title) {
+        foreach ($list as $title) {
             echo strlen($title);
         }
 

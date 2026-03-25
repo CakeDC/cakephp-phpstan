@@ -13,10 +13,12 @@ declare(strict_types=1);
 
 namespace CakeDC\PHPStan\Test\TestCase\Type;
 
+use CakeDC\PHPStan\Test\TestCase\PhpStanTestTrait;
 use PHPUnit\Framework\TestCase;
 
 class TypeFactoryBuildDynamicReturnTypeExtensionTest extends TestCase
 {
+    use PhpStanTestTrait;
     /**
      * Test that TypeFactory::build() returns correct types and allows valid method calls.
      *
@@ -42,26 +44,5 @@ class TypeFactoryBuildDynamicReturnTypeExtensionTest extends TestCase
         static::assertStringContainsString('BoolType::setUserTimezone()', $output);
         static::assertStringContainsString('JsonType::nonExistentMethod()', $output);
         static::assertStringContainsString('Found 4 errors', $output);
-    }
-
-    /**
-     * Run PHPStan on a file and return the output.
-     *
-     * @param string $file File to analyze
-     * @return string
-     */
-    private function runPhpStan(string $file): string
-    {
-        $configFile = dirname(__DIR__, 3) . '/extension.neon';
-        $command = sprintf(
-            'cd %s && vendor/bin/phpstan analyze %s --level=max --configuration=%s --no-progress 2>&1',
-            escapeshellarg(dirname(__DIR__, 3)),
-            escapeshellarg($file),
-            escapeshellarg($configFile),
-        );
-
-        exec($command, $output, $exitCode);
-
-        return implode("\n", $output);
     }
 }

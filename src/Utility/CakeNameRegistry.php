@@ -15,6 +15,14 @@ class CakeNameRegistry
     }
 
     /**
+     * @param string $appNamespace The application's namespace.
+     */
+    public static function instance(string $appNamespace = 'App'): self
+    {
+        return new self($appNamespace);
+    }
+
+    /**
      * @param string $baseName
      * @return array{string|null,string}
      * @psalm-return array{string|null,string}

@@ -43,15 +43,18 @@ class ConsoleHelperLoadDynamicReturnTypeExtension implements DynamicMethodReturn
      */
     protected string $namespaceFormat;
 
+    private readonly CakeNameRegistry $cakeNameRegistry;
+
     /**
      * TableLocatorDynamicReturnTypeExtension constructor.
      */
-    public function __construct(private readonly CakeNameRegistry $cakeNameRegistry)
+    public function __construct(?CakeNameRegistry $cakeNameRegistry = null)
     {
         $this->className = ConsoleIo::class;
         $this->methodName = 'helper';
         $this->defaultClass = Helper::class;
         $this->namespaceFormat = '%s\\Command\Helper\\%sHelper';
+        $this->cakeNameRegistry = $cakeNameRegistry ?? CakeNameRegistry::instance();
     }
 
     /**

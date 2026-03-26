@@ -16,6 +16,7 @@ namespace CakeDC\PHPStan\Type;
 use Cake\Console\ConsoleIo;
 use Cake\Console\Helper;
 use CakeDC\PHPStan\Traits\BaseCakeRegistryReturnTrait;
+use CakeDC\PHPStan\Utility\CakeNameRegistry;
 use PHPStan\Type\DynamicMethodReturnTypeExtension;
 use PHPStan\Type\Type;
 
@@ -45,7 +46,7 @@ class ConsoleHelperLoadDynamicReturnTypeExtension implements DynamicMethodReturn
     /**
      * TableLocatorDynamicReturnTypeExtension constructor.
      */
-    public function __construct()
+    public function __construct(private readonly CakeNameRegistry $cakeNameRegistry)
     {
         $this->className = ConsoleIo::class;
         $this->methodName = 'helper';

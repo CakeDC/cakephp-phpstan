@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace CakeDC\PHPStan\Test\TestCase\Rule\Controller;
 
 use CakeDC\PHPStan\Rule\Controller\LoadComponentExistsClassRule;
+use CakeDC\PHPStan\Utility\CakeNameRegistry;
 use PHPStan\Rules\Rule;
 use PHPStan\Testing\RuleTestCase;
 
@@ -24,7 +25,7 @@ class LoadComponentExistsClassRuleTest extends RuleTestCase
     protected function getRule(): Rule
     {
         // getRule() method needs to return an instance of the tested rule
-        return new LoadComponentExistsClassRule();
+        return new LoadComponentExistsClassRule(new CakeNameRegistry('App'));
     }
 
     /**

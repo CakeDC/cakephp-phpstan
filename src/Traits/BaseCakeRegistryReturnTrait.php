@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace CakeDC\PHPStan\Traits;
 
-use CakeDC\PHPStan\Utility\CakeNameRegistry;
 use PhpParser\Node\Expr\MethodCall;
 use PHPStan\Analyser\Scope;
 use PHPStan\Reflection\MethodReflection;
@@ -75,7 +74,7 @@ trait BaseCakeRegistryReturnTrait
      */
     protected function getCakeType(string $baseName): ObjectType
     {
-        $className = CakeNameRegistry::getClassName($baseName, $this->namespaceFormat);
+        $className = $this->cakeNameRegistry->getClassName($baseName, $this->namespaceFormat);
         if ($className !== null) {
             return new ObjectType($className);
         }

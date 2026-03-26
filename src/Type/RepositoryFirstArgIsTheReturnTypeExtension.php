@@ -15,6 +15,7 @@ namespace CakeDC\PHPStan\Type;
 
 use Cake\Datasource\EntityInterface;
 use CakeDC\PHPStan\Traits\BaseCakeRegistryReturnTrait;
+use CakeDC\PHPStan\Utility\CakeNameRegistry;
 use PhpParser\Node\Expr\MethodCall;
 use PHPStan\Analyser\Scope;
 use PHPStan\Reflection\MethodReflection;
@@ -59,7 +60,7 @@ class RepositoryFirstArgIsTheReturnTypeExtension implements DynamicMethodReturnT
     /**
      * @param class-string $className  The target className.
      */
-    public function __construct(string $className)
+    public function __construct(string $className, private readonly CakeNameRegistry $cakeNameRegistry)
     {
         $this->className = $className;
         $this->defaultClass = EntityInterface::class;

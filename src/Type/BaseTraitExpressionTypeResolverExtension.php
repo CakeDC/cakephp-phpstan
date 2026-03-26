@@ -41,6 +41,7 @@ class BaseTraitExpressionTypeResolverExtension implements ExpressionTypeResolver
         protected string $targetTrait,
         protected string $methodName,
         protected string $namespaceFormat,
+        protected CakeNameRegistry $cakeNameRegistry,
         protected ?string $propertyDefaultValue = null,
     ) {
     }
@@ -74,7 +75,7 @@ class BaseTraitExpressionTypeResolverExtension implements ExpressionTypeResolver
         if ($baseName === null) {
             return null;
         }
-        $className = CakeNameRegistry::getClassName($baseName, $this->namespaceFormat);
+        $className = $this->cakeNameRegistry->getClassName($baseName, $this->namespaceFormat);
         if ($className !== null) {
             return new ObjectType($className);
         }

@@ -39,11 +39,18 @@ class AddBehaviorExistsClassRule extends LoadObjectExistsCakeClassRule
     ];
 
     /**
+     * @param \CakeDC\PHPStan\Utility\CakeNameRegistry $cakeNameRegistry
+     */
+    public function __construct(private readonly CakeNameRegistry $cakeNameRegistry)
+    {
+    }
+
+    /**
      * @inheritDoc
      */
     protected function getTargetClassName(string $name): ?string
     {
-        return CakeNameRegistry::getBehaviorClassName($name);
+        return $this->cakeNameRegistry->getBehaviorClassName($name);
     }
 
     /**

@@ -43,11 +43,18 @@ class AddAssociationExistsTableClassRule extends LoadObjectExistsCakeClassRule
     protected array $associationCollectionMethods = ['load'];
 
     /**
+     * @param \CakeDC\PHPStan\Utility\CakeNameRegistry $cakeNameRegistry
+     */
+    public function __construct(private readonly CakeNameRegistry $cakeNameRegistry)
+    {
+    }
+
+    /**
      * @inheritDoc
      */
     protected function getTargetClassName(string $name): ?string
     {
-        return CakeNameRegistry::getTableClassName($name);
+        return $this->cakeNameRegistry->getTableClassName($name);
     }
 
     /**

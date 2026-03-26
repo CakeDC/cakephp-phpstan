@@ -1,5 +1,6 @@
 parameters:
 	cakeDC:
+	 	appNamespace: App
 	 	addAssociationExistsTableClassRule: true
 	 	addAssociationMatchOptionsTypesRule: true
 	 	addBehaviorExistsClassRule: true
@@ -13,6 +14,7 @@ parameters:
 	 	disallowDebugStaticCallRule: true
 parametersSchema:
 	cakeDC: structure([
+		appNamespace: string()
 		addAssociationExistsTableClassRule: anyOf(bool(), arrayOf(bool()))
 		addAssociationMatchOptionsTypesRule: anyOf(bool(), arrayOf(bool()))
 		addBehaviorExistsClassRule: anyOf(bool(), arrayOf(bool()))

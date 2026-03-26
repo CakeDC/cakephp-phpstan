@@ -51,10 +51,14 @@ services:
 		tags:
 			- phpstan.broker.expressionTypeResolverExtension
 	-
-		factory: CakeDC\PHPStan\Type\BaseTraitExpressionTypeResolverExtension(Cake\ORM\Locator\LocatorAwareTrait, fetchTable, %s\Model\Table\%sTable, defaultTable)
+		factory: CakeDC\PHPStan\Type\BaseTraitExpressionTypeResolverExtension(Cake\ORM\Locator\LocatorAwareTrait, fetchTable, %s\Model\Table\%sTable, @CakeDC\PHPStan\Utility\CakeNameRegistry, defaultTable)
 		tags:
 			- phpstan.broker.expressionTypeResolverExtension
 	-
 		class: CakeDC\PHPStan\Type\TypeFactoryBuildDynamicReturnTypeExtension
 		tags:
 			- phpstan.broker.dynamicStaticMethodReturnTypeExtension
+	-
+		class: CakeDC\PHPStan\Utility\CakeNameRegistry
+		arguments:
+			appNamespace: %cakeDC.appNamespace%

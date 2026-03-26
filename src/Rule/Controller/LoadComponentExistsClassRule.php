@@ -39,11 +39,18 @@ class LoadComponentExistsClassRule extends LoadObjectExistsCakeClassRule
     ];
 
     /**
+     * @param \CakeDC\PHPStan\Utility\CakeNameRegistry $cakeNameRegistry
+     */
+    public function __construct(private readonly CakeNameRegistry $cakeNameRegistry)
+    {
+    }
+
+    /**
      * @inheritDoc
      */
     protected function getTargetClassName(string $name): ?string
     {
-        return CakeNameRegistry::getComponentClassName($name);
+        return $this->cakeNameRegistry->getComponentClassName($name);
     }
 
     /**

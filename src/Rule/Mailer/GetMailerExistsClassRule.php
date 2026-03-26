@@ -30,6 +30,13 @@ class GetMailerExistsClassRule implements Rule
     protected string $identifier = 'cake.getMailer.existClass';
 
     /**
+     * @param \CakeDC\PHPStan\Utility\CakeNameRegistry $cakeNameRegistry
+     */
+    public function __construct(private readonly CakeNameRegistry $cakeNameRegistry)
+    {
+    }
+
+    /**
      * @inheritDoc
      */
     public function getNodeType(): string
@@ -66,7 +73,7 @@ class GetMailerExistsClassRule implements Rule
         }
         $reflection = $callerType->getClassReflection();
 
-        if (CakeNameRegistry::getMailerClassName($value->value) !== null) {
+        if ($this->cakeNameRegistry->getMailerClassName($value->value) !== null) {
             return [];
         }
 

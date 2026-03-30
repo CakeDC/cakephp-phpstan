@@ -59,6 +59,10 @@ services:
 		tags:
 			- phpstan.broker.dynamicStaticMethodReturnTypeExtension
 	-
+		class: CakeDC\PHPStan\Type\SelectQueryFindListReturnTypeExtension
+		tags:
+			- phpstan.broker.dynamicMethodReturnTypeExtension
+	-
 		class: CakeDC\PHPStan\Utility\CakeNameRegistry
 		arguments:
 			appNamespace: %cakeDC.appNamespace%

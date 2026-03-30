@@ -18,6 +18,7 @@ use Cake\ORM\Table;
 use Cake\Utility\Inflector;
 use CakeDC\PHPStan\Traits\BaseCakeRegistryReturnTrait;
 use CakeDC\PHPStan\Traits\RepositoryReferenceTrait;
+use CakeDC\PHPStan\Utility\CakeNameRegistry;
 use PhpParser\Node\Expr\MethodCall;
 use PHPStan\Analyser\Scope;
 use PHPStan\Reflection\MethodReflection;
@@ -56,14 +57,17 @@ class RepositoryEntityDynamicReturnTypeExtension implements DynamicMethodReturnT
      */
     protected string $namespaceFormat;
 
+    private readonly CakeNameRegistry $cakeNameRegistry;
+
     /**
      * @param class-string $className  The target className.
      */
-    public function __construct(string $className)
+    public function __construct(string $className, ?CakeNameRegistry $cakeNameRegistry = null)
     {
         $this->className = $className;
         $this->defaultClass = EntityInterface::class;
         $this->namespaceFormat = '%s\\Model\Entity\\%s';
+        $this->cakeNameRegistry = $cakeNameRegistry ?? CakeNameRegistry::instance();
     }
 
     /**

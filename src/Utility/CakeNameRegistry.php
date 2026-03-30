@@ -8,6 +8,21 @@ use function Cake\Core\pluginSplit;
 class CakeNameRegistry
 {
     /**
+     * @param string $appNamespace The application's namespace.
+     */
+    public function __construct(private readonly string $appNamespace)
+    {
+    }
+
+    /**
+     * @param string $appNamespace The application's namespace.
+     */
+    public static function instance(string $appNamespace = 'App'): self
+    {
+        return new self($appNamespace);
+    }
+
+    /**
      * @param string $baseName
      * @return array{string|null,string}
      * @psalm-return array{string|null,string}
@@ -22,14 +37,14 @@ class CakeNameRegistry
      * @param array<string>|string $namespaceFormat
      * @return string|null
      */
-    public static function getClassName(string $baseName, string|array $namespaceFormat): ?string
+    public function getClassName(string $baseName, string|array $namespaceFormat): ?string
     {
         if (str_contains($baseName, '\\')) {
             return class_exists($baseName) ? $baseName : null;
         }
 
         [$plugin, $name] = static::pluginSplit($baseName);
-        $prefixes = $plugin !== null ? [$plugin] : ['App', 'Cake'];
+        $prefixes = $plugin !== null ? [$plugin] : [$this->appNamespace, 'Cake'];
         $namespaceFormat = (array)$namespaceFormat;
         foreach ($namespaceFormat as $format) {
             foreach ($prefixes as $prefix) {
@@ -48,9 +63,9 @@ class CakeNameRegistry
      * @param string $name
      * @return string|null
      */
-    public static function getComponentClassName(string $name): ?string
+    public function getComponentClassName(string $name): ?string
     {
-        return static::getClassName($name, [
+        return $this->getClassName($name, [
             '%s\\Controller\\Component\\%sComponent',
             '%s\\Controller\\Component\\%sComponent',
         ]);
@@ -60,9 +75,9 @@ class CakeNameRegistry
      * @param string $name
      * @return string|null
      */
-    public static function getBehaviorClassName(string $name): ?string
+    public function getBehaviorClassName(string $name): ?string
     {
-        return static::getClassName($name, [
+        return $this->getClassName($name, [
             '%s\\Model\\Behavior\\%sBehavior',
             '%s\\ORM\\Behavior\\%sBehavior',
         ]);
@@ -72,9 +87,9 @@ class CakeNameRegistry
      * @param string $name
      * @return string|null
      */
-    public static function getTableClassName(string $name): ?string
+    public function getTableClassName(string $name): ?string
     {
-        return static::getClassName($name, [
+        return $this->getClassName($name, [
             '%s\\Model\\Table\\%sTable',
         ]);
     }
@@ -83,9 +98,9 @@ class CakeNameRegistry
      * @param string $name
      * @return string|null
      */
-    public static function getMailerClassName(string $name): ?string
+    public function getMailerClassName(string $name): ?string
     {
-        return static::getClassName($name, [
+        return $this->getClassName($name, [
             '%s\\Mailer\\%sMailer',
         ]);
     }

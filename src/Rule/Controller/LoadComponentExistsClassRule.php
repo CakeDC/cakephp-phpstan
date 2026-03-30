@@ -38,12 +38,22 @@ class LoadComponentExistsClassRule extends LoadObjectExistsCakeClassRule
         'load',
     ];
 
+    private readonly CakeNameRegistry $cakeNameRegistry;
+
+    /**
+     * @param \CakeDC\PHPStan\Utility\CakeNameRegistry $cakeNameRegistry
+     */
+    public function __construct(?CakeNameRegistry $cakeNameRegistry = null)
+    {
+        $this->cakeNameRegistry = $cakeNameRegistry ?? CakeNameRegistry::instance();
+    }
+
     /**
      * @inheritDoc
      */
     protected function getTargetClassName(string $name): ?string
     {
-        return CakeNameRegistry::getComponentClassName($name);
+        return $this->cakeNameRegistry->getComponentClassName($name);
     }
 
     /**

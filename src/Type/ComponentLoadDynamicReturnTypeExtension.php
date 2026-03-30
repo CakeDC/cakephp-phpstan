@@ -16,6 +16,7 @@ namespace CakeDC\PHPStan\Type;
 use Cake\Controller\Component;
 use Cake\Controller\Controller;
 use CakeDC\PHPStan\Traits\BaseCakeRegistryReturnTrait;
+use CakeDC\PHPStan\Utility\CakeNameRegistry;
 use PHPStan\Type\DynamicMethodReturnTypeExtension;
 
 class ComponentLoadDynamicReturnTypeExtension implements DynamicMethodReturnTypeExtension
@@ -40,14 +41,17 @@ class ComponentLoadDynamicReturnTypeExtension implements DynamicMethodReturnType
      */
     protected string $namespaceFormat;
 
+    private readonly CakeNameRegistry $cakeNameRegistry;
+
     /**
      * TableLocatorDynamicReturnTypeExtension constructor.
      */
-    public function __construct()
+    public function __construct(?CakeNameRegistry $cakeNameRegistry = null)
     {
         $this->className = Controller::class;
         $this->methodName = 'loadComponent';
         $this->defaultClass = Component::class;
         $this->namespaceFormat = '%s\\Controller\Component\\%sComponent';
+        $this->cakeNameRegistry = $cakeNameRegistry ?? CakeNameRegistry::instance();
     }
 }

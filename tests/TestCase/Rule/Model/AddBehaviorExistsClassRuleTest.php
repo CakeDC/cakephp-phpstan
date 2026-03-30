@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace CakeDC\PHPStan\Test\TestCase\Rule\Model;
 
 use CakeDC\PHPStan\Rule\Model\AddBehaviorExistsClassRule;
+use CakeDC\PHPStan\Utility\CakeNameRegistry;
 use PHPStan\Rules\Rule;
 use PHPStan\Testing\RuleTestCase;
 
@@ -25,7 +26,7 @@ class AddBehaviorExistsClassRuleTest extends RuleTestCase
     protected function getRule(): Rule
     {
         // getRule() method needs to return an instance of the tested rule
-        return new AddBehaviorExistsClassRule();
+        return new AddBehaviorExistsClassRule(new CakeNameRegistry('App'));
     }
 
     /**

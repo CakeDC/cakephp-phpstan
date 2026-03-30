@@ -15,6 +15,7 @@ namespace CakeDC\PHPStan\Type;
 
 use Cake\ORM\Table;
 use CakeDC\PHPStan\Traits\BaseCakeRegistryReturnTrait;
+use CakeDC\PHPStan\Utility\CakeNameRegistry;
 use PhpParser\Node\Expr\MethodCall;
 use PhpParser\Node\Scalar\String_;
 use PHPStan\Analyser\Scope;
@@ -41,18 +42,21 @@ class TableLocatorDynamicReturnTypeExtension implements DynamicMethodReturnTypeE
     protected string $defaultClass;
     protected string $namespaceFormat;
 
+    private readonly CakeNameRegistry $cakeNameRegistry;
+
     /**
      * TableLocatorDynamicReturnTypeExtension constructor.
      *
      * @param class-string $className  The target className.
      * @param string $methodName The dynamic method to handle.
      */
-    public function __construct(string $className, string $methodName)
+    public function __construct(string $className, string $methodName, ?CakeNameRegistry $cakeNameRegistry = null)
     {
         $this->className = $className;
         $this->methodName = $methodName;
         $this->defaultClass = Table::class;
         $this->namespaceFormat = '%s\\Model\\Table\\%sTable';
+        $this->cakeNameRegistry = $cakeNameRegistry ?? CakeNameRegistry::instance();
     }
 
     /**

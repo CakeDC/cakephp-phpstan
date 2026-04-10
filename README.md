@@ -46,6 +46,27 @@ Features included:
 1. Provide correct return type for `Cake\Console\ConsoleIo::helper()`
 
 # Table class return type extensions
+### SelectQueryFindListReturnTypeExtension
+Provides proper return type for `find('list')->toArray()`:
+1. Returns `array<int|string, string>` for `find('list')->toArray()` instead of the generic entity array
+1. Returns `array<int|string, array<int|string, string>>` when `groupField` is provided
+1. Works with chained queries: `find('list')->where([...])->orderBy([...])->toArray()`
+
+<details>
+      <summary>Examples:</summary>
+
+```php
+  // PHPStan now knows the return type is array<int|string, string>
+  $roles = $this->Roles->find('list')->toArray();
+
+  // PHPStan now knows the return type is array<int|string, string> (chained)
+  $roles = $this->Roles->find('list')->where(['active' => true])->orderBy(['name' => 'ASC'])->toArray();
+
+  // PHPStan now knows the return type is array<int|string, array<int|string, string>> (grouped)
+  $roles = $this->Roles->find('list', groupField: 'category_id')->toArray();
+```
+</details>
+
 ### TableEntityDynamicReturnTypeExtension
 1. Provide correct return type for `Cake\ORM\Table::get` based on your table class name
 1. Provide correct return type for `Cake\ORM\Table::newEntity` based on your table class name
@@ -215,6 +236,20 @@ parameters:
 	cakeDC:
 	 	addAssociationExistsTableClassRule: false
 ```
+
+# Configuration
+
+### Custom application namespace
+
+By default, this extension assumes your application uses the `App` namespace. If your application uses a custom namespace, configure it with the `appNamespace` parameter:
+
+```
+parameters:
+    cakeDC:
+        appNamespace: MyApp
+```
+
+This affects class resolution in rules and type extensions (e.g. `MyApp\Model\Table\UsersTable` instead of `App\Model\Table\UsersTable`).
 
 # PHPDoc Extensions
 ### TableAssociationTypeNodeResolverExtension

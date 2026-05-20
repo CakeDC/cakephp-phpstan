@@ -16,6 +16,7 @@ namespace CakeDC\PHPStan\Type;
 use Cake\ORM\Association;
 use Cake\ORM\Query\SelectQuery;
 use CakeDC\PHPStan\Traits\EntityClassFromTableClassTrait;
+use CakeDC\PHPStan\Traits\RepositoryReferenceTrait;
 use PhpParser\Node\Expr\MethodCall;
 use PHPStan\Analyser\Scope;
 use PHPStan\Reflection\MethodReflection;
@@ -51,6 +52,7 @@ use PHPStan\Type\Type;
 class AssociationFindDynamicReturnTypeExtension implements DynamicMethodReturnTypeExtension
 {
     use EntityClassFromTableClassTrait;
+    use RepositoryReferenceTrait;
 
     /**
      * @inheritDoc
@@ -79,7 +81,7 @@ class AssociationFindDynamicReturnTypeExtension implements DynamicMethodReturnTy
         MethodCall $methodCall,
         Scope $scope,
     ): ?Type {
-        $tableClass = $this->extractTargetTableClass($scope, $methodCall);
+        $tableClass = $this->getReferenceClass($scope, $methodCall);
         if ($tableClass === null) {
             return null;
         }
@@ -90,37 +92,5 @@ class AssociationFindDynamicReturnTypeExtension implements DynamicMethodReturnTy
         }
 
         return new GenericObjectType(SelectQuery::class, [new ObjectType($entityClass)]);
-    }
-
-    /**
-     * Returns the target table FQCN from an `Association<TargetTable>` generic
-     * type, or null if the association is not generic-typed.
-     *
-     * @param \PHPStan\Analyser\Scope $scope
-     * @param \PhpParser\Node\Expr\MethodCall $methodCall
-     * @return string|null
-     */
-    protected function extractTargetTableClass(Scope $scope, MethodCall $methodCall): ?string
-    {
-        $calledOnType = $scope->getType($methodCall->var);
-        // GenericObjectType is the only way to read template parameter types
-        // from a typed Association — there is no non-deprecated equivalent in
-        // PHPStan 2.x yet.
-        // @phpstan-ignore-next-line phpstanApi.instanceofType
-        if (!$calledOnType instanceof GenericObjectType) {
-            return null;
-        }
-
-        $typeArgs = $calledOnType->getTypes();
-        if (count($typeArgs) === 0) {
-            return null;
-        }
-
-        $tableClassNames = $typeArgs[0]->getObjectClassNames();
-        if (count($tableClassNames) === 0) {
-            return null;
-        }
-
-        return $tableClassNames[0];
     }
 }

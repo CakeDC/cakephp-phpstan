@@ -15,8 +15,8 @@ namespace CakeDC\PHPStan\Type;
 
 use Cake\Datasource\EntityInterface;
 use Cake\ORM\Table;
-use Cake\Utility\Inflector;
 use CakeDC\PHPStan\Traits\BaseCakeRegistryReturnTrait;
+use CakeDC\PHPStan\Traits\EntityClassFromTableClassTrait;
 use CakeDC\PHPStan\Traits\RepositoryReferenceTrait;
 use CakeDC\PHPStan\Utility\CakeNameRegistry;
 use PhpParser\Node\Expr\MethodCall;
@@ -31,6 +31,7 @@ use PHPStan\Type\Type;
 class RepositoryEntityDynamicReturnTypeExtension implements DynamicMethodReturnTypeExtension
 {
     use BaseCakeRegistryReturnTrait;
+    use EntityClassFromTableClassTrait;
     use RepositoryReferenceTrait;
 
     /**
@@ -107,26 +108,5 @@ class RepositoryEntityDynamicReturnTypeExtension implements DynamicMethodReturnT
         }
 
         return null;
-    }
-
-    /**
-     * @param string $className
-     * @return string|null
-     */
-    protected function getEntityClassByTableClass(string $className): ?string
-    {
-        $parts = explode('\\', $className);
-        $count = count($parts);
-        $nameIndex = $count - 1;
-        $folderIndex = $count - 2;
-        if ($count < 3 || $parts[$folderIndex] !== 'Table') {
-            return null;
-        }
-        $name = str_replace('Table', '', $parts[$nameIndex]);
-        $name = Inflector::singularize($name);
-        $parts[$folderIndex] = 'Entity';
-        $parts[$nameIndex] = $name;
-
-        return implode('\\', $parts);
     }
 }

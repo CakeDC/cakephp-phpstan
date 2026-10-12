@@ -20,7 +20,7 @@ class MyTestLoadCell extends Cell
     protected ?string $defaultTable = 'Users';
 
     /**
-     * Test for TableLocatorDynamicReturnTypeExtension with loadModel
+     * Test for TableLocatorDynamicReturnTypeExtension with fetchTable
      *
      * @return void
      */

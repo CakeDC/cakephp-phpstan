@@ -11,21 +11,21 @@ declare(strict_types=1);
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
-namespace App\Command\Helper;
+namespace App\Console\Helper;
 
 use Cake\Console\Helper;
 
 class MyHeadingHelper extends Helper
 {
     /**
-     * This method should output content using `$this->_io`.
+     * This method should output content using `$this->io`.
      *
      * @param  array<string> $args The arguments for the helper.
      * @return void
      */
     public function output(array $args): void
     {
-        $this->_io->success('Sample heading');
+        $this->io->success('Sample heading');
     }
 
     /**
@@ -36,6 +36,6 @@ class MyHeadingHelper extends Helper
      */
     public function headingOne(string $text): void
     {
-        $this->_io->out('# ' . $text . ' #');
+        $this->io->out('# ' . $text . ' #');
     }
 }

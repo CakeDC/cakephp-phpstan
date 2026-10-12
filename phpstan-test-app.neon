@@ -11,5 +11,3 @@ parameters:
     ignoreErrors:
         -
             identifier: missingType.generics
-        -
-            identifier: method.deprecated

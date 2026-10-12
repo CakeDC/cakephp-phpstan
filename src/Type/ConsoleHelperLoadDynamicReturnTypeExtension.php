@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace CakeDC\PHPStan\Type;
 
-use Cake\Console\ConsoleIo;
+use Cake\Console\ConsoleIoInterface;
 use Cake\Console\Helper;
 use CakeDC\PHPStan\Traits\BaseCakeRegistryReturnTrait;
 use CakeDC\PHPStan\Utility\CakeNameRegistry;
@@ -50,10 +50,10 @@ class ConsoleHelperLoadDynamicReturnTypeExtension implements DynamicMethodReturn
      */
     public function __construct(?CakeNameRegistry $cakeNameRegistry = null)
     {
-        $this->className = ConsoleIo::class;
+        $this->className = ConsoleIoInterface::class;
         $this->methodName = 'helper';
         $this->defaultClass = Helper::class;
-        $this->namespaceFormat = '%s\\Command\Helper\\%sHelper';
+        $this->namespaceFormat = '%s\\Console\Helper\\%sHelper';
         $this->cakeNameRegistry = $cakeNameRegistry ?? CakeNameRegistry::instance();
     }
 

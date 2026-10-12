@@ -18,7 +18,7 @@ use Cake\Mailer\Mailer;
 class MyTestLoadMailer extends Mailer
 {
     /**
-     * Test for TableLocatorDynamicReturnTypeExtension with loadModel
+     * Test for TableLocatorDynamicReturnTypeExtension with fetchTable
      *
      * @return void
      */

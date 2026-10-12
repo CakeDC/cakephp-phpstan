@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace CakeDC\PHPStan\Utility;
 
+use PHPStan\Reflection\ReflectionProvider;
 use function Cake\Core\pluginSplit;
 
 class CakeNameRegistry
@@ -10,8 +11,10 @@ class CakeNameRegistry
     /**
      * @param string $appNamespace The application's namespace.
      */
-    public function __construct(private readonly string $appNamespace)
-    {
+    public function __construct(
+        private readonly string $appNamespace,
+        private readonly ?ReflectionProvider $reflectionProvider = null,
+    ) {
     }
 
     /**
@@ -40,7 +43,7 @@ class CakeNameRegistry
     public function getClassName(string $baseName, string|array $namespaceFormat): ?string
     {
         if (str_contains($baseName, '\\')) {
-            return class_exists($baseName) ? $baseName : null;
+            return $this->hasClass($baseName) ? $baseName : null;
         }
 
         [$plugin, $name] = static::pluginSplit($baseName);
@@ -50,13 +53,22 @@ class CakeNameRegistry
             foreach ($prefixes as $prefix) {
                 $namespace = str_replace('/', '\\', $prefix);
                 $className = sprintf($format, $namespace, $name);
-                if (class_exists($className)) {
+                if ($this->hasClass($className)) {
                     return $className;
                 }
             }
         }
 
         return null;
+    }
+
+    /**
+     * @param string $className
+     * @return bool
+     */
+    private function hasClass(string $className): bool
+    {
+        return $this->reflectionProvider?->hasClass($className) ?? class_exists($className);
     }
 
     /**

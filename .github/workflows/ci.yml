@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - 'master'
-      - '3.next-cake5'
+      - '4.next-cake5'
   pull_request:
     branches:
       - '*'
@@ -19,18 +19,11 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php-version: ['8.1', '8.4']
-        dependencies: ['highest']
-        include:
-          - php-version: '8.1'
-            dependencies: 'lowest'
-          - php-version: '8.2'
-            dependencies: 'highest'
-          - php-version: '8.3'
-            dependencies: 'highest'
+        php-version: ['8.5']
+        dependencies: ['highest', 'lowest']
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
@@ -47,19 +40,19 @@ jobs:
           composer-options: ${{ matrix.composer-options }}
 
       - name: Run PHPUnit
-        run: vendor/bin/phpunit
+        run: composer test
 
   cs-stan:
     name: Coding Standard & Static Analysis
     runs-on: ubuntu-22.04
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.2'
+          php-version: '8.5'
           extensions: mbstring, intl
           coverage: none
           tools: phive, cs2pr

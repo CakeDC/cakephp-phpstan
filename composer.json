@@ -1,6 +1,6 @@
 {
     "name": "cakedc/cakephp-phpstan",
-    "description": "CakePHP plugin extension for PHPStan.",
+    "description": "CakePHP 6 plugin extension for PHPStan.",
     "type": "phpstan-extension",
     "license": "MIT",
     "authors": [
@@ -11,14 +11,14 @@
         }
     ],
     "require": {
-        "php": ">=8.1.0",
+        "php": ">=8.5",
         "phpstan/phpstan": "^2.1.26",
-        "cakephp/cakephp": "^5.0"
+        "cakephp/cakephp": "^6.0"
     },
     "require-dev": {
         "phpstan/phpstan-phpunit": "^2.0",
-        "phpunit/phpunit": "^10.5 || ^11.5 || ^12.1",
-        "cakephp/cakephp-codesniffer": "^5.0",
+        "phpunit/phpunit": "^13.0",
+        "cakephp/cakephp-codesniffer": "6.x-dev",
         "phpstan/phpstan-deprecation-rules": "^2.0",
         "phpstan/phpstan-strict-rules": "^2.0"
     },
@@ -39,12 +39,15 @@
             "CakeDC\\PHPStan\\Test\\": "tests/",
             "CakeDC\\MyPlugin\\": "tests/test_plugin",
             "App\\": "tests/test_app"
-        }
+        },
+        "classmap": [
+            "tests/data/StaticOnlyTable.php"
+        ]
     },
     "scripts": {
         "cs-check": "phpcs -p",
         "cs-fix": "phpcbf -p",
-        "test": "phpunit --stderr",
+        "test": "@php -d memory_limit=1G vendor/bin/phpunit --stderr",
         "stan-integration": [
             "phpstan analyse --debug -c phpstan-test-app.neon",
             "phpstan analyse --debug -c phpstan-test-plugin.neon"
@@ -61,5 +64,7 @@
         "allow-plugins": {
             "dealerdirect/phpcodesniffer-composer-installer": true
         }
-    }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
 }

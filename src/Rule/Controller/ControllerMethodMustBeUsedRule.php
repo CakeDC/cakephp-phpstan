@@ -16,6 +16,7 @@ namespace CakeDC\PHPStan\Rule\Controller;
 use Cake\Controller\Controller;
 use PhpParser\Node;
 use PhpParser\Node\Expr\MethodCall;
+use PhpParser\Node\Identifier;
 use PhpParser\Node\Stmt\Expression;
 use PHPStan\Analyser\Scope;
 use PHPStan\Rules\Rule;
@@ -62,7 +63,7 @@ class ControllerMethodMustBeUsedRule implements Rule
         $methodCall = $node->expr;
 
         // Check if the method name is one we care about
-        if (!$methodCall->name instanceof Node\Identifier) {
+        if (!$methodCall->name instanceof Identifier) {
             return [];
         }
 

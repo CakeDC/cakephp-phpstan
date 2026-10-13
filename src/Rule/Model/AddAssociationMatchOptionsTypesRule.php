@@ -12,7 +12,9 @@ use CakeDC\PHPStan\Rule\Traits\ParseClassNameFromArgTrait;
 use PhpParser\Node;
 use PhpParser\Node\Arg;
 use PhpParser\Node\ArrayItem;
+use PhpParser\Node\Expr\Array_;
 use PhpParser\Node\Expr\MethodCall;
+use PhpParser\Node\Identifier;
 use PhpParser\Node\Scalar\String_;
 use PHPStan\Analyser\Scope;
 use PHPStan\Reflection\ClassReflection;
@@ -65,7 +67,7 @@ class AddAssociationMatchOptionsTypesRule implements Rule
     {
         assert($node instanceof MethodCall);
         $args = $node->getArgs();
-        if (!$node->name instanceof Node\Identifier) {
+        if (!$node->name instanceof Identifier) {
             return [];
         }
         $reference = $scope->getType($node->var)->getReferencedClasses()[0] ?? null;
@@ -78,7 +80,7 @@ class AddAssociationMatchOptionsTypesRule implements Rule
         }
         if (
             $details['options'] === null
-            || !$details['options']->value instanceof Node\Expr\Array_
+            || !$details['options']->value instanceof Array_
         ) {
             return [];
         }
@@ -170,7 +172,7 @@ class AddAssociationMatchOptionsTypesRule implements Rule
         $classReflection = $object->getClassReflection();
         assert($classReflection instanceof ClassReflection);
         $propertyType = $classReflection
-            ->getInstanceProperty('_' . $property, $scope)
+            ->getInstanceProperty($property, $scope)
             ->getWritableType();
         $assignedValueType = $scope->getType($item->value);
         $accepts = $this->ruleLevelHelper->accepts($propertyType, $assignedValueType, true);

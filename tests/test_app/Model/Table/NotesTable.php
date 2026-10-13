@@ -94,7 +94,7 @@ class NotesTable extends Table
             'year <=' => $year,
         ];
         if ($fun === true) {
-            $where[] = $query->newExpr()->in(
+            $where[] = $query->expr()->in(
                 'type',
                 ['funny_stuff', 'funny_songs', 'funny_messages'],
             );

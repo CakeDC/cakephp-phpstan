@@ -16,8 +16,11 @@ namespace CakeDC\PHPStan\Rule;
 use CakeDC\PHPStan\Rule\Traits\ParseClassNameFromArgTrait;
 use PhpParser\Node;
 use PhpParser\Node\Arg;
+use PhpParser\Node\ArrayItem;
+use PhpParser\Node\Expr\Array_;
 use PhpParser\Node\Expr\ConstFetch;
 use PhpParser\Node\Expr\MethodCall;
+use PhpParser\Node\Identifier;
 use PhpParser\Node\Scalar\String_;
 use PHPStan\Analyser\Scope;
 use PHPStan\Rules\Rule;
@@ -49,7 +52,7 @@ abstract class LoadObjectExistsCakeClassRule implements Rule
     {
         assert($node instanceof MethodCall);
         $args = $node->getArgs();
-        if (!$node->name instanceof Node\Identifier) {
+        if (!$node->name instanceof Identifier) {
             return [];
         }
         $reference = $scope->getType($node->var)->getReferencedClasses()[0] ?? null;
@@ -100,13 +103,13 @@ abstract class LoadObjectExistsCakeClassRule implements Rule
         $className = $nameArg->value;
         if (
             $options === null
-            || !$options->value instanceof Node\Expr\Array_
+            || !$options->value instanceof Array_
         ) {
             return $className;
         }
         foreach ($options->value->items as $item) {
             if (
-                !$item instanceof Node\Expr\ArrayItem
+                !$item instanceof ArrayItem
                 || !$item->key instanceof String_
                 || $item->key->value !== 'className'
             ) {

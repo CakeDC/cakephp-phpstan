@@ -16,6 +16,7 @@ namespace CakeDC\PHPStan\Type;
 use CakeDC\PHPStan\Traits\IsFromTargetTrait;
 use CakeDC\PHPStan\Utility\CakeNameRegistry;
 use PhpParser\Node\Expr;
+use PhpParser\Node\Expr\MethodCall;
 use PhpParser\Node\Identifier;
 use PhpParser\Node\Scalar\String_;
 use PHPStan\Analyser\Scope;
@@ -54,7 +55,7 @@ class BaseTraitExpressionTypeResolverExtension implements ExpressionTypeResolver
     public function getType(Expr $expr, Scope $scope): ?Type
     {
         if (
-            !$expr instanceof Expr\MethodCall
+            !$expr instanceof MethodCall
             || !$expr->name instanceof Identifier
             || $expr->name->toString() !== $this->methodName
         ) {

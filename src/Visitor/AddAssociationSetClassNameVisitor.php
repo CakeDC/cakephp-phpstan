@@ -8,6 +8,7 @@ use PhpParser\Node;
 use PhpParser\Node\Arg;
 use PhpParser\Node\Expr;
 use PhpParser\Node\Expr\MethodCall;
+use PhpParser\Node\Identifier;
 use PhpParser\NodeVisitorAbstract;
 
 class AddAssociationSetClassNameVisitor extends NodeVisitorAbstract
@@ -40,7 +41,7 @@ class AddAssociationSetClassNameVisitor extends NodeVisitorAbstract
      */
     public function enterNode(Node $node): ?Node
     {
-        if (!$node instanceof MethodCall || !$node->name instanceof Node\Identifier) {
+        if (!$node instanceof MethodCall || !$node->name instanceof Identifier) {
             return null;
         }
         if ($this->optionsSet === null && $node->name->name === 'setClassName') {

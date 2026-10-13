@@ -1,4 +1,4 @@
-# CakePHP extension for PHPStan
+# CakePHP 6 extension for PHPStan
 
 ![Build Status](https://github.com/CakeDC/cakephp-phpstan/actions/workflows/ci.yml/badge.svg)
 [![Downloads](https://poser.pugx.org/CakeDC/cakephp-phpstan/d/total.svg)](https://packagist.org/packages/CakeDC/cakephp-phpstan)
@@ -12,6 +12,10 @@ Provide services and rules for a better PHPStan analyze on CakePHP applications,
 and multiple rules.
 
 # Installation
+
+Requires PHP 8.5+, CakePHP 6, and PHPStan 2.1.26+. CakePHP 6 is currently in development; configure `"minimum-stability": "dev"` and `"prefer-stable": true` in the root Composer project to allow its dependencies.
+
+When upgrading, move custom console helpers to `Console/Helper`. Commands implement `execute(): ?int` and access arguments and console IO through properties.
 
 To use this extension, require it through [Composer](https://getcomposer.org/):
 
@@ -39,11 +43,11 @@ Features included:
 1. Provide correct return type for `Cake\ORM\Locator\LocatorInterface::get()`
 1. Provide correct return type for `Cake\Controller\Controller::loadComponent()`
 1. Provide correct return type for `Cake\Controller\Controller::fetchTable()`
-1. Provide correct return type for `Cake\Controller\Component::fetchTable()`
+1. Provide correct return type for `fetchTable()` on components using `Cake\ORM\Locator\LocatorAwareTrait`
 1. Provide correct return type for `Cake\Command\Command::fetchTable()`
 1. Provide correct return type for `Cake\Mailer\Mailer::fetchTable()`
 1. Provide correct return type for `Cake\View\Cell::fetchTable()`
-1. Provide correct return type for `Cake\Console\ConsoleIo::helper()`
+1. Provide correct return type for `Cake\Console\ConsoleIo::helper()` and `Cake\Console\ConsoleIoInterface::helper()`
 
 # Table class return type extensions
 ### SelectQueryFindListReturnTypeExtension

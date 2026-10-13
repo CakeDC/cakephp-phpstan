@@ -120,7 +120,7 @@ class TypeFactoryBuildDynamicReturnTypeExtension implements DynamicStaticMethodR
             /**
              * @var \PHPStan\Reflection\Php\PhpPropertyReflection $property
              */
-            $property = $reflection->getStaticProperty('_types');
+            $property = $reflection->getStaticProperty('types');
             /**
              * @var array<string, class-string> $defaultValue
              */

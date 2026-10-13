@@ -13,8 +13,10 @@ use Cake\ORM\Table;
 use CakeDC\PHPStan\Rule\Traits\ParseClassNameFromArgTrait;
 use InvalidArgumentException;
 use PhpParser\Node;
+use PhpParser\Node\Arg;
 use PhpParser\Node\Expr\Array_;
 use PhpParser\Node\Expr\MethodCall;
+use PhpParser\Node\Identifier;
 use PhpParser\Node\Scalar\String_;
 use PHPStan\Analyser\Scope;
 use PHPStan\Reflection\ExtendedMethodReflection;
@@ -99,7 +101,7 @@ class OrmSelectQueryFindMatchOptionsTypesRule implements Rule
     {
         assert($node instanceof MethodCall);
         $args = $node->getArgs();
-        if (!$node->name instanceof Node\Identifier || !in_array($node->name->name, $this->targetMethods, true)) {
+        if (!$node->name instanceof Identifier || !in_array($node->name->name, $this->targetMethods, true)) {
             return [];
         }
         $referenceClasses = $scope->getType($node->var)->getReferencedClasses();
@@ -238,7 +240,7 @@ class OrmSelectQueryFindMatchOptionsTypesRule implements Rule
      * @param array<\PhpParser\Node\Expr> $options
      * @return array<\PhpParser\Node\Expr>
      */
-    protected function extractOptionsUnpackedArray(Node\Arg $arg, array $options): array
+    protected function extractOptionsUnpackedArray(Arg $arg, array $options): array
     {
         if ($arg->value instanceof Array_ && $arg->unpack) {
             $options = $this->getOptionsFromArray($arg->value, $options);
@@ -299,7 +301,7 @@ class OrmSelectQueryFindMatchOptionsTypesRule implements Rule
      */
     protected function getParamNamesIgnore(Scope $scope, MethodCall $node): array
     {
-        assert($node->name instanceof Node\Identifier);
+        assert($node->name instanceof Identifier);
         $methodReflection = $scope->getMethodReflection($scope->getType($node->var), $node->name->toString());
         if ($methodReflection === null) {
             return [];

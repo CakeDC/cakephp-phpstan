@@ -18,8 +18,8 @@ use PHPStan\Analyser\Scope;
 use PHPStan\Reflection\MethodReflection;
 use PHPStan\Type\ObjectType;
 use PHPStan\Type\Type;
+use PHPStan\Type\TypeCombinator;
 use function count;
-use function method_exists;
 
 trait BaseCakeRegistryReturnTrait
 {
@@ -40,15 +40,15 @@ trait BaseCakeRegistryReturnTrait
         }
 
         $argType = $scope->getType($methodCall->getArgs()[0]->value);
-        if (!method_exists($argType, 'getValue')) {
-            return new ObjectType($this->defaultClass);
-        }
-        $value = $argType->getValue();
-        if (!is_string($value)) {
+        $names = $argType->getConstantStrings();
+        if ($names === [] || !TypeCombinator::union(...$names)->isSuperTypeOf($argType)->yes()) {
             return null;
         }
 
-        return $this->getCakeType($value);
+        return TypeCombinator::union(...array_map(
+            fn($name) => $this->getCakeType($name->getValue()),
+            $names,
+        ));
     }
 
     /**

@@ -6,6 +6,7 @@ namespace CakeDC\PHPStan\Rule\Debug;
 use PhpParser\Node;
 use PhpParser\Node\Expr\ConstFetch;
 use PhpParser\Node\Expr\FuncCall;
+use PhpParser\Node\Name;
 use PHPStan\Analyser\Scope;
 use PHPStan\Rules\Rule;
 use PHPStan\Rules\RuleErrorBuilder;
@@ -44,7 +45,7 @@ class DisallowDebugFuncCallRule implements Rule
     public function processNode(Node $node, Scope $scope): array
     {
         assert($node instanceof FuncCall);
-        if (!$node->name instanceof Node\Name) {
+        if (!$node->name instanceof Name) {
             return [];
         }
         $usedName = $node->name->name;

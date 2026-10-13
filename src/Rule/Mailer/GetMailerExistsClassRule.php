@@ -16,6 +16,7 @@ namespace CakeDC\PHPStan\Rule\Mailer;
 use CakeDC\PHPStan\Utility\CakeNameRegistry;
 use PhpParser\Node;
 use PhpParser\Node\Expr\MethodCall;
+use PhpParser\Node\Identifier;
 use PhpParser\Node\Scalar\String_;
 use PHPStan\Analyser\Scope;
 use PHPStan\Rules\Rule;
@@ -56,7 +57,7 @@ class GetMailerExistsClassRule implements Rule
     {
         assert($node instanceof MethodCall);
         if (
-            !$node->name instanceof Node\Identifier
+            !$node->name instanceof Identifier
             || $node->name->name !== 'getMailer'
         ) {
             return [];

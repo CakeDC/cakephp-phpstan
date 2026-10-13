@@ -13,18 +13,17 @@ declare(strict_types=1);
 
 namespace App\Command;
 
-use Cake\Console\Arguments;
-use Cake\Console\ConsoleIo;
-
 class MyTestExtendedCommand extends MyTestLoadCommand
 {
     /**
      * @inheritDoc
      */
-    public function execute(Arguments $args, ConsoleIo $io)
+    public function execute(): ?int
     {
         $this->fetchTable('VeryCustomize00009Articles')->newSample();
-        $io->helper('MyHeading')->headingOne('Sample Text 02');
+        $this->io->helper('MyHeading')->headingOne('Sample Text 02');
         $this->getMailer('MyTestLoad')->testing();
+
+        return null;
     }
 }

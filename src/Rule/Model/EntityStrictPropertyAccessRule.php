@@ -13,6 +13,7 @@ use PHPStan\Analyser\Scope;
 use PHPStan\Node\Printer\ExprPrinter;
 use PHPStan\Reflection\MissingPropertyFromReflectionException;
 use PHPStan\Reflection\Php\PhpMethodFromParserNodeReflection;
+use PHPStan\Reflection\ReflectionProvider;
 use PHPStan\Rules\Rule;
 use PHPStan\Rules\RuleErrorBuilder;
 
@@ -26,8 +27,10 @@ class EntityStrictPropertyAccessRule implements Rule
     /**
      * @param \PHPStan\Node\Printer\ExprPrinter $printer
      */
-    public function __construct(private ExprPrinter $printer)
-    {
+    public function __construct(
+        private ExprPrinter $printer,
+        private ReflectionProvider $reflectionProvider,
+    ) {
     }
 
     /**
@@ -60,7 +63,11 @@ class EntityStrictPropertyAccessRule implements Rule
         if ($classReflection === null) {
             return [];
         }
-        if (!$classReflection->isSubclassOf(Entity::class) && $classReflection->getName() !== Entity::class) {
+        $entityBaseReflection = $this->reflectionProvider->getClass(Entity::class);
+        if (
+            !$classReflection->isSubclassOfClass($entityBaseReflection)
+            && $classReflection->getName() !== Entity::class
+        ) {
             return [];
         }
         if (!$node->var->name instanceof Identifier) {

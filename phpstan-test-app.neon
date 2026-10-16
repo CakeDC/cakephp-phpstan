@@ -8,9 +8,3 @@ parameters:
     treatPhpDocTypesAsCertain: false
     cakeDC:
         disallowEntityArrayAccessRule: true
-	ignoreErrors:
-		-
-			message: '#^Assign to protected\(set\) property App\\Model\\Entity\\User\:\:\$name\.$#'
-			identifier: assign.propertyProtectedSet
-			count: 1
-			path: tests/test_app/Model/Table/NotesTable.php

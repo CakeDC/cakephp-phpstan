@@ -15,6 +15,7 @@ namespace CakeDC\PHPStan\Test\TestCase\Rule\Model;
 
 use CakeDC\PHPStan\Rule\Model\EntityStrictPropertyAccessRule;
 use PHPStan\Node\Printer\ExprPrinter;
+use PHPStan\Reflection\ReflectionProvider;
 use PHPStan\Rules\Rule;
 use PHPStan\Testing\RuleTestCase;
 
@@ -26,9 +27,9 @@ class EntityStrictPropertyAccessRuleTest extends RuleTestCase
     protected function getRule(): Rule
     {
         $printer = $this->getContainer()->getByType(ExprPrinter::class);
-
+        $reflectionProvider = $this->getContainer()->getByType(ReflectionProvider::class);
         // getRule() method needs to return an instance of the tested rule
-        return new EntityStrictPropertyAccessRule($printer);
+        return new EntityStrictPropertyAccessRule($printer, $reflectionProvider);
     }
 
     /**

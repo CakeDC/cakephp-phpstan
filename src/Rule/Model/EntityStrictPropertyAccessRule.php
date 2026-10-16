@@ -10,6 +10,7 @@ use PhpParser\Node\Expr\Variable;
 use PhpParser\Node\Identifier;
 use PHPStan\Analyser\Scope;
 use PHPStan\Reflection\MissingPropertyFromReflectionException;
+use PHPStan\Reflection\Php\PhpMethodFromParserNodeReflection;
 use PHPStan\Rules\Rule;
 use PHPStan\Rules\RuleErrorBuilder;
 
@@ -56,6 +57,11 @@ class EntityStrictPropertyAccessRule implements Rule
         if (!$classReflection->hasNativeProperty($propertyName)) {
             return [];
         }
+        $currentFunction = $scope->getFunction();
+        if ($currentFunction instanceof PhpMethodFromParserNodeReflection && $currentFunction->getHookedPropertyName() === $propertyName) {
+            return [];
+        }
+
         try {
             $property = $classReflection->getNativeProperty($propertyName);
             if (!$property->isProtectedSet()) {

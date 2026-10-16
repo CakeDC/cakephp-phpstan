@@ -7,7 +7,6 @@ use Cake\ORM\Entity;
 
 /**
  * @property int $id
- * @property string $name
  * @property string $role
  * @property \Cake\I18n\DateTime $last_login
  * @property \Cake\I18n\DateTime $created
@@ -15,4 +14,17 @@ use Cake\ORM\Entity;
  */
 class User extends Entity
 {
+    /**
+     * @var string|null
+     */
+    public protected(set) ?string $name;
+
+    /**
+     * @var string|null
+     */
+    public protected(set) ?string $password {
+        set(?string $value) {
+            $this->password = $value ? password_hash($value, PASSWORD_DEFAULT) : null;
+        }
+    }
 }

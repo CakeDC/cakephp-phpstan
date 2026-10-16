@@ -39,8 +39,6 @@ class EntityStrictPropertyAccessRuleTest extends RuleTestCase
         $this->analyse([__DIR__ . '/Fake/FailingUser.php'], [
             [
                 'Modifying property "$this->first_name" in entity class "CakeDC\PHPStan\Test\TestCase\Rule\Model\Fake\FailingUser" is not allowed. Use $this->set(...) for proper dirty tracking.',
-
-
                 32, // asserted error line
             ],
             [

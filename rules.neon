@@ -7,6 +7,7 @@ parameters:
 	 	tableGetMatchOptionsTypesRule: true
 	 	ormSelectQueryFindMatchOptionsTypesRule: true
 	 	disallowEntityArrayAccessRule: true
+	 	entityStrictPropertyAccessRule: true
 	 	getMailerExistsClassRule: true
 	 	loadComponentExistsClassRule: true
 	 	controllerMethodMustBeUsedRule: true
@@ -21,6 +22,7 @@ parametersSchema:
 		tableGetMatchOptionsTypesRule: anyOf(bool(), arrayOf(bool()))
 		ormSelectQueryFindMatchOptionsTypesRule: anyOf(bool(), arrayOf(bool()))
 		disallowEntityArrayAccessRule: anyOf(bool(), arrayOf(bool()))
+		entityStrictPropertyAccessRule: anyOf(bool(), arrayOf(bool()))
 		getMailerExistsClassRule: anyOf(bool(), arrayOf(bool()))
 		loadComponentExistsClassRule: anyOf(bool(), arrayOf(bool()))
 		controllerMethodMustBeUsedRule: anyOf(bool(), arrayOf(bool()))
@@ -43,6 +45,8 @@ conditionalTags:
 		phpstan.rules.rule: %cakeDC.addBehaviorExistsClassRule%
 	CakeDC\PHPStan\Rule\Model\DisallowEntityArrayAccessRule:
 		phpstan.rules.rule: %cakeDC.disallowEntityArrayAccessRule%
+	CakeDC\PHPStan\Rule\Model\EntityStrictPropertyAccessRule:
+		phpstan.rules.rule: %cakeDC.entityStrictPropertyAccessRule%
 	CakeDC\PHPStan\Rule\Mailer\GetMailerExistsClassRule:
 		phpstan.rules.rule: %cakeDC.getMailerExistsClassRule%
 	CakeDC\PHPStan\Rule\Model\TableGetMatchOptionsTypesRule:
@@ -69,6 +73,8 @@ services:
 		class: CakeDC\PHPStan\Rule\Model\AddBehaviorExistsClassRule
 	-
 		class: CakeDC\PHPStan\Rule\Model\DisallowEntityArrayAccessRule
+	-
+		class: CakeDC\PHPStan\Rule\Model\EntityStrictPropertyAccessRule
 	-
 		class: CakeDC\PHPStan\Rule\Mailer\GetMailerExistsClassRule
 	-

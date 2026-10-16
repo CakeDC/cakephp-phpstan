@@ -67,7 +67,10 @@ class EntityStrictPropertyAccessRule implements Rule
             return [];
         }
         $currentFunction = $scope->getFunction();
-        if ($currentFunction instanceof PhpMethodFromParserNodeReflection && $currentFunction->getHookedPropertyName() === $propertyName) {
+        if (
+            $currentFunction instanceof PhpMethodFromParserNodeReflection
+            && $currentFunction->getHookedPropertyName() === $propertyName
+        ) {
             return [];
         }
 
@@ -79,7 +82,7 @@ class EntityStrictPropertyAccessRule implements Rule
 
             return [
                 RuleErrorBuilder::message(sprintf(
-                    'Modifying property "%s" in entity class "%s" is not allowed. Use $this->set(\'%s\', %s) for proper dirty tracking.',
+                    'Modifying property "%s" in entity class "%s" is not allowed. Use $this->set(\'%s\', %s) for proper dirty tracking.',// phpcs:ignore
                     $propertyName,
                     $classReflection->getName(),
                     $propertyName,

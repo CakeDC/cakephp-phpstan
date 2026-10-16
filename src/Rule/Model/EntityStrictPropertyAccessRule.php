@@ -51,7 +51,7 @@ class EntityStrictPropertyAccessRule implements Rule
         }
         if (
             !$node->var->var instanceof Variable
-            || ($node->var->var->name ?? null) !== 'this'
+            || $node->var->var->name !== 'this'
         ) {
             return [];
         }

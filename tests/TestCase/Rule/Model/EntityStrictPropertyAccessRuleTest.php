@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace CakeDC\PHPStan\Test\TestCase\Rule\Model;
 
 use CakeDC\PHPStan\Rule\Model\EntityStrictPropertyAccessRule;
+use PHPStan\Node\Printer\ExprPrinter;
 use PHPStan\Rules\Rule;
 use PHPStan\Testing\RuleTestCase;
 
@@ -24,8 +25,10 @@ class EntityStrictPropertyAccessRuleTest extends RuleTestCase
      */
     protected function getRule(): Rule
     {
+        $printer = $this->getContainer()->getByType(ExprPrinter::class);
+
         // getRule() method needs to return an instance of the tested rule
-        return new EntityStrictPropertyAccessRule();
+        return new EntityStrictPropertyAccessRule($printer);
     }
 
     /**
@@ -38,12 +41,36 @@ class EntityStrictPropertyAccessRuleTest extends RuleTestCase
         // each error consists of the asserted error message, and the asserted error file line
         $this->analyse([__DIR__ . '/Fake/FailingUser.php'], [
             [
-                'Modifying property "$this->first_name" in entity class "CakeDC\PHPStan\Test\TestCase\Rule\Model\Fake\FailingUser" is not allowed. Use $this->set(...) for proper dirty tracking.',
-                32, // asserted error line
+                'Modifying property "first_name" in entity class "CakeDC\PHPStan\Test\TestCase\Rule\Model\Fake\FailingUser" is not allowed. Use $this->set(\'first_name\', \'John\') for proper dirty tracking.',
+                35, // asserted error line
             ],
             [
-                'Modifying property "$this->last_name" in entity class "CakeDC\PHPStan\Test\TestCase\Rule\Model\Fake\FailingUser" is not allowed. Use $this->set(...) for proper dirty tracking.',
-                33, // asserted error line
+                'Modifying property "last_name" in entity class "CakeDC\PHPStan\Test\TestCase\Rule\Model\Fake\FailingUser" is not allowed. Use $this->set(\'last_name\', \'Doe\') for proper dirty tracking.',
+                36, // asserted error line
+            ],
+            [
+                'Modifying property "password" in entity class "CakeDC\PHPStan\Test\TestCase\Rule\Model\Fake\FailingUser" is not allowed. Use $this->set(\'password\', \'0000000\') for proper dirty tracking.',
+                37, // asserted error line
+            ],
+            [
+                'Modifying property "is_active" in entity class "CakeDC\PHPStan\Test\TestCase\Rule\Model\Fake\FailingUser" is not allowed. Use $this->set(\'is_active\', true) for proper dirty tracking.',
+                38, // asserted error line
+            ],
+            [
+                'Modifying property "id" in entity class "CakeDC\PHPStan\Test\TestCase\Rule\Model\Fake\FailingUser" is not allowed. Use $this->set(\'id\', 100) for proper dirty tracking.',
+                39, // asserted error line
+            ],
+            [
+                'Modifying property "rate" in entity class "CakeDC\PHPStan\Test\TestCase\Rule\Model\Fake\FailingUser" is not allowed. Use $this->set(\'rate\', 9.5) for proper dirty tracking.',
+                40, // asserted error line
+            ],
+            [
+                'Modifying property "first_name" in entity class "CakeDC\PHPStan\Test\TestCase\Rule\Model\Fake\FailingUser" is not allowed. Use $this->set(\'first_name\', $name) for proper dirty tracking.',
+                43, // asserted error line
+            ],
+            [
+                'Modifying property "password" in entity class "CakeDC\PHPStan\Test\TestCase\Rule\Model\Fake\FailingUser" is not allowed. Use $this->set(\'password\', static::FIELD_ID) for proper dirty tracking.',
+                44, // asserted error line
             ],
         ]);
     }

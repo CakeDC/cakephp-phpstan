@@ -9,6 +9,7 @@ use PhpParser\Node\Expr\PropertyFetch;
 use PhpParser\Node\Expr\Variable;
 use PhpParser\Node\Identifier;
 use PHPStan\Analyser\Scope;
+use PHPStan\Node\Printer\ExprPrinter;
 use PHPStan\Reflection\MissingPropertyFromReflectionException;
 use PHPStan\Reflection\Php\PhpMethodFromParserNodeReflection;
 use PHPStan\Rules\Rule;
@@ -20,6 +21,13 @@ class EntityStrictPropertyAccessRule implements Rule
      * @var string
      */
     protected string $identifier = 'cake.entity.strictPropertyAccess';
+
+    /**
+     * @param \PHPStan\Node\Printer\ExprPrinter $printer
+     */
+    public function __construct(private ExprPrinter $printer)
+    {
+    }
 
     /**
      * @inheritDoc
@@ -67,11 +75,14 @@ class EntityStrictPropertyAccessRule implements Rule
             if (!$property->isProtectedSet()) {
                 return [];
             }
+
             return [
                 RuleErrorBuilder::message(sprintf(
-                    'Modifying property "$this->%s" in entity class "%s" is not allowed. Use $this->set(...) for proper dirty tracking.',
+                    'Modifying property "%s" in entity class "%s" is not allowed. Use $this->set(\'%s\', %s) for proper dirty tracking.',
                     $propertyName,
                     $classReflection->getName(),
+                    $propertyName,
+                    $this->printer->printExpr($node->expr)
                 ))
                     ->identifier($this->identifier)
                     ->build(),

@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace CakeDC\PHPStan\Rule\Model;
 
+use Cake\ORM\Entity;
 use PhpParser\Node;
 use PhpParser\Node\Expr\Assign;
 use PhpParser\Node\Expr\PropertyFetch;
@@ -57,6 +58,9 @@ class EntityStrictPropertyAccessRule implements Rule
         }
         $classReflection = $scope->getClassReflection();
         if ($classReflection === null) {
+            return [];
+        }
+        if (!$classReflection->isSubclassOf(Entity::class) && $classReflection->getName() !== Entity::class) {
             return [];
         }
         if (!$node->var->name instanceof Identifier) {

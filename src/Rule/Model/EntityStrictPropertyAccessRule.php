@@ -49,7 +49,8 @@ class EntityStrictPropertyAccessRule implements Rule
         if (!$node->var instanceof PropertyFetch) {
             return [];
         }
-        if (!$node->var->var instanceof Variable
+        if (
+            !$node->var->var instanceof Variable
             || ($node->var->var->name ?? null) !== 'this'
         ) {
             return [];
@@ -82,7 +83,7 @@ class EntityStrictPropertyAccessRule implements Rule
                     $propertyName,
                     $classReflection->getName(),
                     $propertyName,
-                    $this->printer->printExpr($node->expr)
+                    $this->printer->printExpr($node->expr),
                 ))
                     ->identifier($this->identifier)
                     ->build(),

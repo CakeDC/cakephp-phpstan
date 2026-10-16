@@ -16,14 +16,14 @@ class FailingUser extends Entity
     public protected(set) ?string $first_name;
     public protected(set) ?string $last_name;
 
-    public protected(set) ?string $password {
-        set(?string $value) {
-            $this->password = $value ? password_hash($value, PASSWORD_DEFAULT) : null;
+    public protected(set) ?string $password {//phpcs:ignore
+        set(?string $value) {//phpcs:ignore
+            $this->password = $value ? password_hash($value, PASSWORD_DEFAULT) : null;//phpcs:ignore
         }
     }
 
-    public string $full_name {
-        get => $this->first_name . ' ' . $this->last_name;
+    public string $full_name {//phpcs:ignore
+        get => $this->first_name . ' ' . $this->last_name;//phpcs:ignore
     }
 
     /**

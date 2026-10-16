@@ -13,3 +13,8 @@ parameters:
     ignoreErrors:
         -
             identifier: missingType.generics
+        -
+            message: '#^Although PHPStan\\Reflection\\Php\\PhpMethodFromParserNodeReflection is covered by backward compatibility promise, this instanceof assumption might break because it''s not guaranteed to always stay the same\.$#'
+            identifier: phpstanApi.instanceofAssumption
+            count: 1
+            path: src/Rule/Model/EntityStrictPropertyAccessRule.php

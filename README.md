@@ -176,6 +176,9 @@ Methods covered:
 ### DisallowEntityArrayAccessRule
 This rule disallow array access to entity in favor of object notation, is easier to detect a wrong property and to refactor code.
 
+### EntityStrictPropertyAccessRule
+This rule check incorrect assigment of native entity properties to avoid issues with dirty tracking.
+
 ### GetMailerExistsClassRule
 This rule check if the target mailer is a valid class when calling to Cake\Mailer\MailerAwareTrait::getMailer.
 

@@ -83,10 +83,11 @@ class NotesTable extends Table
     }
 
     /**
-     * @param \Cake\ORM\Query\SelectQuery $query
+     * @template TSubject of \Cake\Datasource\EntityInterface|array
+     * @param \Cake\ORM\Query\SelectQuery<TSubject> $query
      * @param string|int $year
      * @param bool $fun
-     * @return \Cake\ORM\Query\SelectQuery
+     * @return \Cake\ORM\Query\SelectQuery<TSubject>
      */
     public function findFeatured(SelectQuery $query, string|int $year, bool $fun): SelectQuery
     {
@@ -105,9 +106,10 @@ class NotesTable extends Table
     }
 
     /**
-     * @param \Cake\ORM\Query\SelectQuery $query
+     * @template TSubject of \Cake\Datasource\EntityInterface|array
+     * @param \Cake\ORM\Query\SelectQuery<TSubject> $query
      * @param string $myType
-     * @return \Cake\ORM\Query\SelectQuery
+     * @return \Cake\ORM\Query\SelectQuery<TSubject>
      */
     public function findTwoArgsButNotLegacy(SelectQuery $query, string $myType): SelectQuery
     {
@@ -121,9 +123,10 @@ class NotesTable extends Table
     }
 
     /**
-     * @param \Cake\ORM\Query\SelectQuery $query
+     * @template TSubject of \Cake\Datasource\EntityInterface|array
+     * @param \Cake\ORM\Query\SelectQuery<TSubject> $query
      * @param array<string, mixed> $options
-     * @return \Cake\ORM\Query\SelectQuery
+     * @return \Cake\ORM\Query\SelectQuery<TSubject>
      */
     public function findLegacy(SelectQuery $query, array $options): SelectQuery
     {
@@ -135,9 +138,10 @@ class NotesTable extends Table
     }
 
     /**
-     * @param \Cake\ORM\Query\SelectQuery $query
+     * @template TSubject of \Cake\Datasource\EntityInterface|array
+     * @param \Cake\ORM\Query\SelectQuery<TSubject> $query
      * @param mixed ...$options
-     * @return \Cake\ORM\Query\SelectQuery
+     * @return \Cake\ORM\Query\SelectQuery<TSubject>
      */
     public function findOptionsPacked(SelectQuery $query, mixed ...$options): SelectQuery
     {
@@ -147,9 +151,10 @@ class NotesTable extends Table
     }
 
     /**
-     * @param \Cake\ORM\Query\SelectQuery $query
+     * @template TSubject of \Cake\Datasource\EntityInterface|array
+     * @param \Cake\ORM\Query\SelectQuery<TSubject> $query
      * @param mixed ...$args
-     * @return \Cake\ORM\Query\SelectQuery
+     * @return \Cake\ORM\Query\SelectQuery<TSubject>
      */
     public function findArgsPacked(SelectQuery $query, mixed ...$args): SelectQuery
     {

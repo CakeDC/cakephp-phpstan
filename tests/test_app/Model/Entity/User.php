@@ -15,4 +15,12 @@ use Cake\ORM\Entity;
  */
 class User extends Entity
 {
+    /**
+     * @var string|null
+     */
+    public protected(set) ?string $password {//phpcs:ignore
+        set {
+            $this->password = $value ? password_hash($value, PASSWORD_DEFAULT) : null;//phpcs:ignore
+        }
+    }
 }

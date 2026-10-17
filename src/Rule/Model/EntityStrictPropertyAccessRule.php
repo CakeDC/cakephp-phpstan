@@ -11,7 +11,7 @@ use PhpParser\Node\Expr\Variable;
 use PhpParser\Node\Identifier;
 use PHPStan\Analyser\Scope;
 use PHPStan\Node\Printer\ExprPrinter;
-use PHPStan\Reflection\MissingPropertyFromReflectionException;
+use PHPStan\Reflection\ClassReflection;
 use PHPStan\Reflection\Php\PhpMethodFromParserNodeReflection;
 use PHPStan\Reflection\ReflectionProvider;
 use PHPStan\Rules\Rule;
@@ -23,6 +23,10 @@ class EntityStrictPropertyAccessRule implements Rule
      * @var string
      */
     protected string $identifier = 'cake.entity.strictPropertyAccess';
+    /**
+     * @var \PHPStan\Reflection\ClassReflection
+     */
+    protected ClassReflection $entityBaseReflection;
 
     /**
      * @param \PHPStan\Node\Printer\ExprPrinter $printer
@@ -31,6 +35,7 @@ class EntityStrictPropertyAccessRule implements Rule
         private ExprPrinter $printer,
         private ReflectionProvider $reflectionProvider,
     ) {
+        $this->entityBaseReflection = $this->reflectionProvider->getClass(Entity::class);
     }
 
     /**
@@ -63,9 +68,8 @@ class EntityStrictPropertyAccessRule implements Rule
         if ($classReflection === null) {
             return [];
         }
-        $entityBaseReflection = $this->reflectionProvider->getClass(Entity::class);
         if (
-            !$classReflection->isSubclassOfClass($entityBaseReflection)
+            !$classReflection->isSubclassOfClass($this->entityBaseReflection)
             && $classReflection->getName() !== Entity::class
         ) {
             return [];
@@ -75,7 +79,7 @@ class EntityStrictPropertyAccessRule implements Rule
         }
         $propertyName = $node->var->name->toString();
         //Ignore properties from \Cake\ORM\Entity
-        if ($entityBaseReflection->hasNativeProperty($propertyName)) {
+        if ($this->entityBaseReflection->hasNativeProperty($propertyName)) {
             return [];
         }
         if (!$classReflection->hasNativeProperty($propertyName)) {

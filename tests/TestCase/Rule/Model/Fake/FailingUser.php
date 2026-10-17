@@ -3,8 +3,6 @@ declare(strict_types=1);
 
 namespace CakeDC\PHPStan\Test\TestCase\Rule\Model\Fake;
 
-use Cake\ORM\Entity;
-
 class FailingUser extends BaseFailingUser
 {
     public const string FIELD_ID = 'id';
@@ -31,7 +29,7 @@ class FailingUser extends BaseFailingUser
      */
     public function fail()
     {
-        //Error properties should be set using $this>set method
+        //Error, properties should be set using $this>set method
         $this->first_name = 'John';
         $this->last_name = 'Doe';
         $this->password = '0000000';

@@ -42,5 +42,6 @@ class FailingUser extends Entity
         $name = 'James';
         $this->first_name = $name;
         $this->password = static::FIELD_ID;
+        $this->hidden = ['password'];//Allowed to change from base entity
     }
 }

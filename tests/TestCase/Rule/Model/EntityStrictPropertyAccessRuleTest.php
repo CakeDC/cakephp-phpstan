@@ -73,6 +73,10 @@ class EntityStrictPropertyAccessRuleTest extends RuleTestCase
                 'Modifying property "password" in entity class "CakeDC\PHPStan\Test\TestCase\Rule\Model\Fake\FailingUser" is not allowed. Use $this->set(\'password\', static::FIELD_ID) for proper dirty tracking.',
                 44, // asserted error line
             ],
+            [
+                'Modifying property "role" in entity class "CakeDC\PHPStan\Test\TestCase\Rule\Model\Fake\FailingUser" is not allowed. Use $this->set(\'role\', \'user\') for proper dirty tracking.',
+                47, // asserted error line
+            ],
         ]);
     }
 }

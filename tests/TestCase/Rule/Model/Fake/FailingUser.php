@@ -5,7 +5,7 @@ namespace CakeDC\PHPStan\Test\TestCase\Rule\Model\Fake;
 
 use Cake\ORM\Entity;
 
-class FailingUser extends Entity
+class FailingUser extends BaseFailingUser
 {
     public const string FIELD_ID = 'id';
 
@@ -43,5 +43,7 @@ class FailingUser extends Entity
         $this->first_name = $name;
         $this->password = static::FIELD_ID;
         $this->hidden = ['password'];//Allowed to change from base entity
+        $this->new = false;
+        $this->role = 'user';
     }
 }

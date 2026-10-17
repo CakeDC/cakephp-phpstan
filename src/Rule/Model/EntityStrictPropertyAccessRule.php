@@ -74,6 +74,10 @@ class EntityStrictPropertyAccessRule implements Rule
             return [];
         }
         $propertyName = $node->var->name->toString();
+        //Ignore properties from \Cake\ORM\Entity
+        if ($entityBaseReflection->hasNativeProperty($propertyName)) {
+            return [];
+        }
         if (!$classReflection->hasNativeProperty($propertyName)) {
             return [];
         }
@@ -85,25 +89,16 @@ class EntityStrictPropertyAccessRule implements Rule
             return [];
         }
 
-        try {
-            $property = $classReflection->getNativeProperty($propertyName);
-            if (!$property->isProtectedSet()) {
-                return [];
-            }
-
-            return [
-                RuleErrorBuilder::message(sprintf(
-                    'Modifying property "%s" in entity class "%s" is not allowed. Use $this->set(\'%s\', %s) for proper dirty tracking.',// phpcs:ignore
-                    $propertyName,
-                    $classReflection->getName(),
-                    $propertyName,
-                    $this->printer->printExpr($node->expr),
-                ))
-                    ->identifier($this->identifier)
-                    ->build(),
-            ];
-        } catch (MissingPropertyFromReflectionException) {
-            return [];
-        }
+        return [
+            RuleErrorBuilder::message(sprintf(
+                'Modifying property "%s" in entity class "%s" is not allowed. Use $this->set(\'%s\', %s) for proper dirty tracking.',// phpcs:ignore
+                $propertyName,
+                $classReflection->getName(),
+                $propertyName,
+                $this->printer->printExpr($node->expr),
+            ))
+                ->identifier($this->identifier)
+                ->build(),
+        ];
     }
 }
